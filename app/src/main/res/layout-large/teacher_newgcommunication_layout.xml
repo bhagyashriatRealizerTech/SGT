@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    android:weightSum="10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <FrameLayout style="@style/SubFrameLayoutWeight1"
+        android:background="#ffffff"
+        android:layout_height="wrap_content">
+        <TextView style="@style/TextViewFontStyle"
+            android:layout_gravity="left"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
+            android:text="Class :"/>
+        <TextView style="@style/TextViewFontStyle"
+            android:layout_gravity="left"
+            android:id="@+id/txttclassname"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="90dp"
+            android:textSize="20dp"
+            android:text="Playgroup"/>
+        <TextView style="@style/TextViewFontStyle"
+            android:layout_gravity="right"
+            android:textColor="#000000"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="90dp"
+            android:textSize="20dp"
+            android:text="Div :"/>
+        <TextView style="@style/TextViewFontStyle"
+            android:layout_gravity="right"
+            android:id="@+id/txttdivname"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:textSize="20dp"
+            android:text="A"/>
+    </FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:background="@drawable/border_line"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Select Category"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/lstcategory"
+        android:dividerHeight="1dp"
+        android:divider="@color/colorAccent"
+        android:background="@drawable/rectangleshape"
+        android:layout_weight="4.5"
+        android:layout_margin="10dp">
+
+    </ListView>
+
+    <EditText style="@style/EditTextMultiline"
+        android:hint=" Message"
+        android:maxLength="200"
+        android:layout_weight="4.7"
+        android:paddingLeft="7dp"
+        android:layout_marginTop="27dp"
+        android:textSize="20sp"
+        android:id="@+id/edtnewalerts"/>
+
+</LinearLayout>

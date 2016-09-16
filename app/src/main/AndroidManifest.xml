@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.realizer.schoolgenie.teacher" >
+
+
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- External storage for caching. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <!-- My Location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- GCM requires search_layout Google account. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <!-- Keeps the processor from sleeping when search_layout message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!--
+     Creates search_layout custom permission so only this app can receive its messages.
+
+     NOTE: the permission *must* be called PACKAGE.permission.C2D_MESSAGE,
+           where PACKAGE is the application's package name.
+    -->
+    <permission
+        android:name="com.realizer.schoolgenie.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission
+        android:name="com.realizer.schoolgenie.permission.C2D_MESSAGE" />
+
+    <!-- This app has permission to register and receive data message. -->
+    <uses-permission
+        android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/school_genie_logo"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:theme="@style/AppTheme" >
+
+        <activity
+            android:name="com.realizer.schoolgeine.teacher.SplashScreen"
+            android:label="Teacher"
+            android:noHistory="true"
+            android:theme="@style/AppTheme1"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.realizer.schoolgeine.teacher.MainActivity"
+            android:screenOrientation="portrait"
+            android:noHistory="true"
+            android:theme="@style/AppTheme1"
+             />
+
+        <activity android:name="com.realizer.schoolgeine.teacher.LoginActivity"
+            android:screenOrientation="portrait"
+            android:noHistory="true"
+            android:theme="@style/AppTheme1"
+            />
+        <activity
+            android:name="com.realizer.schoolgeine.teacher.DrawerActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--<activity android:name="com.realizer.schooldiary.teacher1.AddPhotDisplayNameActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />-->
+
+        <activity android:name="com.realizer.schoolgeine.teacher.TeacherActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity android:name="com.realizer.schoolgeine.teacher.view.FullImageViewActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            android:windowSoftInputMode="adjustPan" ></activity>
+
+        <activity android:name="com.realizer.schoolgeine.teacher.exceptionhandler.AnotherActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            android:windowSoftInputMode="adjustPan" ></activity>
+
+
+        <activity android:name="com.realizer.schoolgeine.teacher.funcenter.TeacherFunCenterImageLargeViewFragment"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" ></activity>
+
+        <activity android:name="com.realizer.schoolgeine.teacher.Utils.ChatSectionIndexer"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" ></activity>
+        <activity android:name="com.realizer.schoolgeine.teacher.myclass.TeacherMyClassAttenadanceActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" ></activity>
+
+        <activity android:name="com.realizer.schoolgeine.teacher.funcenter.CustomPhotoGalleryActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" ></activity>
+
+
+        <service
+            android:name="com.realizer.schoolgeine.teacher.service.AutoSyncService"
+            android:enabled="true" />
+        <service
+            android:name="com.realizer.schoolgeine.teacher.service.ManualSyncService"
+            android:enabled="true" />
+
+
+        <receiver
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <!-- Receives the registration id. -->
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="com.google.android.gcm.demo.app" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.realizer.schoolgeine.teacher.service.NetworkChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <!--
+          Application-specific subclass of GCMBaseIntentService that will
+          handle received messages.
+
+          By default, it must be named .GCMIntentService, unless the
+          application uses search_layout custom BroadcastReceiver that redefines its name.
+        -->
+        <service android:name="com.realizer.schoolgeine.teacher.GCMIntentService" />
+    </application>
+
+
+</manifest>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    android:weightSum="13"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <FrameLayout style="@style/SubFrameLayoutWeight1"
+        android:background="#ffffff"
+        android:layout_height="wrap_content">
+        <TextView style="@style/TextViewFontStyle"
+            android:layout_gravity="left"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
+            android:text="Class :"/>
+        <TextView style="@style/TextViewFontStyle"
+            android:layout_gravity="left"
+            android:id="@+id/txtstdname"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="90dp"
+            android:textSize="20dp"
+            android:text="Playgroup"/>
+        <TextView style="@style/TextViewFontStyle"
+            android:layout_gravity="right"
+            android:textColor="#000000"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="90dp"
+            android:textSize="20dp"
+            android:text="Div :"/>
+        <TextView style="@style/TextViewFontStyle"
+            android:layout_gravity="right"
+            android:id="@+id/txttdivname"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:textSize="20dp"
+            android:text="A"/>
+    </FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:background="@drawable/border_line"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center"
+        android:background="#ffffff"
+        android:orientation="horizontal">
+
+    <Spinner
+        android:id="@+id/spinnersub"
+        android:drawSelectorOnTop="true"
+        style="@style/FinalSpinner"
+        android:layout_width="150dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="1"
+        android:layout_height="50dp"
+        android:spinnerMode="dropdown"
+        android:dropDownVerticalOffset="50dp"
+        android:fontFamily="sans-serif-condensed"
+        />
+        <Spinner
+            android:id="@+id/spinnerdate"
+            android:drawSelectorOnTop="true"
+            style="@style/FinalSpinner"
+            android:layout_width="150dp"
+            android:layout_weight="1"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="0dp"
+            android:layout_height="50dp"
+            android:spinnerMode="dropdown"
+            android:dropDownVerticalOffset="50dp"
+            android:fontFamily="sans-serif-condensed"
+            />
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:background="@drawable/imageviewborder"
+                android:id="@+id/btnCapturePicture1"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+
+                />
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:background="@drawable/imageviewborder"
+                android:id="@+id/btnCapturePicture2"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+
+                />
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:background="@drawable/imageviewborder"
+                android:id="@+id/btnCapturePicture3"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>
+</ScrollView>
+    <EditText style="@style/EditTextMultiline"
+        android:hint=" Homework"
+        android:layout_height="0dp"
+        android:layout_weight="11"
+        android:maxLines="7"
+        android:gravity="left"
+        android:paddingLeft="7dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/edtthomework"/>
+
+    <Button style="@style/LoginButton"
+        android:text="SEND"
+        android:visibility="gone"
+        android:layout_height="30dp"
+        android:id="@+id/btnhomeworksubmit"
+        android:layout_width="100dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/buttonselector"
+        />
+
+
+
+</LinearLayout>

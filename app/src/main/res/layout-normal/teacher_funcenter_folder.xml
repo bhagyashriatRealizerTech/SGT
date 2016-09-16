@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:orientation="vertical"
+        android:background="@drawable/outer_rect">
+
+        <ImageView
+        android:id="@+id/btnCapturefolder"
+        android:layout_width="80dp"
+        android:scaleType="fitXY"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        />
+
+    </FrameLayout>
+    <TextView
+        android:id="@+id/event_title"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textStyle="normal"
+        android:ellipsize="marquee"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:layout_marginBottom="3dp"/>
+
+    <TextView
+        android:id="@+id/event_date"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textStyle="normal"
+        android:ellipsize="marquee"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:layout_marginBottom="15dp"/>
+</LinearLayout>
