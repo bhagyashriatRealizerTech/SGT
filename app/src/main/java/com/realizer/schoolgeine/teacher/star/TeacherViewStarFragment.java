@@ -79,10 +79,13 @@ public class TeacherViewStarFragment extends Fragment implements FragmentBackPre
         qr = new DatabaseQueries(getActivity());
 
         studlst = qr.GetstudList(txtstd.getText().toString(), txtclss.getText().toString());
+
         ArrayList<String> listofSubject = qr.GetSub(txtstd.getText().toString(), txtclss.getText().toString());
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, listofSubject);
         adapter.setDropDownViewResource(R.layout.viewstar_subject_spiner);
+
         for (int i = 0; i < adapter.toString().length(); i++) {
             sub.setAdapter(adapter);
             break;
@@ -90,6 +93,7 @@ public class TeacherViewStarFragment extends Fragment implements FragmentBackPre
         sub.setSelection(0);
 
         final ArrayList<String> listofDate = qr.GetAllStarDate(txtstd.getText().toString(), txtclss.getText().toString(), sub.getSelectedItem().toString());
+
         ArrayList<String> listofDay = getStarDate(listofDate);
         if(listofDay.size()==0)
         {
@@ -99,6 +103,7 @@ public class TeacherViewStarFragment extends Fragment implements FragmentBackPre
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, listofDay);
         adapter1.setDropDownViewResource(R.layout.viewstar_subject_spiner);
+
         for (int i = 0; i < adapter1.toString().length(); i++) {
             date.setAdapter(adapter1);
             break;

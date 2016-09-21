@@ -1,6 +1,7 @@
 package com.realizer.schoolgeine.teacher.myclass;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -127,8 +128,6 @@ public class TeacherMyClassAttenadanceActivity extends AppCompatActivity impleme
         Config.hideSoftKeyboardWithoutReq(TeacherMyClassAttenadanceActivity.this, mSearchView);
         searchWidgetLayout.setVisibility(View.GONE);
         getSupportActionBar().show();
-       /* ((DrawerActivity) getApplicationContext()).showMyActionBar();
-        ((DrawerActivity) getApplicationContext()).unlockDrawer();*/
 
     }
 
@@ -141,7 +140,6 @@ public class TeacherMyClassAttenadanceActivity extends AppCompatActivity impleme
             {
                 n=-1;
                 n = qr.updateAttendanceSyncFlag(qr.GetAttendanceID(attId));
-                finish();
                 if(n>=0)
                 {
                    finish();
@@ -661,7 +659,7 @@ public class TeacherMyClassAttenadanceActivity extends AppCompatActivity impleme
                     Log.d("ID", "" + o.getAttendanceId());
                     attId = o.getAttendanceId();
                     TeacherAttendanceAsyncTaskPost obj = new TeacherAttendanceAsyncTaskPost(o,TeacherMyClassAttenadanceActivity.this,TeacherMyClassAttenadanceActivity.this,"true");
-                    obj.execute();
+                    obj.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
                 else
                 {

@@ -58,7 +58,7 @@ public class TeacherFunCenterFolderFragment extends Fragment implements Fragment
 
         qr=new DatabaseQueries(getActivity());
 
-        new GetEvents().execute();
+        new GetEvents().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         folderdgridview.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {

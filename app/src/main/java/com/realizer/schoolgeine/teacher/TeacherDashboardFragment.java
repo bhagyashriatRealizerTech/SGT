@@ -97,7 +97,7 @@ public class TeacherDashboardFragment extends Fragment implements View.OnClickLi
         resultReceiver = new MessageResultReceiver(null);
         obj.setResultReceiver(resultReceiver);
 
-        new GetNotificationList().execute();
+        new GetNotificationList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         notificationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -124,7 +124,7 @@ public class TeacherDashboardFragment extends Fragment implements View.OnClickLi
                                 qr.deleteNotificationRow(notificationData.get(position).getId());
                                 // new GetNotificationList().execute();
                                 if(notificationData.size() ==1)
-                                    new GetNotificationList().execute();
+                                    new GetNotificationList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                                 else {
                                     notificationData.remove(position);
                                     notificationAdapter.notifyDataSetChanged();
@@ -174,7 +174,7 @@ public class TeacherDashboardFragment extends Fragment implements View.OnClickLi
                         qr.deleteNotificationRow(notificationData.get(position).getId());
                         TimeTable("b");
                     }
-                    else if(notificationData.get(position).getNotificationtype().equalsIgnoreCase("Chat"))
+                    else if(notificationData.get(position).getNotificationtype().equalsIgnoreCase("Query"))
                     {
                         String uid = notificationData.get(position).getAdditionalData2();
                         String urlImage = null;
@@ -503,7 +503,7 @@ public class TeacherDashboardFragment extends Fragment implements View.OnClickLi
                     }
                     String newURL=sb.toString();
                     if(!ImageStorage.checkifImageExists(newURL.split("/")[newURL.split("/").length - 1]))
-                        new GetImages(newURL,picUser,newURL.split("/")[newURL.split("/").length-1]).execute(newURL);
+                        new GetImages(newURL,picUser,newURL.split("/")[newURL.split("/").length-1]).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
                     else
                     {
                         File image = ImageStorage.getImage(newURL.split("/")[newURL.split("/").length-1]);
@@ -534,9 +534,9 @@ public class TeacherDashboardFragment extends Fragment implements View.OnClickLi
 
         public void run() {
 
-            if (update.equals("RecieveMessage")) {
+            if (update.equals("UpdateNotification")) {
 
-                new GetNotificationList().execute();
+                new GetNotificationList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }
     }

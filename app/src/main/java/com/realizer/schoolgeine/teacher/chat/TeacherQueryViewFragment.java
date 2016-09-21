@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -137,7 +138,7 @@ public class TeacherQueryViewFragment extends Fragment implements AbsListView.On
                             if(isConnectingToInternet()) {
                                 TeacherQuerySendModel obj = qr.GetQuery(qid);
                                 TeacherQueryAsyncTaskPost asyncobj = new TeacherQueryAsyncTaskPost(obj, getActivity(), TeacherQueryViewFragment.this, "true");
-                                asyncobj.execute();
+                                asyncobj.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                             }
                             else
                             {
@@ -220,7 +221,7 @@ public class TeacherQueryViewFragment extends Fragment implements AbsListView.On
 
     @Override
     public void onTaskCompleted(String s,QueueListModel queueListModel) {
-        if(s.equals("true"))
+        if(s.equals("true") && queueListModel.getType().equalsIgnoreCase("Query"))
         {
             long n = qr.deleteQueueRow(queueListModel.getId(),"Query");
 

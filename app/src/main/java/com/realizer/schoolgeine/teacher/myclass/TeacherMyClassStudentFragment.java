@@ -100,6 +100,7 @@ public class TeacherMyClassStudentFragment extends Fragment implements SearchVie
     private int indexListSize;
     MenuItem done,search;
     ProgressWheel loading;
+    boolean isOnCreate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -120,9 +121,7 @@ public class TeacherMyClassStudentFragment extends Fragment implements SearchVie
         studentList.setOnCheckedChangeListener(this);
         attendance.setOnCheckedChangeListener(this);
 
-       /* rdStdList = (RadioButton)rootView.findViewById(R.id.rbstdList);
-        rdStdAttendance =  (RadioButton)rootView.findViewById(R.id.rbstdAttendance);*/
-        //rdgl = (TextView) rootView.findViewById(R.id.txtgreenrd);
+
         lstgl = (TextView) rootView.findViewById(R.id.txtgreenlst);
         btnnew = (FloatingActionButton) rootView.findViewById(R.id.newAttendance);
         ln = (LinearLayout) rootView.findViewById(R.id.lntext);
@@ -144,45 +143,8 @@ public class TeacherMyClassStudentFragment extends Fragment implements SearchVie
         txtstd.setText(preferences.getString("STANDARD", ""));
         txtclss.setText(preferences.getString("DIVISION", ""));
 
-        Bundle b= getArguments();
-        String statechk = b.getString("AttLst","");
 
-        if(statechk.equals("true"))
-        {
-            attendance.setChecked(true);
-            studentList.setChecked(false);
-            ((DrawerActivity) getActivity()).getSupportActionBar().setTitle(Config.actionBarTitle("Attendance", getActivity()));
-            ((DrawerActivity) getActivity()).getSupportActionBar().show();
-            attendance.setBackgroundResource(R.drawable.team_toggle_on_round_shape);
-            attendance.setTextColor(getResources().getColor(R.color.colorAccent));
-            studentList.setBackgroundResource(R.drawable.team_toggle_off_round_shape);
-            studentList.setTextColor(getResources().getColor(R.color.abc_primary_text_disable_only_material_dark));
-            studentClassAtt(rootView, "Visible");
-            btnnew.setVisibility(View.VISIBLE);
-            ln.setVisibility(View.VISIBLE);
-            lstgl.setVisibility(View.VISIBLE);
-            sideIndex.setVisibility(View.GONE);
-            if(search != null)
-                search.setVisible(false);
-        }
-        else {
-
-            attendance.setChecked(false);
-            studentList.setChecked(true);
-            studentList.setBackgroundResource(R.drawable.team_toggle_on_round_shape);
-            studentList.setTextColor(getResources().getColor(R.color.colorAccent));
-            attendance.setBackgroundResource(R.drawable.team_toggle_off_round_shape);
-            attendance.setTextColor(getResources().getColor(R.color.abc_primary_text_disable_only_material_dark));
-            btnnew.setVisibility(View.GONE);
-            lstgl.setVisibility(View.GONE);
-            ln.setVisibility(View.GONE);
-            sideIndex.setVisibility(View.VISIBLE);
-            studentClassList(rootView, "Invisible");
-            change = 0;
-            if(search != null)
-                search.setVisible(true);
-        }
-
+        isOnCreate = true;
 
 
         btnnew.setOnClickListener(new View.OnClickListener() {
@@ -192,8 +154,6 @@ public class TeacherMyClassStudentFragment extends Fragment implements SearchVie
                 getActivity().startActivity(intent);
             }
         });
-
-        updateList();
 
         return rootView;
     }
@@ -310,7 +270,7 @@ public class TeacherMyClassStudentFragment extends Fragment implements SearchVie
     {
         String flagStudentList=setFlag;
 
-        new GetStudentList().execute();
+        new GetStudentList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         mSearchView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -374,6 +334,7 @@ public class TeacherMyClassStudentFragment extends Fragment implements SearchVie
 
         List<AlphabetListAdapter.Row> rows = new ArrayList<AlphabetListAdapter.Row>();
         sections.clear();
+        alphabet.clear();
         int start = 0;
         int end = 0;
         String previousLetter = null;
@@ -475,7 +436,7 @@ public class TeacherMyClassStudentFragment extends Fragment implements SearchVie
     public void studentClassAtt(View v,String setFlag)
     {
 
-        new GetAttendanceList().execute();
+        new GetAttendanceList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         lstStudentName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -548,20 +509,55 @@ public class TeacherMyClassStudentFragment extends Fragment implements SearchVie
     @Override
     public void onResume() {
         super.onResume();
-        /*rdStdList.setChecked(true);
-        rdStdAttendance.setChecked(false);*/
-        btnnew.setVisibility(View.GONE);
-        ln.setVisibility(View.GONE);
-        ((DrawerActivity) getActivity()).getSupportActionBar().setTitle(Config.actionBarTitle("My Class", getActivity()));
-        ((DrawerActivity) getActivity()).getSupportActionBar().show();
-        sideIndex.setVisibility(View.VISIBLE);
-        attendance.setChecked(false);
-        studentList.setChecked(true);
-        studentList.setBackgroundResource(R.drawable.team_toggle_on_round_shape);
-        studentList.setTextColor(getResources().getColor(R.color.colorAccent));
-        attendance.setBackgroundResource(R.drawable.team_toggle_off_round_shape);
-        attendance.setTextColor(getResources().getColor(R.color.abc_primary_text_disable_only_material_dark));
-        studentClassList(root, "Invisible");
+
+        Bundle b= getArguments();
+        String statechk = "";
+        if(isOnCreate) {
+            statechk = b.getString("CheckState", "");
+            isOnCreate = false;
+        }
+        else
+        statechk = "true";
+
+        if(statechk.equals("true"))
+        {
+            attendance.setChecked(true);
+            studentList.setChecked(false);
+            ((DrawerActivity) getActivity()).getSupportActionBar().setTitle(Config.actionBarTitle("Attendance", getActivity()));
+            ((DrawerActivity) getActivity()).getSupportActionBar().show();
+            attendance.setBackgroundResource(R.drawable.team_toggle_on_round_shape);
+            attendance.setTextColor(getResources().getColor(R.color.colorAccent));
+            studentList.setBackgroundResource(R.drawable.team_toggle_off_round_shape);
+            studentList.setTextColor(getResources().getColor(R.color.abc_primary_text_disable_only_material_dark));
+            studentClassAtt(root, "Visible");
+            btnnew.setVisibility(View.VISIBLE);
+            ln.setVisibility(View.VISIBLE);
+            lstgl.setVisibility(View.VISIBLE);
+            sideIndex.setVisibility(View.GONE);
+            if(search != null)
+                search.setVisible(false);
+        }
+        else {
+
+            attendance.setChecked(false);
+            studentList.setChecked(true);
+            studentList.setBackgroundResource(R.drawable.team_toggle_on_round_shape);
+            studentList.setTextColor(getResources().getColor(R.color.colorAccent));
+            attendance.setBackgroundResource(R.drawable.team_toggle_off_round_shape);
+            attendance.setTextColor(getResources().getColor(R.color.abc_primary_text_disable_only_material_dark));
+            btnnew.setVisibility(View.GONE);
+            lstgl.setVisibility(View.GONE);
+            ln.setVisibility(View.GONE);
+            sideIndex.setVisibility(View.VISIBLE);
+            studentClassList(root, "Invisible");
+            change = 0;
+            if(search != null)
+                search.setVisible(true);
+        }
+
+
+
+
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         change=0;
@@ -719,6 +715,8 @@ public class TeacherMyClassStudentFragment extends Fragment implements SearchVie
                     ln.setVisibility(View.GONE);
                     sideIndex.setVisibility(View.VISIBLE);
                     studentClassList(root, "Invisible");
+
+                    updateList();
                     if(search != null)
                         search.setVisible(true);
 
@@ -769,6 +767,8 @@ public class TeacherMyClassStudentFragment extends Fragment implements SearchVie
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             getList(studentNameList);
+            sideIndex.setVisibility(View.VISIBLE);
+            updateList();
             loading.setVisibility(View.GONE);
         }
     }

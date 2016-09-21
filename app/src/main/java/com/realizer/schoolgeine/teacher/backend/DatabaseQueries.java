@@ -40,7 +40,7 @@ public class DatabaseQueries {
     public DatabaseQueries(Context context) {
 
         this.context = context;
-        SQLiteOpenHelper myHelper = new SqliteHelper(context);
+        SQLiteOpenHelper myHelper = SqliteHelper.getInstance(context);
         this.db = myHelper.getWritableDatabase();
 
         SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(context);

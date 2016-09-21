@@ -125,47 +125,6 @@ public class TeacherMyClassAttDetails extends Fragment implements FragmentBackPr
         }
     }
 
-    public List<TeacherMyClassAttModel> getHardcodeValue()
-    {
-        List<TeacherMyClassAttModel> templist = new ArrayList<>();
-
-        TeacherMyClassAttModel obj1 = new TeacherMyClassAttModel();
-        obj1.setAttDate("Rudra Shinde");
-        obj1.setAbscnt("P");
-        obj1.setPrsnt("1");
-        templist.add(obj1);
-        TeacherMyClassAttModel obj2 = new TeacherMyClassAttModel();
-        obj2.setAttDate("Vivaan Salgare");
-        obj2.setAbscnt("P");
-        obj2.setPrsnt("2");
-        templist.add(obj2);
-        TeacherMyClassAttModel obj3 = new TeacherMyClassAttModel();
-        obj3.setAttDate("Arrav Mahargude");
-        obj3.setAbscnt("P");
-        obj3.setPrsnt("3");
-        templist.add(obj3);
-        TeacherMyClassAttModel obj4 = new TeacherMyClassAttModel();
-        obj4.setAttDate("Farhan Bodale");
-        obj4.setAbscnt("A");
-        obj4.setPrsnt("4");
-        templist.add(obj4);
-        TeacherMyClassAttModel obj5 = new TeacherMyClassAttModel();
-        obj5.setAttDate("Pravin Jadhav");
-        obj5.setAbscnt("P");
-        obj5.setPrsnt("5");
-        templist.add(obj5);
-        TeacherMyClassAttModel obj6 = new TeacherMyClassAttModel();
-        obj6.setAttDate("Ramchandra Magar");
-        obj6.setAbscnt("A");
-        obj6.setPrsnt("6");
-        templist.add(obj6);
-        TeacherMyClassAttModel obj7 = new TeacherMyClassAttModel();
-        obj7.setAttDate("Kishor Gunjal");
-        obj7.setAbscnt("P");
-        obj7.setPrsnt("7");
-        templist.add(obj7);
-        return templist;
-    }
 
     @Override
     public void onFragmentBackPressed() {

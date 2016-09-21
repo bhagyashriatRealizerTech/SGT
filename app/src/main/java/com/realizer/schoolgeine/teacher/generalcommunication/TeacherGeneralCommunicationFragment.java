@@ -67,14 +67,15 @@ public class TeacherGeneralCommunicationFragment extends Fragment implements Fra
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object o = listHoliday.getItemAtPosition(position);
-                TeacherGeneralCommunicationListModel gcommunication = (TeacherGeneralCommunicationListModel) o;
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+                TeacherGeneralCommunicationListModel gcommunication = (TeacherGeneralCommunicationListModel) o;
                 TeacherGcommunicationDetailFragment fragment = new TeacherGcommunicationDetailFragment();
                 Singlton.setSelectedFragment(fragment);
                 Bundle bundle = new Bundle();
                 bundle.putString("CategoryName",gcommunication.getCategory());
-                bundle.putString("AlertDate",gcommunication.getAnnouncementTime());
-                bundle.putString("TeacherName",gcommunication.getSentBy());
+                bundle.putString("AlertDate",Config.getMediumDate(gcommunication.getAnnouncementTime()));
+                bundle.putString("TeacherName",preferences.getString("DisplayName",""));
                 bundle.putString("AlertText",gcommunication.getAnnouncementText());
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();

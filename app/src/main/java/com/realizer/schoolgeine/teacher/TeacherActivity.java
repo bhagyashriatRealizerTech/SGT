@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
@@ -384,9 +385,17 @@ public class TeacherActivity extends AppCompatActivity {
     {
         SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor edit = sharedpreferences.edit();
-        edit.putString("Login","false" );
-        edit.putString("LogChk","true");
+        edit.putString("Login", "false");
+        edit.putString("LogChk", "true");
         edit.commit();
+        if(Singlton.getManualserviceIntent() != null) {
+            stopService(Singlton.getManualserviceIntent());
+            Singlton.setManualserviceIntent(null);
+        }
+        if(Singlton.getAutoserviceIntent() != null) {
+            stopService(Singlton.getAutoserviceIntent());
+            Singlton.setAutoserviceIntent(null);
+        }
         finish();
     }
 

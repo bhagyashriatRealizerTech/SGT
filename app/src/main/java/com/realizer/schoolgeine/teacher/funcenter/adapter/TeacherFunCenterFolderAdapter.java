@@ -18,6 +18,8 @@ import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterModel;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -39,6 +41,7 @@ public class TeacherFunCenterFolderAdapter extends BaseAdapter
     static Bitmap decodedByte;
     SimpleDateFormat dfinput;
     SimpleDateFormat dfoutput;
+    int IMAGE_MAX_SIZE = 140;
 
     public TeacherFunCenterFolderAdapter(Context context, ArrayList<TeacherFunCenterModel> setImage1)
     {
@@ -89,12 +92,12 @@ public class TeacherFunCenterFolderAdapter extends BaseAdapter
         byte[] decodedString = Base64.decode(image1, Base64.DEFAULT);
         decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         image.setImageBitmap(decodedByte);
+        decodedByte = null;
+        System.gc();
         text.setText(eventnm);
-        datetext.setText(Config.getMediumDateForEvent(getImage1.get(position).getDate()));
+        datetext.setText(Config.getMediumDateForImage(getImage1.get(position).getDate()));
 
         return convertView;
     }
-
-
 
 }

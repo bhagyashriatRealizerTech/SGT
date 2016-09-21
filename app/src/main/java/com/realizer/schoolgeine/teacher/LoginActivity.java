@@ -19,34 +19,20 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.google.android.gcm.GCMRegistrar;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
-import com.realizer.schoolgeine.teacher.chat.asynctask.TeacherQueryAsyncTaskPost;
-import com.realizer.schoolgeine.teacher.chat.model.TeacherQuerySendModel;
-import com.realizer.schoolgeine.teacher.funcenter.asynctask.TeacherFunCenterAsyncTaskPost;
-import com.realizer.schoolgeine.teacher.funcenter.asynctask.TeacherFunCenterImageAsynckPost;
-import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterEventModel;
-import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterImageModel;
-import com.realizer.schoolgeine.teacher.generalcommunication.asynctask.TeacherGCommunicationAsyncTaskPost;
-import com.realizer.schoolgeine.teacher.generalcommunication.model.TeacherGeneralCommunicationListModel;
-import com.realizer.schoolgeine.teacher.homework.asynctask.TeacherClassworkAsyncTaskPost;
-import com.realizer.schoolgeine.teacher.homework.asynctask.TeacherHomeworkAsyncTaskPost;
-import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
-import com.realizer.schoolgeine.teacher.myclass.asynctask.TeacherAttendanceAsyncTaskPost;
-import com.realizer.schoolgeine.teacher.myclass.model.TeacherAttendanceListModel;
 import com.realizer.schoolgeine.teacher.service.AutoSyncService;
-import com.realizer.schoolgeine.teacher.star.asynctask.TeacherGiveStarAsyncTaskPost;
-import com.realizer.schoolgeine.teacher.star.model.TeacherGiveStarModel;
-import com.realizer.schoolgeine.teacher.timetable.asynctask.TeacherTimeTableAsyncTask;
-import com.realizer.schoolgeine.teacher.timetable.model.TeacherTimeTableExamListModel;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
@@ -59,7 +45,6 @@ import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -72,12 +57,12 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
     EditText userName, password;
     Button loginButton;
     CheckBox checkBox;
-    SqliteHelper myhelper;
     DatabaseQueries dbqr;
     int num;
     ProgressWheel loading;
     AlertDialog.Builder adbdialog;
     SharedPreferences sharedpreferences;
+    TextView forgotPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +79,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
         loginButton.setTypeface(face);
         checkBox = (CheckBox) findViewById(R.id.checkBox1);
         loading = (ProgressWheel) findViewById(R.id.loading);
+        forgotPassword = (TextView) findViewById(R.id.txtForgetPswrd);
         dbqr = new DatabaseQueries(LoginActivity.this);
         num =0;
         //About Remember me in login page
@@ -189,6 +175,53 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
             userName.setText("");
             password.setText("");
         }
+
+
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               final Typeface face= Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/font.ttf");
+
+                LayoutInflater inflater = getLayoutInflater();
+                View dialoglayout = inflater.inflate(R.layout.forgotpwd_recoveryoption, null);
+                Button submit = (Button)dialoglayout.findViewById(R.id.btn_submit);
+                Button cancel = (Button)dialoglayout.findViewById(R.id.btn_cancel);
+                final RadioButton mail = (RadioButton)dialoglayout.findViewById(R.id.rb_option_mail);
+                final RadioButton magicword = (RadioButton)dialoglayout.findViewById(R.id.rb_option_magic_word);
+                submit.setTypeface(face);
+                cancel.setTypeface(face);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setView(dialoglayout);
+
+                final AlertDialog alertDialog = builder.create();
+
+                submit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mail.isChecked()) {
+                            alertDialog.dismiss();
+                            recoverPasswordByEmail();
+                        }
+                        if (magicword.isChecked()) {
+
+                        }
+
+                    }
+                });
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                alertDialog.show();
+
+            }
+        });
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -613,5 +646,39 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void recoverPasswordByEmail()
+    {
+        final Typeface face= Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/font.ttf");
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.forgotpwd_rmailpassword, null);
+        Button submit = (Button)dialoglayout.findViewById(R.id.btn_submit);
+        Button cancel = (Button)dialoglayout.findViewById(R.id.btn_cancel);
+        final EditText userID = (EditText)dialoglayout.findViewById(R.id.edtuserid);
+        final EditText email = (EditText)dialoglayout.findViewById(R.id.edtmailid);
+        submit.setTypeface(face);
+        cancel.setTypeface(face);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setView(dialoglayout);
+        final AlertDialog alertDialog = builder.create();
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userId = userID.getText().toString().trim();
+                String userEmail =  email.getText().toString().trim();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 }

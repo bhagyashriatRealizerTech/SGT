@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -125,22 +126,22 @@ public class TeacherMyPupilInfoFragment extends Fragment implements FragmentBack
 
                     studclass.setText(obj.getString("std"));
                     studdiv.setText(obj.getString("division"));
-                    rollno.setText(":  "+obj.getString("classRollNo"));
+                    rollno.setText(obj.getString("classRollNo"));
 
                     if( !obj.getString("dob").equals("") &&  !obj.getString("dob").equals(null) &&  !obj.getString("dob").equals("null")) {
                         String timestamp = obj.getString("dob").trim().split("\\(")[1].trim().split("\\-")[0];
                         Date createdOn = new Date(Long.parseLong(timestamp));
                         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
                         String formattedDate = sdf.format(createdOn);
-                        dob.setText(":  "+formattedDate);
+                        dob.setText(formattedDate);
                     }
                     else
-                    dob.setText(":  "+"No Birthday Found");
-                    hobbies.setText(":  "+obj.getString("hobbies"));
-                    bloodgroup.setText(":  "+obj.getString("bldGrp"));
-                    parentname.setText(":  "+obj.getString("mName")+" "+obj.getString("lName"));
-                    contactno.setText(":  "+obj.getString("contactNo"));
-                    address.setText(":  "+obj.getString("address"));
+                    dob.setText("No Birthday Found");
+                    hobbies.setText(obj.getString("hobbies"));
+                    bloodgroup.setText(obj.getString("bldGrp"));
+                    parentname.setText(obj.getString("mName")+" "+obj.getString("lName"));
+                    contactno.setText(obj.getString("contactNo"));
+                    address.setText(obj.getString("address"));
 
                     if (obj.getString("ThumbnailURL")!=null && !obj.getString("ThumbnailURL").equalsIgnoreCase("null"))
                     {
@@ -163,7 +164,7 @@ public class TeacherMyPupilInfoFragment extends Fragment implements FragmentBack
                         }
                         String newURL=sb.toString();
                         if(!ImageStorage.checkifImageExists(newURL.split("/")[newURL.split("/").length - 1]))
-                            new GetImages(newURL,profile_pic,newURL.split("/")[newURL.split("/").length-1]).execute(newURL);
+                            new GetImages(newURL,profile_pic,newURL.split("/")[newURL.split("/").length-1]).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
                         else
                         {
                             File image = ImageStorage.getImage(newURL.split("/")[newURL.split("/").length-1]);

@@ -249,7 +249,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                 super.onPostExecute(result);
                 iv.setImageBitmap(result);
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override

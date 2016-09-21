@@ -105,8 +105,8 @@
             android:background="@drawable/team_toggle_off_round_shape"
             android:textAllCaps="false"
             android:textColor="#fff"
-            android:textOff="Attenadance"
-            android:textOn="Attenadance"
+            android:textOff="Attendance"
+            android:textOn="Attendance"
             android:textSize="20sp" />
         </LinearLayout>
         </LinearLayout>

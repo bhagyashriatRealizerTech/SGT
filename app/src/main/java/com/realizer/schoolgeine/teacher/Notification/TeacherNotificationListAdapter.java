@@ -96,51 +96,6 @@ public class TeacherNotificationListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-       /* holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
-        holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, holder.swipeLayout.findViewById(R.id.tvNoDataMsg));
-        holder.swipeLayout.setLeftSwipeEnabled(false);
-        holder.swipeLayout.setRightSwipeEnabled(true);
-        holder.swipeLayout.mViewBoundCache.clear();
-        holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
-            @Override
-            public void onClose(SwipeLayout layout) {
-                //when the SurfaceView totally cover the BottomView.
-                Log.d("Swipe","Close");
-            }
-
-            @Override
-            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-                //you are swiping.
-                Log.d("Swipe","swiping");
-            }
-
-            @Override
-            public void onStartOpen(SwipeLayout layout) {
-                Log.d("Swipe","startopen");
-            }
-
-            @Override
-            public void onOpen(SwipeLayout layout) {
-                //when the BottomView totally show.
-                if (prevSwipedLayout != null && layout != prevSwipedLayout) {
-                    prevSwipedLayout.close();
-                }
-                prevSwipedLayout = layout;
-                Log.d("Swipe","open");
-            }
-
-            @Override
-            public void onStartClose(SwipeLayout layout) {
-            }
-
-            @Override
-            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-                //when user's hand released.
-                Log.d("Swipe","release");
-            }
-
-        });
-*/
 
         String notificationData = "";
         String date = notifications.get(position).getNotificationDate();
@@ -164,7 +119,7 @@ public class TeacherNotificationListAdapter extends BaseAdapter {
                     notifications.get(position).getAdditionalData1().split("@@@")[2];
             holder.notificationImage.setImageResource(R.drawable.timetable_icon);
         }
-        else if(notifications.get(position).getNotificationtype().equalsIgnoreCase("Chat"))
+        else if(notifications.get(position).getNotificationtype().equalsIgnoreCase("Query"))
         {
             notificationData = "Recieved Message From "+
                     notifications.get(position).getAdditionalData1().split("@@@")[0]+"\nMessage : "+notifications.get(position).getMessage();
@@ -212,7 +167,11 @@ public class TeacherNotificationListAdapter extends BaseAdapter {
             }
         }
 
+        if(notifications.get(position).getNotificationtype().equalsIgnoreCase("Query"))
+            holder.type.setText("Chat");
+            else
         holder.type.setText(notifications.get(position).getNotificationtype());
+
         holder.notificationDate.setText(Config.getDate(date,"D"));
         holder.notificationText.setText(notificationData);
 

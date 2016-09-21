@@ -76,7 +76,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Roll Number"
+                            android:text="Roll Number :"
                             android:textSize="16sp"
                             android:gravity="left"
                             android:layout_marginTop="5dp"
@@ -158,7 +158,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Date Of Birth"
+                            android:text="Date Of Birth :"
                             android:textSize="16sp"
                             android:gravity="left"
                             android:layout_marginTop="5dp"
@@ -187,7 +187,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Hobbies"
+                            android:text="Hobbies :"
                             android:textSize="16sp"
                             android:gravity="left"
                             android:layout_marginTop="5dp"
@@ -215,7 +215,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Blood Group"
+                            android:text="Blood Group :"
                             android:textSize="16sp"
                             android:gravity="left"
                             android:layout_marginTop="5dp"
@@ -243,7 +243,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Parent Name"
+                            android:text="Parent Name :"
                             android:textSize="16sp"
                             android:gravity="left"
                             android:layout_marginTop="5dp"
@@ -271,7 +271,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Contact Number"
+                            android:text="Contact Number :"
                             android:textSize="16sp"
                             android:gravity="left"
                             android:layout_marginTop="5dp"
@@ -299,7 +299,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Emergency Number"
+                            android:text="Emergency Number :"
                             android:textSize="16sp"
                             android:gravity="left"
                             android:layout_marginTop="5dp"
@@ -311,7 +311,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=":  8967452389"
+                            android:text="8967452389"
                             android:textSize="16sp"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
@@ -327,7 +327,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Address"
+                            android:text="Address : "
                             android:textSize="16sp"
                             android:gravity="left"
                             android:layout_marginTop="5dp"
@@ -340,7 +340,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
-                            android:layout_marginTop="5dp"
                             android:text="Aurangabad"
                             android:textColor="#ffffff"
                             android:layout_marginLeft="150dp"

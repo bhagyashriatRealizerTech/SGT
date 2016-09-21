@@ -60,7 +60,7 @@ public class TeacherGcommunicationDetailFragment extends Fragment implements Fra
         }
 
 
-        txtDate.setText(bundle.getString("AlertDate").split(" ")[0]);
+        txtDate.setText(bundle.getString("AlertDate"));
         txtTeacherName.setText(bundle.getString("TeacherName"));
         txtDescription.setText(bundle.getString("AlertText"));
 

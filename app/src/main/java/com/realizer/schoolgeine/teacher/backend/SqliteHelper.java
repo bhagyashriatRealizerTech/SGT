@@ -12,7 +12,8 @@ import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 public class SqliteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SchoolDiaryTeacher";
     private static final int DATABASE_VERSION =41;
-    Context mycontext;
+    static Context mycontext;
+    private static SqliteHelper mInstance = null;
     private static final String STUDINFO ="CREATE TABLE StudInfo(Std TEXT,Div TEXT, StudArr TEXT)";
     private static final String STDSUBALLOCATE ="CREATE TABLE StdDivSub(Std TEXT,Div TEXT, Sub TEXT)";
     private static final String TEACHERINFO ="CREATE TABLE TeacherInfo(Id TEXT,DispName TEXT, Pic TEXT)";
@@ -32,10 +33,22 @@ public class SqliteHelper extends SQLiteOpenHelper {
     private static final String TEACHERFULLINFO ="CREATE TABLE TeacherFullInfo(ActiveDate TEXT,ClassTeacherOn TEXT,Name TEXT,Qualification TEXT,ThumbnailURL TEXT,UserId TEXT,ContactNo TEXT,DOB TEXT,EmailId TEXT,IsActive TEXT)";
     private static final String Notification ="CREATE TABLE Notification(ID INTEGER PRIMARY KEY   AUTOINCREMENT,NotificationId INTEGER,Type TEXT,Message TEXT,Date TEXT,AdditionalData1 TEXT,AdditionalData2 TEXT,IsRead TEXT)";
 
-    public SqliteHelper(Context context) {
+    private SqliteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(context));
         this.mycontext = context;
+    }
+
+    public static SqliteHelper getInstance(Context ctx) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (mInstance == null) {
+            mInstance = new SqliteHelper(ctx.getApplicationContext());
+        }
+        mycontext = ctx;
+        return mInstance;
     }
 
 

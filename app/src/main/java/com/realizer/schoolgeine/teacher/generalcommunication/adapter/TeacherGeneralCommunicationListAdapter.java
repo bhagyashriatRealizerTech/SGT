@@ -58,16 +58,6 @@ public class TeacherGeneralCommunicationListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-       /* if (position % 2 == 0) {
-            convertView.setBackgroundColor(Color.parseColor("#87CEFF"));
-            holder.initial.setBackgroundResource(R.drawable.circlewhite);
-            holder.initial.setTextColor(Color.BLACK);
-        } else {
-            convertView.setBackgroundColor(Color.parseColor("#ffffff"));
-            holder.initial.setBackgroundResource(R.drawable.circleblue);
-            holder.initial.setTextColor(Color.WHITE);
-        }*/
-
 
         if(hList.get(position).getCategory().equals("CA")) {
             holder.initial.setText("CA");

@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -215,7 +216,7 @@ public class TeacherQueryFragment extends Fragment implements OnTaskCompleted, F
                                     for (int i = 0; i < qid.length; i++) {
                                         TeacherQuerySendModel obj = qr.GetQuery(qid[i]);
                                         TeacherQueryAsyncTaskPost asyncobj = new TeacherQueryAsyncTaskPost(obj, getActivity(), TeacherQueryFragment.this, "true");
-                                        asyncobj.execute();
+                                        asyncobj.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                                     }
                                 } else {
                                     //String uid[] = univsersalid.split(",");
@@ -323,7 +324,7 @@ public class TeacherQueryFragment extends Fragment implements OnTaskCompleted, F
         SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String stdC=sharedpreferences.getString("STANDARD", "");
         String divC = sharedpreferences.getString("DIVISION", "");
-        if(s.equals("true"))
+        if(s.equals("true") && queueListModel.getType().equalsIgnoreCase("Query"))
         {
 
             long n = qr.deleteQueueRow(queueListModel.getId(),"Query");

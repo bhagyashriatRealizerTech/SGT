@@ -69,7 +69,7 @@ public class TeacherFunCenterGalleryFragment extends Fragment implements Fragmen
         ((DrawerActivity) getActivity()).getSupportActionBar().show();
 
 
-        new GetImagesForEvent().execute();
+        new GetImagesForEvent().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         // allData.clear();
 
@@ -135,7 +135,7 @@ public class TeacherFunCenterGalleryFragment extends Fragment implements Fragmen
         {
             Singlton.setIsDonclick(Boolean.FALSE);
 
-            new GetImagesForEvent().execute();
+            new GetImagesForEvent().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
            /* ArrayList<TeacherFunCenterGalleryModel> allData=qr.GetImage(getid);
             if(allData.size()>1) {
                 noDataText.setVisibility(View.GONE);

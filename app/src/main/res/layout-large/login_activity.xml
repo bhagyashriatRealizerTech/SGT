@@ -79,7 +79,6 @@
             android:text="Forgot Password ?"
             android:layout_marginTop="12dp"
             android:layout_marginLeft="30dp"
-            android:onClick="ForgotPswd"
             android:textColor="#4682B4"
             android:clickable="true"
             android:layout_gravity="center_vertical"
