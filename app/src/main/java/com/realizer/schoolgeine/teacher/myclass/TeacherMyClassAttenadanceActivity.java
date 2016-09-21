@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.AlphabetListAdapter;
 import com.realizer.schoolgeine.teacher.Utils.Config;
@@ -218,6 +219,7 @@ public class TeacherMyClassAttenadanceActivity extends AppCompatActivity impleme
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getItemAtPosition(position) instanceof AlphabetListAdapter.Section)
                     return;
+
                 AddedContactModel modelView = ((AlphabetListAdapter.Item) parent.getItemAtPosition(position)).text;
              if(selectedTeam.size()>0) {
                  if (!selectedTeam.contains(modelView)) {
@@ -235,6 +237,7 @@ public class TeacherMyClassAttenadanceActivity extends AppCompatActivity impleme
                  selectedTeam.add(modelView);
                  listView.setItemChecked(position, true);
               }
+
                 adapter.setCheckedEmployeeList(selectedTeam);
                 adapter.setFlag("Attendance");
                 adapter.notifyDataSetChanged();

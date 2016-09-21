@@ -32,6 +32,10 @@ import android.widget.Toast;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
+import com.realizer.schoolgeine.teacher.forgotpassword.SetMagicWordAsyncTaskGet;
+import com.realizer.schoolgeine.teacher.forgotpassword.SetPasswordAsyncTaskGet;
+import com.realizer.schoolgeine.teacher.forgotpassword.SetPasswordByEmailAsyncTaskGet;
+import com.realizer.schoolgeine.teacher.forgotpassword.ValidateMagicWordAsyncTaskGet;
 import com.realizer.schoolgeine.teacher.service.AutoSyncService;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
@@ -45,6 +49,8 @@ import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -63,6 +69,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
     AlertDialog.Builder adbdialog;
     SharedPreferences sharedpreferences;
     TextView forgotPassword;
+    String defaultMagicWord;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +89,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
         forgotPassword = (TextView) findViewById(R.id.txtForgetPswrd);
         dbqr = new DatabaseQueries(LoginActivity.this);
         num =0;
+        defaultMagicWord="";
         //About Remember me in login page
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -204,7 +212,8 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                             recoverPasswordByEmail();
                         }
                         if (magicword.isChecked()) {
-
+                            alertDialog.dismiss();
+                            recoverPasswordByMagicWord("ForgotPassword",false,"");
                         }
 
                     }
@@ -286,7 +295,72 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
     }
 
     @Override
-    public void onTaskCompleted(String s,QueueListModel queueListModel)  {
+    public void onTaskCompleted(String s,QueueListModel queueListModel) {
+        if(queueListModel != null) {
+            if (queueListModel.getType().equalsIgnoreCase("SetMagicWord")) {
+                if(s.equalsIgnoreCase("true"))
+                {
+
+                }
+                boolean b = parsData(queueListModel.getTime());
+                if (b == true) {
+                    loading.setVisibility(View.GONE);
+                    GCMReg();
+                    SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                    SharedPreferences.Editor edit = sharedpreferences.edit();
+                    edit.putString("Login", "true");
+                    edit.commit();
+                    Intent ser = new Intent(LoginActivity.this, AutoSyncService.class);
+                    Singlton.setAutoserviceIntent(ser);
+                    startService(ser);
+                    Intent i = new Intent(LoginActivity.this, DrawerActivity.class);
+                    startActivity(i);
+
+                } else {
+                    if (num == 0)
+                        Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+                    else if (num == 1)
+                        Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else  if (queueListModel.getType().equalsIgnoreCase("ValidateMagicWord")) {
+                loading.setVisibility(View.GONE);
+                if(s.equalsIgnoreCase("true"))
+                {
+                    resetPassword();
+                }
+                else
+                {
+                    Toast.makeText(LoginActivity.this,"Wrong User ID / Wrong Magic Word Entered",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+            else  if (queueListModel.getType().equalsIgnoreCase("SetPassword")) {
+                loading.setVisibility(View.GONE);
+                if(s.equalsIgnoreCase("true"))
+                {
+
+                }
+                else
+                {
+                    Toast.makeText(LoginActivity.this,"Fail to Reset Password",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+            else  if (queueListModel.getType().equalsIgnoreCase("SendEmail")) {
+                loading.setVisibility(View.GONE);
+                if(s.equalsIgnoreCase("true"))
+                {
+                    Toast.makeText(LoginActivity.this,"Email Sent Successfully",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(LoginActivity.this,"Fail to Send Email",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }
+        else{
         boolean b = false;
         final SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -297,48 +371,49 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
 
         edit.commit();
 
-            String logchk = sharedpreferences.getString("LogChk","");
-            if(logchk.equals("true"))
-            {
+        String logchk = sharedpreferences.getString("LogChk", "");
+        String mWord = "";
+            String validate = "";
+            JSONObject rootObj = null;
+            try {
+                rootObj = new JSONObject(s);
+                validate = rootObj.getString("isLoginSuccessfull");
+                JSONObject teacherInfo  = rootObj.getJSONObject("Teacher");
+                mWord =teacherInfo.getString("MagicWord");
 
-                try {
-                    JSONObject rootObj = new JSONObject(s);
-                    String validate = rootObj.getString("isLoginSuccessfull");
-                    if(validate.equals("valid"))
-                    {
-                        b=true;
-                    }
-                    else
-                    {
-                        String Schoolcode = rootObj.getString("SchoolCode");
-                        if(Schoolcode.length()==0)
-                        {
-                            num=1;
-                        }
-                        b=false;
-                    }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        if (logchk.equals("true")) {
+
+            try {
+
+                if (validate.equals("valid")) {
+                    b = true;
+                } else {
+                    String Schoolcode = rootObj.getString("SchoolCode");
+                    if (Schoolcode.length() == 0) {
+                        num = 1;
+                    }
+                    b = false;
                 }
 
-
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            else {
-                b = parsData(s);
-            }
+            if(mWord.trim().length()>0) {
+                if (b == true) {
 
-        if(b==true) {
-
-            loading.setVisibility(View.GONE);
-                   GCMReg();
-                   edit.putString("Login", "true");
-                   edit.commit();
-                   Intent ser = new Intent(LoginActivity.this,AutoSyncService.class);
-                   Singlton.setAutoserviceIntent(ser);
-                   startService(ser);
-                   Intent i = new Intent(LoginActivity.this, DrawerActivity.class);
-                   startActivity(i);
+                    loading.setVisibility(View.GONE);
+                    GCMReg();
+                    edit.putString("Login", "true");
+                    edit.commit();
+                    Intent ser = new Intent(LoginActivity.this, AutoSyncService.class);
+                    Singlton.setAutoserviceIntent(ser);
+                    startService(ser);
+                    Intent i = new Intent(LoginActivity.this, DrawerActivity.class);
+                    startActivity(i);
 
                    /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                    String temp = preferences.getString("DisplayName","");
@@ -355,17 +430,42 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                        startActivity(i);
                    }
 */
-               }
+                } else {
+                    if (num == 0)
+                        Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+                    else if (num == 1)
+                        Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else
+            {
+                recoverPasswordByMagicWord("FirstLogin", b, s);
+            }
+        } else {
+            if(mWord.trim().length()>0) {
+                 b = parsData(s);
+                if (b == true) {
+                    loading.setVisibility(View.GONE);
+                    GCMReg();
+                    edit.putString("Login", "true");
+                    edit.commit();
+                    Intent ser = new Intent(LoginActivity.this, AutoSyncService.class);
+                    Singlton.setAutoserviceIntent(ser);
+                    startService(ser);
+                    Intent i = new Intent(LoginActivity.this, DrawerActivity.class);
+                    startActivity(i);
 
-        else {
-                   if(num==0)
-                       Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
-                   else if(num==1)
-                       Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (num == 0)
+                        Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+                    else if (num == 1)
+                        Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else
+            recoverPasswordByMagicWord("FirstLogin", b, s);
         }
-
-
-
+    }
     }
 
     public void GCMReg()
@@ -669,6 +769,138 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
             public void onClick(View v) {
                 String userId = userID.getText().toString().trim();
                 String userEmail =  email.getText().toString().trim();
+                alertDialog.dismiss();
+               if(userID.length()>0 && userEmail.length()>0)
+                {
+                    loading.setVisibility(View.VISIBLE);
+                    new SetPasswordByEmailAsyncTaskGet(userId,userEmail,LoginActivity.this,LoginActivity.this).execute();
+                }
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+
+    public void recoverPasswordByMagicWord(final String from, boolean b1,final String s)
+    {
+        final Typeface face= Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/font.ttf");
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.forgotpwd_mwordpassword, null);
+        Button submit = (Button)dialoglayout.findViewById(R.id.btn_submit);
+        Button cancel = (Button)dialoglayout.findViewById(R.id.btn_cancel);
+        final EditText userID = (EditText)dialoglayout.findViewById(R.id.edtuserid);
+        userID.setText(userName.getText().toString());
+        final EditText magicWord = (EditText)dialoglayout.findViewById(R.id.edtmagicword);
+
+        final TextView titledialog = (TextView)dialoglayout.findViewById(R.id.dialogTitle);
+        final TextView infodialog = (TextView)dialoglayout.findViewById(R.id.infodialog);
+
+        submit.setTypeface(face);
+        cancel.setTypeface(face);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setView(dialoglayout);
+        if(from.equalsIgnoreCase("FirstLogin"))
+        {
+            titledialog.setText("Set Magic Word");
+            infodialog.setText("You  are Logged in First Time ,Please Set Your Magic Word");
+            builder.setCancelable(false);
+        }
+
+        final AlertDialog alertDialog = builder.create();
+
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userId = userID.getText().toString().trim();
+                String wordMagic =  magicWord.getText().toString().trim();
+                alertDialog.dismiss();
+                if (from.equalsIgnoreCase("FirstLogin")) {
+                    if(userId.length()>0 && wordMagic.length()>0)
+
+                    new SetMagicWordAsyncTaskGet(userId,wordMagic,s,LoginActivity.this,LoginActivity.this).execute();
+                }
+                else
+                {
+                    loading.setVisibility(View.VISIBLE);
+                    new ValidateMagicWordAsyncTaskGet(userId,wordMagic,LoginActivity.this,LoginActivity.this).execute();
+                }
+                //resetPassword();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alertDialog.dismiss();
+                if (from.equalsIgnoreCase("FirstLogin")) {
+                    boolean b = parsData(s);
+                    if (b == true) {
+                        loading.setVisibility(View.GONE);
+                        GCMReg();
+                        SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                        SharedPreferences.Editor edit = sharedpreferences.edit();
+                        edit.putString("Login", "true");
+                        edit.commit();
+                        Intent ser = new Intent(LoginActivity.this, AutoSyncService.class);
+                        Singlton.setAutoserviceIntent(ser);
+                        startService(ser);
+                        Intent i = new Intent(LoginActivity.this, DrawerActivity.class);
+                        startActivity(i);
+
+                    } else {
+                        if (num == 0)
+                            Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+                        else if (num == 1)
+                            Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        alertDialog.show();
+    }
+
+
+    public void resetPassword()
+    {
+        final Typeface face= Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/font.ttf");
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.forgotpwd_resetpassword, null);
+        Button submit = (Button)dialoglayout.findViewById(R.id.btn_submit);
+        Button cancel = (Button)dialoglayout.findViewById(R.id.btn_cancel);
+        final EditText userID = (EditText)dialoglayout.findViewById(R.id.edtuserid);
+        final EditText pwd = (EditText)dialoglayout.findViewById(R.id.edtpwd);
+        final EditText cPwd = (EditText)dialoglayout.findViewById(R.id.edtconfirmpwd);
+        submit.setTypeface(face);
+        cancel.setTypeface(face);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setView(dialoglayout);
+        final AlertDialog alertDialog = builder.create();
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userId = userID.getText().toString().trim();
+                String password =  pwd.getText().toString().trim();
+                String cPassword =  cPwd.getText().toString().trim();
+
+                alertDialog.dismiss();
+
+                if(password.equals(cPassword))
+                new SetPasswordAsyncTaskGet(userId,password,LoginActivity.this,LoginActivity.this).execute();
+                else
+                    Toast.makeText(LoginActivity.this,"Password Mismatch",Toast.LENGTH_SHORT).show();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {

@@ -109,6 +109,7 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
         spinnersub = (Spinner) rootView.findViewById(R.id.spinnersub);
         spinnerdate = (Spinner) rootView.findViewById(R.id.spinnerdate);
         edthwork = (EditText) rootView.findViewById(R.id.edtthomework);
+
         cpature1=0;cpature2=0;cpature3=0;
         txtstd  = (TextView) rootView.findViewById(R.id.txtstdname);
         txtclss = (TextView) rootView.findViewById(R.id.txttdivname);
@@ -116,6 +117,7 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
 
         Bundle b = getArguments();
         htext = b.getString("HEADERTEXT");
+        edthwork.setHint(htext);
 
 
         ((DrawerActivity) getActivity()).getSupportActionBar().setTitle(Config.actionBarTitle(htext, getActivity()));

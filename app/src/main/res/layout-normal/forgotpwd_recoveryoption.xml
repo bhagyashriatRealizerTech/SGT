@@ -12,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Choose Password Recovery Option"
+            android:text="Password Recovery Option"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/white"/>
@@ -30,12 +30,14 @@
             android:text="Receive Password by Email"
             android:id="@+id/rb_option_mail"
             android:textSize="16sp"
+            android:textColor="@color/black"
             android:layout_marginBottom="10dp"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reset Password by Magic Word"
             android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
             android:id="@+id/rb_option_magic_word"
             android:textSize="16sp"/>
     </RadioGroup>

@@ -102,6 +102,7 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
                 else
                 {
                     noHwMsg.setVisibility(View.VISIBLE);
+                    noHwMsg.setText("No "+htext+" Provided");
                     listHoliday.setVisibility(View.GONE);
                 }
             }
@@ -355,6 +356,7 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
                 else
                 {
                     noHwMsg.setVisibility(View.VISIBLE);
+                    noHwMsg.setText("No "+htext+" Provided");
                     listHoliday.setVisibility(View.GONE);
                 }
             }

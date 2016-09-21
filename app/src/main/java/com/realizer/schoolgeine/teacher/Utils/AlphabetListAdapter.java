@@ -8,22 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.realizer.schoolgeine.teacher.view.SelectStudentCheckBox;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.chat.model.AddedContactModel;
 import com.realizer.schoolgeine.teacher.view.CheckableRelativeLayout;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlphabetListAdapter extends BaseAdapter {
 
-    private List<AddedContactModel> checkedEmployee;
+    private ArrayList<AddedContactModel> checkedEmployee;
     Boolean[] chkstate;
     String Flag="";
 
@@ -61,7 +64,7 @@ public class AlphabetListAdapter extends BaseAdapter {
         this.Flag=flag;
     }
 
-    public void setCheckedEmployeeList(List<AddedContactModel> checkedEmployee) {
+    public void setCheckedEmployeeList(ArrayList<AddedContactModel> checkedEmployee) {
         this.checkedEmployee = checkedEmployee;
     }
 
@@ -95,7 +98,7 @@ public class AlphabetListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         View view = convertView;
         
         if (getItemViewType(position) == 0) { // Item
@@ -104,12 +107,15 @@ public class AlphabetListAdapter extends BaseAdapter {
                 view = (CheckableRelativeLayout) inflater.inflate(R.layout.row_item, parent, false);
             }
             
-            Item item = (Item) getItem(position);
+            final Item item = (Item) getItem(position);
             TextView textviewDP = (TextView) view.findViewById(R.id.txtinitialPupil);
             TextView firstName = (TextView) view.findViewById(R.id.first_name);
-            final CheckBox checkBox = (CheckBox) view.findViewById(R.id.select_Recipient_checkbox);
+            final SelectStudentCheckBox checkBox = (SelectStudentCheckBox) view.findViewById(R.id.select_Recipient_checkbox);
+            checkBox.setTag(position);
             RelativeLayout id_relativeLayout=(RelativeLayout) view.findViewById(R.id.id_relativeLayout);
+            id_relativeLayout.setTag(position);
             ImageView userImage = (ImageView)view.findViewById(R.id.img_user_image);
+
 
             if(item.text.getProfileimage() != null && !item.text.getProfileimage().equals("") && !item.text.getProfileimage().equalsIgnoreCase("null"))
             {
@@ -176,6 +182,7 @@ public class AlphabetListAdapter extends BaseAdapter {
                     ((ListView) parent).setItemChecked(position, false);
                 }
 
+
             }
 
             if(Flag.equalsIgnoreCase("MyClass"))
@@ -185,6 +192,37 @@ public class AlphabetListAdapter extends BaseAdapter {
 
 
             firstName.setText(item.text.getUserName().trim());
+
+
+
+/*            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int pos = (Integer) buttonView.getTag();
+                    final Item item1 = (Item) getItem(pos);
+                    if(isChecked)
+                    {
+                        if (checkedEmployee != null )
+                        {
+                            checkedEmployee.add(item1.text);
+                        }
+                        else
+                        {
+                            checkedEmployee = new ArrayList<AddedContactModel>();
+                            checkedEmployee.add(item1.text);
+                        }
+                    }
+                    else
+                    {
+                        if (checkedEmployee != null  && checkedEmployee.contains(item1.text)) {
+                            int posremove = checkedEmployee.indexOf(item1.text);
+                            checkedEmployee.remove(posremove);
+                        }
+                    }
+                    Singlton.setSelectedStudentList(checkedEmployee);
+                }
+            });*/
+
 
         }
         else { // Section
@@ -197,6 +235,8 @@ public class AlphabetListAdapter extends BaseAdapter {
             TextView textView = (TextView) view.findViewById(R.id.textView1);
             textView.setText(section.text);
         }
+
+
         
         return view;
     }

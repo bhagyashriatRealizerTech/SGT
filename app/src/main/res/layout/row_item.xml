@@ -58,7 +58,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <CheckBox
+            <com.realizer.schoolgeine.teacher.view.SelectStudentCheckBox
                 android:id="@+id/select_Recipient_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +67,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:focusable="false"
-                android:enabled="false"
                 android:button="@drawable/multi_radio_chice"
                 android:paddingRight="3dp" />
         </LinearLayout>

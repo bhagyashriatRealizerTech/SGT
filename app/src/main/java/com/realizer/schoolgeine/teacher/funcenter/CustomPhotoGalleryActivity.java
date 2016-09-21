@@ -25,6 +25,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
@@ -60,6 +61,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
     SimpleDateFormat df;
     long m;
     int totalselectedImageCount;
+    ProgressWheel loading;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +93,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
             int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
             arrPath[i] = imagecursor.getString(dataColumnIndex);
         }
-
+        loading = (ProgressWheel) findViewById(R.id.loading);
         imageAdapter = new ImageAdapter(CustomPhotoGalleryActivity.this);
         grdImages.setAdapter(imageAdapter);
         imagecursor.close();
@@ -123,34 +125,70 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
 
     public void showDialog()
     {
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View alertDialogView = inflater.inflate(R.layout.teacher_funcenter_caption_layout, null);
-        adb.setView(alertDialogView);
+        if(totalselectedImageCount == 0)
+        {
+            Toast.makeText(getApplicationContext(), "Please select at least one image", Toast.LENGTH_LONG).show();
+        }
+        else {
 
-        adb.setTitle("Image Caption");
-        adb.setMessage("Please Enter Caption for Images");
-        adb.setIcon(android.R.drawable.ic_dialog_info);
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            LayoutInflater inflater = this.getLayoutInflater();
+            final View alertDialogView = inflater.inflate(R.layout.teacher_funcenter_caption_layout, null);
+            adb.setView(alertDialogView);
 
-        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                EditText et = (EditText)alertDialogView.findViewById(R.id.edt_caption);
-                if(et.getText().toString().trim().length()>0)
-                    selectImages(et.getText().toString().trim());
-                else
-                    selectImages(imagecaption);
-                dialog.dismiss();
-            } });
+            adb.setTitle("Image Caption");
+            adb.setMessage("Please Enter Caption for Images");
+            adb.setIcon(android.R.drawable.ic_dialog_info);
+
+            adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    EditText et = (EditText) alertDialogView.findViewById(R.id.edt_caption);
+                    if (et.getText().toString().trim().length() > 0)
+                        new insertImageAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, et.getText().toString().trim());
+                        //selectImages(et.getText().toString().trim());
+                    else
+                        new insertImageAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imagecaption);
+                    //selectImages(imagecaption);
+                    dialog.dismiss();
+                }
+            });
 
 
-        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                selectImages(imagecaption);
-                dialog.dismiss();
-            } });
-        adb.show();
+            adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    new insertImageAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imagecaption);
+                    //selectImages(imagecaption);
+                    dialog.dismiss();
+                }
+            });
+            adb.show();
+        }
     }
 
+    public class insertImageAsync extends AsyncTask<String,Void,Void>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            String caption = params[0];
+            selectImages(caption);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            loading.setVisibility(View.GONE);
+            finish();
+        }
+
+    }
     public void selectImages(String caption)
     {
         final int len = thumbnailsselection.length;
@@ -164,7 +202,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
             }
         }
         if (cnt == 0) {
-            Toast.makeText(getApplicationContext(), "Please select at least one image", Toast.LENGTH_LONG).show();
+
         } else {
 
             UUID imguuid = UUID.randomUUID();
@@ -218,10 +256,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                 }
 
             }
-            finish();
-          /*  if (!Config.isConnectingToInternet(CustomPhotoGalleryActivity.this)) {
-                finish();
-            }*/
+
         }
     }
 
