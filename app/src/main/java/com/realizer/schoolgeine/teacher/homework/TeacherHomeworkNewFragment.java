@@ -213,23 +213,28 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
     {
         if(txtstd.getText().toString().isEmpty() )
         {
-            Toast.makeText(getActivity(), "Please Select Standard", Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(), "New Homework", "Please Select Standard");
+           // Toast.makeText(getActivity(), "Please Select Standard", Toast.LENGTH_SHORT).show();
         }
         else if(txtclss.getText().toString().isEmpty())
         {
-            Toast.makeText(getActivity(), "Please Select Division", Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(), "New Homework", "Please Select Division");
+           // Toast.makeText(getActivity(), "Please Select Division", Toast.LENGTH_SHORT).show();
         }
         else if( spinnersub.getSelectedItem().toString().isEmpty())
         {
-            Toast.makeText(getActivity(), "Please Select Subject", Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(), "New Homework", "Please Select Subject");
+           // Toast.makeText(getActivity(), "Please Select Subject", Toast.LENGTH_SHORT).show();
         }
         else if( spinnerdate.getSelectedItem().toString().isEmpty())
         {
-            Toast.makeText(getActivity(), "Please Select Date", Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(), "New Homework", "Please Select Date");
+           // Toast.makeText(getActivity(), "Please Select Date", Toast.LENGTH_SHORT).show();
         }
         else if(edthwork.getText().toString().isEmpty())
         {
-            Toast.makeText(getActivity(), "Please Enter Description", Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(), "New Homework", "Please Enter Homework Description");
+            //Toast.makeText(getActivity(), "Please Enter Description", Toast.LENGTH_SHORT).show();
         }
         else {
 
@@ -445,15 +450,16 @@ public void getOption() {
             } else if (resultCode == getActivity().RESULT_CANCELED) {
 
                 // user cancelled Image capture
-                Toast.makeText(getActivity(),
+              /*  Toast.makeText(getActivity(),
                         "User cancelled image capture", Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
 
             } else {
                 // failed to capture image
-                Toast.makeText(getActivity(),
+                Config.alertDialog(Singlton.getContext(), "Camera", "Sorry, Failed to Capture Image");
+             /*   Toast.makeText(getActivity(),
                         "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
             }
 
         }

@@ -503,7 +503,7 @@ public class TeacherDashboardFragment extends Fragment implements View.OnClickLi
                     }
                     String newURL=sb.toString();
                     if(!ImageStorage.checkifImageExists(newURL.split("/")[newURL.split("/").length - 1]))
-                        new GetImages(newURL,picUser,newURL.split("/")[newURL.split("/").length-1]).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
+                        new GetImages(newURL,picUser,userInitials,nameUSer.getText().toString(),newURL.split("/")[newURL.split("/").length-1]).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
                     else
                     {
                         File image = ImageStorage.getImage(newURL.split("/")[newURL.split("/").length-1]);

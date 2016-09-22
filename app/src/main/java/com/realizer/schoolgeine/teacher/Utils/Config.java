@@ -1,14 +1,18 @@
 package com.realizer.schoolgeine.teacher.Utils;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import com.realizer.schoolgenie.teacher.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -318,6 +322,26 @@ public class Config {
         }
 
         return mon;
+
+    }
+
+    /**
+     * @param context
+     * @param title
+     * @param message
+     */
+    public static void alertDialog(final Context context, String title, String message) {
+        AlertDialog.Builder adbdialog;
+        adbdialog = new AlertDialog.Builder(context);
+        adbdialog.setTitle(title);
+        adbdialog.setMessage(message);
+        //adbdialog.setIcon(android.R.drawable.ic_dialog_info);
+        adbdialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+            });
+        adbdialog.show();
 
     }
 

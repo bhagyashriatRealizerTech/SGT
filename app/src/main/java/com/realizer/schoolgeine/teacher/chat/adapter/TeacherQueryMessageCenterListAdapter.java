@@ -3,6 +3,7 @@ package com.realizer.schoolgeine.teacher.chat.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -166,7 +167,7 @@ public class TeacherQueryMessageCenterListAdapter extends BaseAdapter {
             holder.initial.setVisibility(View.GONE);
             holder.profilepic.setVisibility(View.VISIBLE);
             if(!ImageStorage.checkifImageExists(newURL.split("/")[newURL.split("/").length - 1]))
-                new GetImages(newURL,holder.profilepic,newURL.split("/")[newURL.split("/").length-1]).execute(newURL);
+                new GetImages(newURL,holder.profilepic,holder.initial,messageList.get(position).getSendername(),newURL.split("/")[newURL.split("/").length-1]).execute(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
             else
             {
                 File image = ImageStorage.getImage(newURL.split("/")[newURL.split("/").length-1]);
@@ -201,27 +202,6 @@ public class TeacherQueryMessageCenterListAdapter extends BaseAdapter {
 
 
 
-/*
-        if(hList.get(position).getFlag().equals("T"))
-       {
-
-           holder.msgT.setText(hList.get(position).getMsg()+"\t");
-           holder.msgTt.setText("\t"+hList.get(position).getTime());
-           holder.lt.setBackgroundResource(R.drawable.in_message_bg);
-           holder.msgP.setText("");
-           holder.msgPt.setText("");
-           holder.lp.setBackground(null);
-
-       }
-        else if(hList.get(position).getFlag().equals("P"))
-       {
-           holder.msgP.setText(hList.get(position).getMsg()+"\t");
-           holder.msgPt.setText(hList.get(position).getTime());
-           holder.lp.setBackgroundResource(R.drawable.out_message_bg);
-           holder.msgT.setText("");
-           holder.msgTt.setText("");
-           holder.lt.setBackground(null);
-       }*/
 
         return convertView;
     }
@@ -239,11 +219,7 @@ public class TeacherQueryMessageCenterListAdapter extends BaseAdapter {
             holder.date.setText(Config.getDate(setdate, "D"));
             date = setdate;
 
-           /* LinearLayout.LayoutParams layoutmargin = (LinearLayout.LayoutParams)holder.layoutallview.getLayoutParams();
-            layoutmargin.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutmargin.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            layoutmargin.setMargins(0,20,0,0);
-            holder.layoutallview.setLayoutParams(layoutmargin);*/
+
 
         }
 
@@ -254,12 +230,6 @@ public class TeacherQueryMessageCenterListAdapter extends BaseAdapter {
             layoutParams.width = 0;
             layoutParams.height = 0;
             holder.datelayout.setLayoutParams(layoutParams);
-
-            /*LinearLayout.LayoutParams layoutmargin = (LinearLayout.LayoutParams)holder.layoutallview.getLayoutParams();
-            layoutmargin.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutmargin.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            layoutmargin.setMargins(0,0,0,0);
-            holder.layoutallview.setLayoutParams(layoutmargin);*/
 
 
         }

@@ -105,19 +105,23 @@ public class TeacherGCommunicationNewFragment extends Fragment implements OnTask
 
         if(txtstd.getText().toString().isEmpty() )
         {
-            Toast.makeText(getActivity(), "Select Standard", Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(),"New Alert","Please Select Standard");
+            //Toast.makeText(getActivity(), "Select Standard", Toast.LENGTH_SHORT).show();
         }
         else if(txtclss.getText().toString().isEmpty())
         {
-            Toast.makeText(getActivity(), "Select Division", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "Select Division", Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(),"New Alert","Please Select Division");
         }
         else if(edtmsg.getText().toString().isEmpty())
         {
-            Toast.makeText(getActivity(), "Enter Discription", Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(),"New Alert","Please Enter Description");
+           // Toast.makeText(getActivity(), "Enter Discription", Toast.LENGTH_SHORT).show();
         }
         else if(cat==null)
         {
-            Toast.makeText(getActivity(), "Select Catagory", Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(),"New Alert","Please Select Category");
+            //Toast.makeText(getActivity(), "Select Catagory", Toast.LENGTH_SHORT).show();
         }
         else {
             Calendar calendar = Calendar.getInstance();

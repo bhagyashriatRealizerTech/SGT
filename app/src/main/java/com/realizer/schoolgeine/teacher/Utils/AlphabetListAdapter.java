@@ -3,6 +3,7 @@ package com.realizer.schoolgeine.teacher.Utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -138,7 +139,7 @@ public class AlphabetListAdapter extends BaseAdapter {
                 textviewDP.setVisibility(View.GONE);
                 userImage.setVisibility(View.VISIBLE);
                 if(!ImageStorage.checkifImageExists(newURL.split("/")[newURL.split("/").length-1]))
-                    new GetImages(newURL,userImage,newURL.split("/")[newURL.split("/").length-1]).execute(newURL);
+                    new GetImages(newURL,userImage,textviewDP,item.text.getUserName().trim(),newURL.split("/")[newURL.split("/").length-1]).execute(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
                 else
                 {
                     File image = ImageStorage.getImage(newURL.split("/")[newURL.split("/").length-1]);

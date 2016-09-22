@@ -377,7 +377,7 @@ public class DatabaseQueries {
 
     // Select Allocated Std And Div from  STDDivSub
     public ArrayList<TeacherGeneralCommunicationListModel> GetAnnouncement(String std,String div) {
-        Cursor c = db.rawQuery("SELECT * FROM Announcement Where Std='" + std + "' " + "and Div='" + div + "' ", null);
+        Cursor c = db.rawQuery("SELECT * FROM Announcement Where Std='" + std + "' " + "and Div='" + div + "' ORDER BY AnnounceID DESC", null);
         ArrayList<TeacherGeneralCommunicationListModel> result = new ArrayList<>();
 
         int cnt = 1;

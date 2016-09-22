@@ -161,9 +161,11 @@ public class TeacherQueryFragment extends Fragment implements OnTaskCompleted, F
             public void onClick(View v) {
                 Config.hideSoftKeyboardWithoutReq(getActivity(),message);
                 if (addedStudent.getCount() == 0) {
-                    Toast.makeText(getActivity(), "No Student Added", Toast.LENGTH_SHORT).show();
+                    Config.alertDialog(Singlton.getContext(), "New Chat", "Please Add at least one Student to Initiate Chat ");
+                    //Toast.makeText(getActivity(), "No Student Added", Toast.LENGTH_SHORT).show();
                 } else if (message.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getActivity(), "Enter Message", Toast.LENGTH_SHORT).show();
+                    Config.alertDialog(Singlton.getContext(), "New Chat", "Please Enter Message to Send");
+                    //Toast.makeText(getActivity(), "Enter Message", Toast.LENGTH_SHORT).show();
                 } else {
                     // sendTo = getList();
                     if (selectedList.size() == 0 || message.getText().toString().trim().length() == 0) {

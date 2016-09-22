@@ -127,7 +127,8 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
     {
         if(totalselectedImageCount == 0)
         {
-            Toast.makeText(getApplicationContext(), "Please select at least one image", Toast.LENGTH_LONG).show();
+            Config.alertDialog(CustomPhotoGalleryActivity.this, "Gallery", "Please Select at least 1 Image");
+            //Toast.makeText(getApplicationContext(), "Please select at least one image", Toast.LENGTH_LONG).show();
         }
         else {
 
@@ -359,7 +360,8 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                     } else {
                         if(totalselectedImageCount == 10)
                         {
-                            Toast.makeText(CustomPhotoGalleryActivity.this,"Please Select only 10 image",Toast.LENGTH_SHORT).show();
+                            Config.alertDialog(CustomPhotoGalleryActivity.this, "Gallery", "Please Select only 10 image");
+                            //Toast.makeText(CustomPhotoGalleryActivity.this,"Please Select only 10 image",Toast.LENGTH_SHORT).show();
                         }
                         else {
                             cb.setChecked(true);
@@ -380,7 +382,8 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                     } else {
                         if(totalselectedImageCount == 10)
                         {
-                            Toast.makeText(CustomPhotoGalleryActivity.this,"Please Select only 10 image",Toast.LENGTH_SHORT).show();
+                            Config.alertDialog(CustomPhotoGalleryActivity.this, "Gallery", "Please Select only 10 image");
+                            //Toast.makeText(CustomPhotoGalleryActivity.this,"Please Select only 10 image",Toast.LENGTH_SHORT).show();
                         }
                         else {
                             holder.chkImage.setChecked(true);

@@ -771,15 +771,16 @@ public class TeacherActivity extends AppCompatActivity {
             } else if (resultCode == RESULT_CANCELED) {
 
                 // user cancelled Image capture
-                Toast.makeText(getApplicationContext(),
+                /*Toast.makeText(getApplicationContext(),
                         "User cancelled image capture", Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
 
             } else {
                 // failed to capture image
-                Toast.makeText(getApplicationContext(),
+              /*  Toast.makeText(getApplicationContext(),
                         "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
+                Config.alertDialog(TeacherActivity.this, "Camera", "Sorry , Failed to capture Image");
             }
 
         }

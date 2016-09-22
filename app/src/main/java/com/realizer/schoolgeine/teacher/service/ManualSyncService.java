@@ -180,6 +180,20 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                     }
                 }
             }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (id == queueListModel.getId()) {
+                        Config.alertDialog(Singlton.getContext(),"Manual Sync","Sync Completed Successfully");
+                        //Toast.makeText(Singlton.getContext(),"Sync Completed Successfully",Toast.LENGTH_SHORT).show();
+                        if(Singlton.getResultReceiver() != null)
+                            Singlton.getResultReceiver().send(1000,null);
+                   /* if (dialog != null && dialog.isShowing())
+                        dialog.dismiss();*/
+                    }
+                }
+            });
+
 
         }
         else if(s.replace("\"","").equals("success"))
@@ -234,23 +248,26 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                     }
                 }
             }
-        }
-        else {
-            Toast.makeText(this, "Server not responding please wait...", Toast.LENGTH_SHORT).show();
-        }
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (id == queueListModel.getId()) {
-                    Toast.makeText(Singlton.getContext(),"Sync Completed Successfully",Toast.LENGTH_SHORT).show();
-                    if(Singlton.getResultReceiver() != null)
-                        Singlton.getResultReceiver().send(1000,null);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (id == queueListModel.getId()) {
+                        Config.alertDialog(Singlton.getContext(),"Manual Sync","Sync Completed Successfully");
+                        //Toast.makeText(Singlton.getContext(),"Sync Completed Successfully",Toast.LENGTH_SHORT).show();
+                        if(Singlton.getResultReceiver() != null)
+                            Singlton.getResultReceiver().send(1000,null);
                    /* if (dialog != null && dialog.isShowing())
                         dialog.dismiss();*/
+                    }
                 }
-            }
-        });
+            });
+
+        }
+        else {
+            Config.alertDialog(ManualSyncService.this,"Network Error","Server Not Responding");
+            //Toast.makeText(this, "Server not responding please wait...", Toast.LENGTH_SHORT).show();
+        }
+
 
 
     }
@@ -274,7 +291,7 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                     adbdialog = new AlertDialog.Builder(Singlton.getContext());
                     adbdialog.setTitle("Manual Sync");
                     adbdialog.setMessage("Sync will be Performed in Background, you will be Notified once sync is Completed.");
-                    adbdialog.setIcon(android.R.drawable.ic_dialog_info);
+                    //adbdialog.setIcon(android.R.drawable.ic_dialog_info);
                     adbdialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -364,6 +381,14 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
         }
         else
         {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Config.alertDialog(ManualSyncService.this,"Manual Sync","There is No Data to Sync");
+                    //Toast.makeText(Singlton.getContext(), "No Data to Sync", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             if(Singlton.getManualserviceIntent() != null)
                 stopService(Singlton.getManualserviceIntent());
         }

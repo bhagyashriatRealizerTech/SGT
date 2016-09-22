@@ -3,6 +3,7 @@ package com.realizer.schoolgeine.teacher.chat.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,7 @@ public class TeacherQueryAddedContactListAdapter extends BaseAdapter {
             holder.initial.setVisibility(View.GONE);
             holder.profilepic.setVisibility(View.VISIBLE);
             if(!ImageStorage.checkifImageExists(newURL.split("/")[newURL.split("/").length - 1]))
-                new GetImages(newURL,holder.profilepic,newURL.split("/")[newURL.split("/").length-1]).execute(newURL);
+                new GetImages(newURL,holder.profilepic,holder.initial,contactList.get(position).getUserName(),newURL.split("/")[newURL.split("/").length-1]).execute(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
             else
             {
                 File image = ImageStorage.getImage(newURL.split("/")[newURL.split("/").length-1]);

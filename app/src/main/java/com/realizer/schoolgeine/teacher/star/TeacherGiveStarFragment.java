@@ -164,10 +164,12 @@ public class TeacherGiveStarFragment extends Fragment implements OnTaskCompleted
 
         if(studentList.size()==0)
         {
-            Toast.makeText(getActivity(), "Select Student", Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(), "Reward Star", "Please Select t least 1 Student");
+            //Toast.makeText(getActivity(), "Select Student", Toast.LENGTH_SHORT).show();
         }
         else if(commnt.equals("")) {
-            Toast.makeText(getActivity(), "Please Enter Comment", Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(), "Reward Star", "Please Enter Comment");
+            //Toast.makeText(getActivity(), "Please Enter Comment", Toast.LENGTH_SHORT).show();
         }
         else
         {

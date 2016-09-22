@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
+import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
@@ -118,7 +119,8 @@ public class TeacherPublicHolidayFragment extends Fragment implements FragmentBa
 
 
             if(date2.compareTo(date1)<0) {
-                Toast.makeText(getActivity(), "Selected dates are invalid!!!", Toast.LENGTH_SHORT).show();
+                Config.alertDialog(Singlton.getContext(), "holiday", "Selected dates are invalid");
+                //Toast.makeText(getActivity(), "Selected dates are invalid!!!", Toast.LENGTH_SHORT).show();
                 txtsDate.setText((cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.DATE) + "/"
                         + cal.get(Calendar.YEAR));
                 txteDate.setText((cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.DATE) + "/"

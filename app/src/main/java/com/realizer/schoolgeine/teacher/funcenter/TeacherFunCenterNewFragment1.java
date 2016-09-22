@@ -186,7 +186,8 @@ public class TeacherFunCenterNewFragment1 extends Fragment implements View.OnCli
         }
         else if(imageview.getDrawable()==null)
         {
-            Toast.makeText(getActivity(),getString(R.string.FunCenterSelectImage), Toast.LENGTH_SHORT).show();
+            Config.alertDialog(Singlton.getContext(), "Gallery", getString(R.string.FunCenterSelectImage));
+            //Toast.makeText(getActivity(),getString(R.string.FunCenterSelectImage), Toast.LENGTH_SHORT).show();
             //Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.FunCenterSelectImage)).toString());
         }
         else
@@ -448,15 +449,16 @@ public class TeacherFunCenterNewFragment1 extends Fragment implements View.OnCli
             } else if (resultCode == getActivity().RESULT_CANCELED) {
 
                 // user cancelled Image capture
-                Toast.makeText(getActivity(),
+              /*  Toast.makeText(getActivity(),
                         "User cancled action", Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
                 //Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.CanceledImage)).toString());
             } else {
                 // failed to capture image
-                Toast.makeText(getActivity(),
+               /* Toast.makeText(getActivity(),
                         "failed to capture image", Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
+                Config.alertDialog(Singlton.getContext(), "Camera", "Sorry , Failed to Capture Image");
                 //Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.FailedImage)).toString());
             }
 

@@ -239,18 +239,22 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
               boolean res = isConnectingToInternet();
                 if(!res)
                 {
-                    Toast.makeText(LoginActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                    Config.alertDialog(LoginActivity.this,"Network Error","No Internet Connection available");
+                    //Toast.makeText(LoginActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
 
                 }
 
                 else if (userName.getText().toString().equals("") && password.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please Enter Username/Password", Toast.LENGTH_LONG).show();
+                    Config.alertDialog(LoginActivity.this,"Login","Please Enter Username/Password");
+                   // Toast.makeText(getApplicationContext(), "Please Enter Username/Password", Toast.LENGTH_LONG).show();
                 }
                 else if (userName.getText().toString().equals("") ) {
-                    Toast.makeText(getApplicationContext(), "Please Enter Username", Toast.LENGTH_LONG).show();
+                    Config.alertDialog(LoginActivity.this,"Login","Please Enter Username");
+                    //Toast.makeText(getApplicationContext(), "Please Enter Username", Toast.LENGTH_LONG).show();
                 }
                 else if (password.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please Enter Password", Toast.LENGTH_LONG).show();
+                    Config.alertDialog(LoginActivity.this, "Login", "Please Enter Password");
+                             // Toast.makeText(getApplicationContext(), "Please Enter Password", Toast.LENGTH_LONG).show();
                 }
                 else
                 {
@@ -317,10 +321,13 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                     startActivity(i);
 
                 } else {
+                    loading.setVisibility(View.GONE);
                     if (num == 0)
-                        Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+                        Config.alertDialog(LoginActivity.this, "Login", "Invalid credentials, Please Try again!");
+                        //Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
                     else if (num == 1)
-                        Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                        Config.alertDialog(LoginActivity.this, "Network Error", "Server Not Responding Please Try After Some Time");
+                       // Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
                 }
             }
             else  if (queueListModel.getType().equalsIgnoreCase("ValidateMagicWord")) {
@@ -331,7 +338,8 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                 }
                 else
                 {
-                    Toast.makeText(LoginActivity.this,"Wrong User ID / Wrong Magic Word Entered",Toast.LENGTH_SHORT).show();
+                    Config.alertDialog(LoginActivity.this, "Forgot Password", "Invalid User ID / Magic Word Entered");
+                    //Toast.makeText(LoginActivity.this,"Wrong User ID / Wrong Magic Word Entered",Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -343,7 +351,8 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                 }
                 else
                 {
-                    Toast.makeText(LoginActivity.this,"Fail to Reset Password",Toast.LENGTH_SHORT).show();
+                    Config.alertDialog(LoginActivity.this, "Reset Password", "Fail to Reset Password");
+                   // Toast.makeText(LoginActivity.this,"Fail to Reset Password",Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -351,11 +360,13 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                 loading.setVisibility(View.GONE);
                 if(s.equalsIgnoreCase("true"))
                 {
-                    Toast.makeText(LoginActivity.this,"Email Sent Successfully",Toast.LENGTH_SHORT).show();
+                    Config.alertDialog(LoginActivity.this, "Forgot Password", "Email Sent to your Email ID.");
+                    //Toast.makeText(LoginActivity.this,"Email Sent Successfully",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    Toast.makeText(LoginActivity.this,"Fail to Send Email",Toast.LENGTH_SHORT).show();
+                    Config.alertDialog(LoginActivity.this, "Forgot Password", "Fail to Send Email.");
+                    //Toast.makeText(LoginActivity.this,"Fail to Send Email",Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -431,21 +442,25 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                    }
 */
                 } else {
+                    loading.setVisibility(View.GONE);
                     if (num == 0)
-                        Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+                        Config.alertDialog(LoginActivity.this, "Login", "Invalid credentials, Please Try Again");
+                        //Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
                     else if (num == 1)
-                        Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                        Config.alertDialog(LoginActivity.this, "Network Error", "Server Not Responding Please Try After Some Time");
+                        //Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
                 }
             }
             else
             {
+                loading.setVisibility(View.GONE);
                 recoverPasswordByMagicWord("FirstLogin", b, s);
             }
         } else {
+            loading.setVisibility(View.GONE);
             if(mWord.trim().length()>0) {
                  b = parsData(s);
                 if (b == true) {
-                    loading.setVisibility(View.GONE);
                     GCMReg();
                     edit.putString("Login", "true");
                     edit.commit();
@@ -457,9 +472,11 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
 
                 } else {
                     if (num == 0)
-                        Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+                        Config.alertDialog(LoginActivity.this, "Login", "Invalid credentials, Please Try Again");
+                        //Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
                     else if (num == 1)
-                        Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                        Config.alertDialog(LoginActivity.this, "Network Error", "Server Not Responding Please Try After Some Time");
+                        //Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
                 }
             }
             else
@@ -859,9 +876,12 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
 
                     } else {
                         if (num == 0)
-                            Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+                            Config.alertDialog(LoginActivity.this, "Login", "Invalid credentials, Please Try Again");
+                            //Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+
                         else if (num == 1)
-                            Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                            Config.alertDialog(LoginActivity.this, "Network Error", "Server Not Responding Please Try After Some Time");
+                            //Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -900,7 +920,8 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                 if(password.equals(cPassword))
                 new SetPasswordAsyncTaskGet(userId,password,LoginActivity.this,LoginActivity.this).execute();
                 else
-                    Toast.makeText(LoginActivity.this,"Password Mismatch",Toast.LENGTH_SHORT).show();
+                    Config.alertDialog(LoginActivity.this, "Login", "Password Mismatch");
+                    //Toast.makeText(LoginActivity.this,"Password Mismatch",Toast.LENGTH_SHORT).show();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {

@@ -169,7 +169,7 @@ public class DrawerActivity extends AppCompatActivity
             }
             String newURL=sb.toString();
             if(!ImageStorage.checkifImageExists(newURL.split("/")[newURL.split("/").length-1]))
-            new GetImages(newURL,userImage,newURL.split("/")[newURL.split("/").length-1]).execute(newURL);
+            new GetImages(newURL,userImage,userInitials,userName.getText().toString(),newURL.split("/")[newURL.split("/").length-1]).execute(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
            else
             {
                 File image = ImageStorage.getImage(newURL.split("/")[newURL.split("/").length-1]);
@@ -698,15 +698,16 @@ public class DrawerActivity extends AppCompatActivity
             } else if (resultCode == RESULT_CANCELED) {
 
                 // user cancelled Image capture
-                Toast.makeText(getApplicationContext(),
+               /* Toast.makeText(getApplicationContext(),
                         "User cancelled image capture", Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
 
             } else {
                 // failed to capture image
-                Toast.makeText(getApplicationContext(),
+                Config.alertDialog(DrawerActivity.this,"Camera","Sorry, Failed to capture Image");
+              /*  Toast.makeText(getApplicationContext(),
                         "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
             }
 
         }

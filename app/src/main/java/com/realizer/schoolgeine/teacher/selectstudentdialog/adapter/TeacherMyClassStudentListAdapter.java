@@ -201,7 +201,7 @@ public class TeacherMyClassStudentListAdapter extends BaseAdapter {
                             if (cb.getText().toString().equals(temp)) {
                                 setsearch.remove(temp);
                                 editor.putStringSet("SearchList", setsearch);
-                                Toast.makeText(context, "Remove Search", Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(context, "Remove Search", Toast.LENGTH_SHORT).show();
                                 flag = true;
                                 break;
                             }
@@ -211,7 +211,7 @@ public class TeacherMyClassStudentListAdapter extends BaseAdapter {
                             if (cb.getText().toString().equals(temp)) {
                                 setset.remove(temp);
                                 editor.putStringSet("SetList", setset);
-                                Toast.makeText(context, "Remove Set", Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(context, "Remove Set", Toast.LENGTH_SHORT).show();
                                 flag = true;
                                 break;
                             }

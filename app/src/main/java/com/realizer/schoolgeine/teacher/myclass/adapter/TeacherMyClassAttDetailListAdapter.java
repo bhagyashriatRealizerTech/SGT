@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,7 @@ public class TeacherMyClassAttDetailListAdapter extends BaseAdapter {
             holder.initial.setVisibility(View.GONE);
             holder.useImage.setVisibility(View.VISIBLE);
             if(!ImageStorage.checkifImageExists(newURL.split("/")[newURL.split("/").length - 1]))
-                new GetImages(newURL,holder.useImage,newURL.split("/")[newURL.split("/").length-1]).execute(newURL);
+                new GetImages(newURL,holder.useImage,holder.initial,pList.get(position).getAttDate(),newURL.split("/")[newURL.split("/").length-1]).execute(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
             else
             {
                 File image = ImageStorage.getImage(newURL.split("/")[newURL.split("/").length-1]);

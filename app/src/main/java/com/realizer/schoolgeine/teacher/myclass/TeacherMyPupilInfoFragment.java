@@ -164,7 +164,7 @@ public class TeacherMyPupilInfoFragment extends Fragment implements FragmentBack
                         }
                         String newURL=sb.toString();
                         if(!ImageStorage.checkifImageExists(newURL.split("/")[newURL.split("/").length - 1]))
-                            new GetImages(newURL,profile_pic,newURL.split("/")[newURL.split("/").length-1]).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
+                            new GetImages(newURL,profile_pic,profile_init,obj.getString("fName")+" "+obj.getString("lName"),newURL.split("/")[newURL.split("/").length-1]).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
                         else
                         {
                             File image = ImageStorage.getImage(newURL.split("/")[newURL.split("/").length-1]);

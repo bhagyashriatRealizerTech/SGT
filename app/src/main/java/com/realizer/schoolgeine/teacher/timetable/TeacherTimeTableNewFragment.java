@@ -123,18 +123,21 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
 
         if (timetableName.getText().toString().equals(""))
         {
-            Toast.makeText(getActivity(),"Please enter title", Toast.LENGTH_LONG).show();
+            Config.alertDialog(Singlton.getContext(), "Time Table", "Please Enter Title");
+            //Toast.makeText(getActivity(),"Please enter title", Toast.LENGTH_LONG).show();
             //Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.TimetableEnter)).toString());
         }
         else
         if (description.getText().toString().equals(""))
         {
-            Toast.makeText(getActivity(), "Please Enter Description", Toast.LENGTH_LONG).show();
+            Config.alertDialog(Singlton.getContext(), "Time Table", "Please Enter Description");
+           // Toast.makeText(getActivity(), "Please Enter Description", Toast.LENGTH_LONG).show();
             //Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.Timetabledescription)).toString());
         }
         if (imgsyllabus.getDrawable() == null)
         {
-            Toast.makeText(getActivity(), "Please insert image", Toast.LENGTH_LONG).show();
+            Config.alertDialog(Singlton.getContext(), "Time Table", "Please Add Image");
+           // Toast.makeText(getActivity(), "Please insert image", Toast.LENGTH_LONG).show();
         }
         else {
             Bitmap bitmap = ((BitmapDrawable)imgsyllabus.getDrawable()).getBitmap();
@@ -270,12 +273,13 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
             } else if (resultCode == getActivity().RESULT_CANCELED) {
 
                 // user cancelled Image capture
-                Toast.makeText(getActivity(), "user cancle action", Toast.LENGTH_LONG).show();
+               /* Toast.makeText(getActivity(), "user cancle action", Toast.LENGTH_LONG).show();*/
                // Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.CanceledImage)).toString());
 
             } else {
                 // failed to capture image
-                Toast.makeText(getActivity(), "failed to capture image", Toast.LENGTH_LONG).show();
+                Config.alertDialog(Singlton.getContext(), "Camera", "Failed to Capture Image");
+                //Toast.makeText(getActivity(), "failed to capture image", Toast.LENGTH_LONG).show();
                 //Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.FailedImage)).toString());
             }
         }

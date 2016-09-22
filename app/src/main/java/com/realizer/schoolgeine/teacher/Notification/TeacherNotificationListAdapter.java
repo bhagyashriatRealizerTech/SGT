@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -141,7 +142,7 @@ public class TeacherNotificationListAdapter extends BaseAdapter {
                     String newURL = sb.toString();
                     holder.notificationImage.setVisibility(View.VISIBLE);
                     if (!ImageStorage.checkifImageExists(newURL.split("/")[newURL.split("/").length - 1]))
-                        new GetImages(newURL, holder.notificationImage, newURL.split("/")[newURL.split("/").length - 1]).execute(newURL);
+                        new GetImages(newURL, holder.notificationImage,null,null, newURL.split("/")[newURL.split("/").length - 1]).execute(AsyncTask.THREAD_POOL_EXECUTOR,newURL);
                     else {
                         File image = ImageStorage.getImage(newURL.split("/")[newURL.split("/").length - 1]);
                         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
