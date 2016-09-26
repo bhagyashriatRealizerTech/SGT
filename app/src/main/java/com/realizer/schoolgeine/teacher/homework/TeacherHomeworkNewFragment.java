@@ -228,12 +228,12 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
         }
         else if( spinnerdate.getSelectedItem().toString().isEmpty())
         {
-            Config.alertDialog(Singlton.getContext(), "New Homework", "Please Select Date");
+            Config.alertDialog(Singlton.getContext(), "New "+htext, "Please Select Date");
            // Toast.makeText(getActivity(), "Please Select Date", Toast.LENGTH_SHORT).show();
         }
         else if(edthwork.getText().toString().isEmpty())
         {
-            Config.alertDialog(Singlton.getContext(), "New Homework", "Please Enter Homework Description");
+            Config.alertDialog(Singlton.getContext(), "New "+htext, "Please Enter "+htext+" Description");
             //Toast.makeText(getActivity(), "Please Enter Description", Toast.LENGTH_SHORT).show();
         }
         else {

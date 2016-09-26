@@ -38,7 +38,7 @@ import java.util.ArrayList;
 public class TeacherGeneralCommunicationFragment extends Fragment implements FragmentBackPressedListener {
 
     DatabaseQueries qr;
-    TextView txtstd,txtclss;
+    TextView txtstd,txtclss,noDataText;;
     FloatingActionButton txtnew;
     MenuItem search,done;
     @Nullable
@@ -55,14 +55,22 @@ public class TeacherGeneralCommunicationFragment extends Fragment implements Fra
         txtnew = (FloatingActionButton) rootView.findViewById(R.id.txtnewcommunication);
         txtstd  = (TextView) rootView.findViewById(R.id.txttclassname);
         txtclss = (TextView) rootView.findViewById(R.id.txttdivname);
+        noDataText = (TextView)rootView.findViewById(R.id.tvNoDataMsg);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         txtstd.setText(preferences.getString("STANDARD", ""));
         txtclss.setText(preferences.getString("DIVISION", ""));
         ArrayList<TeacherGeneralCommunicationListModel> msg = qr.GetAnnouncement(txtstd.getText().toString(),txtclss.getText().toString());
         final ListView listHoliday = (ListView) rootView.findViewById(R.id.lsttgeneralcommunication);
-        listHoliday.setAdapter(new TeacherGeneralCommunicationListAdapter(getActivity(), msg));
-
-
+        if(msg.size()>0) {
+            listHoliday.setVisibility(View.VISIBLE);
+            noDataText.setVisibility(View.GONE);
+            listHoliday.setAdapter(new TeacherGeneralCommunicationListAdapter(getActivity(), msg));
+        }
+        else
+        {
+            listHoliday.setVisibility(View.GONE);
+            noDataText.setVisibility(View.VISIBLE);
+        }
         listHoliday.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

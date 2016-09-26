@@ -5,18 +5,14 @@
     android:background="@color/greycolor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <com.realizer.schoolgeine.teacher.view.SwipeLayout
-        android:id="@+id/swipeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:clickToClose="true">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:weightSum="5"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="10dp"
@@ -33,7 +29,7 @@
             android:text="SD"/>
         <com.realizer.schoolgeine.teacher.view.RoundedImageView
             android:layout_width="10dp"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:layout_weight="0.6"
             android:visibility="visible"
             android:src="@drawable/f3"
@@ -41,7 +37,6 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:scaleType="center"
-            android:layout_gravity="center_vertical"
             android:id="@+id/img_user_image" />
 
         <LinearLayout
@@ -50,8 +45,6 @@
             android:layout_weight="4.3"
             android:layout_marginLeft="7dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:layout_gravity="center_vertical"
             android:orientation="vertical">
             <LinearLayout
@@ -69,7 +62,7 @@
                     android:layout_gravity="left|center_vertical"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     />
 
                 <TextView
@@ -78,9 +71,9 @@
                     android:layout_height="wrap_content"
                     android:text="31 September"
                     android:gravity="right"
-                    android:textColor="@color/black"
+                    android:textColor="@color/colorPrimaryDark"
                     android:layout_gravity="right|center_vertical"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:id="@+id/txtdate"
                     />
 
@@ -100,7 +93,7 @@
                     android:id="@+id/txtmessage"
                     android:gravity="left"
                     android:layout_gravity="left|center_vertical"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:textColor="@color/black"
                     />
 
@@ -108,7 +101,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="0.3"
                     android:layout_height="30dp"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:textColor="#ffffff"
                     android:gravity="center"
                     android:layout_gravity="right|center_vertical"
@@ -119,5 +112,4 @@
 
         </LinearLayout>
     </LinearLayout>
-    </com.realizer.schoolgeine.teacher.view.SwipeLayout>
 </LinearLayout>

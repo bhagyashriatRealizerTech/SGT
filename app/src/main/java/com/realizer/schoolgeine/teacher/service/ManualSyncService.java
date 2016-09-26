@@ -264,7 +264,7 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
 
         }
         else {
-            Config.alertDialog(ManualSyncService.this,"Network Error","Server Not Responding");
+            Config.alertDialog(Singlton.getContext(),"Network Error","Server Not Responding");
             //Toast.makeText(this, "Server not responding please wait...", Toast.LENGTH_SHORT).show();
         }
 
@@ -384,7 +384,7 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Config.alertDialog(ManualSyncService.this,"Manual Sync","There is No Data to Sync");
+                    Config.alertDialog(Singlton.getContext(),"Manual Sync","There is No Data to Sync");
                     //Toast.makeText(Singlton.getContext(), "No Data to Sync", Toast.LENGTH_SHORT).show();
                 }
             });
