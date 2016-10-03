@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.realizer.schoolgeine.teacher.Notification.NotificationModel;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
+import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.chat.asynctask.TeacherQueryAsyncTaskPost;
 import com.realizer.schoolgeine.teacher.chat.model.TeacherQuerySendModel;
@@ -205,7 +206,7 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
 
         else {
             //Toast.makeText(this, "Server not responding please wait...", Toast.LENGTH_SHORT).show();
-            Config.alertDialog(AutoSyncService.this,"Network Error","Server Not Responding");
+            Config.alertDialog(Singlton.getContext(),"Network Error","Server Not Responding");
         }
     }
 

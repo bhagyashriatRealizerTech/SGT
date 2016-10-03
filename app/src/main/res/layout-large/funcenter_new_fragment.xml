@@ -8,57 +8,66 @@
 
 
 
-    <FrameLayout style="@style/SubFrameLayoutWeight1"
-        android:background="#ffffff"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-        <TextView style="@style/TextViewFontStyle"
-            android:layout_gravity="left"
-            android:textColor="#000000"
-
-            android:textStyle="bold"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:textSize="20dp"
-            android:text="Class :"
-            android:id="@+id/txtclass" />
-        <TextView style="@style/TextViewFontStyle"
-            android:layout_gravity="left"
-            android:id="@+id/txttclassname1"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:textStyle="normal"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="90dp"
-            android:textSize="20dp"
-            android:text="Playgroup"/>
+            >
+            <TextView style="@style/TextViewFontStyle"
+                android:textColor="@color/black"
+                android:id="@+id/headingstd"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="22sp"
+                android:text="Standard :"/>
+            <TextView style="@style/TextViewFontStyle"
+                android:id="@+id/txttclassname1"
+                android:textColor="@color/black"
+                android:gravity="left"
+                android:textStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="22sp"
+                android:text="Playgroup"
+                android:layout_marginLeft="5dp"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/headingstd" />
+        </RelativeLayout>
 
-        <TextView style="@style/TextViewFontStyle"
-            android:id="@+id/txttclassname"
-            android:layout_gravity="right"
-            android:textColor="#000000"
-            android:gravity="center_vertical"
-            android:textStyle="bold"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginRight="90dp"
-            android:textSize="20dp"
-            android:text="Div :"/>
+            android:layout_height="wrap_content"
+            >
+            <TextView style="@style/TextViewFontStyle"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="22sp"
+                android:text="Div :"
+                android:layout_toLeftOf="@+id/txttdivname1"
+                android:layout_toStartOf="@+id/txttdivname1" />
+            <TextView style="@style/TextViewFontStyle"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/txttdivname1"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="22sp"
+                android:text="Buntings"/>
+        </RelativeLayout>
+    </LinearLayout>
 
-        <TextView style="@style/TextViewFontStyle"
-            android:layout_gravity="right"
-            android:id="@+id/txttdivname1"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:textStyle="normal"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginRight="20dp"
-            android:textSize="20dp"
-            android:text="A"/>
-    </FrameLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -74,7 +83,7 @@
         android:orientation="horizontal">
 
         <EditText style="@style/EditTextMultiline"
-            android:hint=" Event Title"
+            android:hint="Event Title"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:padding="5dp"
@@ -96,7 +105,7 @@
         android:orientation="horizontal">
 
         <EditText style="@style/EditTextMultiline"
-            android:hint="Event Date"
+            android:hint="Click Here to Set Event Date"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:padding="5dp"
@@ -104,7 +113,7 @@
             android:layout_marginTop="18dp"
             android:maxLength="50"
             android:textSize="20sp"
-
+            android:focusable="false"
             android:id="@+id/edteventdate"/>
 
     </LinearLayout>
@@ -117,7 +126,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:layout_gravity="center_horizontal"
         android:text="Cover Image"
         android:id="@+id/txteventdate" />

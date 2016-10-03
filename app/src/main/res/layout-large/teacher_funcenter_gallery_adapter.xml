@@ -33,7 +33,7 @@
             android:textStyle="normal"
             android:ellipsize="marquee"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="5dp"/>
 

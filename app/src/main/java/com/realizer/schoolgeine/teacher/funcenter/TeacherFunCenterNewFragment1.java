@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,11 +37,13 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
+import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
@@ -192,12 +195,10 @@ public class TeacherFunCenterNewFragment1 extends Fragment implements View.OnCli
         }
         else
         {
+
             Bitmap bitmap = ((BitmapDrawable) imageview.getDrawable()).getBitmap();
-            String image= String.valueOf(imageview);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-            byte[] b = baos.toByteArray();
-            String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+            String encodedImage = ImageStorage.saveEventToSdCard(bitmap, eventname.getText().toString(), getActivity());
 
             String eventDatenew [] = eventdate.getText().toString().split("/");
             String date = eventDatenew[1];
@@ -211,9 +212,11 @@ public class TeacherFunCenterNewFragment1 extends Fragment implements View.OnCli
                 month = "0"+month;
 
             newDate = month+"/"+date+"/"+eventDatenew[2];
-
-            File f2=new File(fileUri.getPath());
-            String getimg= f2.getName();
+            String getimg="";
+            if(encodedImage != null) {
+                String f2[] = encodedImage.split(File.separator);
+                getimg = f2[f2.length - 1];
+            }
             int currentyear = Calendar.getInstance().get(Calendar.YEAR);
 
             UUID id = UUID.randomUUID();
@@ -569,6 +572,8 @@ public class TeacherFunCenterNewFragment1 extends Fragment implements View.OnCli
             eventdate.setText((month + 1) + "/" + day + "/" + year);
         }
     }
+
+
 
     public boolean isConnectingToInternet(){
 

@@ -11,53 +11,65 @@
         android:background="@color/white"
         android:orientation="vertical">
     <include layout="@layout/search_layout" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                >
+                <TextView style="@style/TextViewFontStyle"
+                    android:textColor="@color/black"
+                    android:id="@+id/headingstd"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textSize="22dp"
+                    android:text="Standard :"/>
+                <TextView style="@style/TextViewFontStyle"
+                    android:id="@+id/txtstdname"
+                    android:textColor="@color/black"
+                    android:gravity="left"
+                    android:textStyle="normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textSize="22dp"
+                    android:text="Playgroup"
+                    android:layout_marginLeft="5dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/headingstd" />
+            </RelativeLayout>
 
-    <FrameLayout style="@style/SubFrameLayoutWeight1"
-        android:background="@color/white"
-        android:layout_height="wrap_content">
-        <TextView style="@style/TextViewFontStyle"
-            android:layout_gravity="left"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="20dp"
-            android:text="Standard :"/>
-        <TextView style="@style/TextViewFontStyle"
-            android:layout_gravity="left"
-            android:id="@+id/txtstdname"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:textStyle="normal"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="100dp"
-            android:textSize="20dp"
-            android:text="Playgroup"/>
-        <TextView style="@style/TextViewFontStyle"
-            android:layout_gravity="right"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginRight="90dp"
-            android:textSize="20dp"
-            android:text="Div :"/>
-        <TextView style="@style/TextViewFontStyle"
-            android:layout_gravity="right"
-            android:id="@+id/txtclassname"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:textStyle="normal"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginRight="20dp"
-            android:textSize="20dp"
-            android:text="A"/>
-    </FrameLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView style="@style/TextViewFontStyle"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textSize="22dp"
+                    android:text="Div :"
+                    android:layout_toLeftOf="@+id/txtclassname"
+                    android:layout_toStartOf="@+id/txtclassname" />
+                <TextView style="@style/TextViewFontStyle"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/txtclassname"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textStyle="normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textSize="22dp"
+                    android:text="Buntings"/>
+            </RelativeLayout>
+        </LinearLayout>>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"

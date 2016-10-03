@@ -128,9 +128,8 @@ public class TeacherFunCenterImageLargeViewFragment extends FragmentActivity imp
             Log.d("FILENAME", "" + IMG[position]);
 
             String filePath = IMG[position];
-            byte[] decodedString = Base64.decode(filePath, Base64.DEFAULT);
-            decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            barr[position] = decodedByte;
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            decodedByte = BitmapFactory.decodeFile(filePath, bmOptions);
             imageView.setImageBitmap(decodedByte);
             txtcnt.setText("" + (position + 1) + " / " + NUM_ITEMS);
 

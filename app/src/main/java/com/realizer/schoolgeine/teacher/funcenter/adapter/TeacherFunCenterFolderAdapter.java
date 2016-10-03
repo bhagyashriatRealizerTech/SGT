@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.Utils.Config;
+import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterModel;
@@ -78,21 +79,20 @@ public class TeacherFunCenterFolderAdapter extends BaseAdapter
         text= (TextView) convertView.findViewById(R.id.event_title);
         datetext = (TextView) convertView.findViewById(R.id.event_date);
 
-        qr=new DatabaseQueries(context);
-        SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(context);
-        String cls = preferences1.getString("Images2", "");
-
         String image1=getImage1.get(position).getImage();
         String eventnm=getImage1.get(position).getText();
-        int evntid=getImage1.get(position).getEventid();
 
-        int id = context.getResources().getIdentifier(image1, "drawable", context.getPackageName());
-        image.setImageResource(id);
+/*
 
-        byte[] decodedString = Base64.decode(image1, Base64.DEFAULT);
-        decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        image.setImageBitmap(decodedByte);
-        decodedByte = null;
+        File file = ImageStorage.getEventImage(image1);
+
+        if(file != null) {
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(image1, bmOptions);
+            image.setImageBitmap(bitmap);
+        }
+*/
+        image.setImageBitmap(getImage1.get(position).getBitmap());
         System.gc();
         text.setText(eventnm);
         datetext.setText(Config.getMediumDateForImage(getImage1.get(position).getDate()));

@@ -143,6 +143,7 @@ public class TeacherMyClassAttenadanceActivity extends AppCompatActivity impleme
                 n = qr.updateAttendanceSyncFlag(qr.GetAttendanceID(attId));
                 if(n>=0)
                 {
+                    Singlton.setSelectedFragment(Singlton.getMainFragment());
                    finish();
                 }
             }
@@ -520,6 +521,12 @@ public class TeacherMyClassAttenadanceActivity extends AppCompatActivity impleme
             //ListView listView = (ListView) findViewById(android.R.id.list);
             listView.setSelection(subitemPosition);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Singlton.setSelectedFragment(Singlton.getMainFragment());
     }
 
     public void saveAttendance()

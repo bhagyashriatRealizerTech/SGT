@@ -22,14 +22,14 @@
             android:gravity="center"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="15dp"
+            android:textSize="16sp"
             android:visibility="gone"
             android:text="SD"/>
 
         <com.realizer.schoolgeine.teacher.view.RoundedImageView
-            android:layout_width="10dp"
-            android:layout_height="65dp"
-            android:layout_weight="0.8"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="0.7"
             android:visibility="visible"
             android:src="@drawable/f3"
             android:scaleType="center"
@@ -51,12 +51,14 @@
                 android:gravity="left"
                 android:layout_gravity="left"
                 android:textStyle="bold"
+                android:textSize="16sp"
                 android:textColor="@color/black"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Teacher"
+                android:textSize="16sp"
                 android:singleLine="true"
                 android:id="@+id/txtsendername"
                 android:gravity="left"
@@ -91,18 +93,20 @@
             android:layout_marginRight="10dp"
             android:textColor="@color/darkgreycolor"
             android:layout_gravity="right"
+            android:textSize="16sp"
             android:id="@+id/txtdate"
             />
 
             <TextView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:textSize="18dp"
+                android:textSize="16sp"
                 android:textColor="#ffffff"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:layout_gravity="right"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/unread_circle"
                 android:id="@+id/txtunreadcount"
                 android:text="1"/>

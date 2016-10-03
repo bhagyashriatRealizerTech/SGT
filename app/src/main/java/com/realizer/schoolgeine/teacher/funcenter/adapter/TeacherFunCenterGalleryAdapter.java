@@ -12,9 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.Utils.Config;
+import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterGalleryModel;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -58,17 +60,7 @@ public class TeacherFunCenterGalleryAdapter extends BaseAdapter
         datetext = (TextView) convertView.findViewById(R.id.event_date);
         status = (ImageView) convertView.findViewById(R.id.uploaded);
 
-        try {
-
-            byte[] decodedString = Base64.decode(elementDetails.get(position).getImage(), Base64.DEFAULT);
-            decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            imageview.setImageBitmap(decodedByte);
-            imageview.setVisibility(View.VISIBLE);
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
+        imageview.setImageBitmap(elementDetails.get(position).getBitmap());
         datetext.setText(Config.getMediumDateForImage(elementDetails.get(position).getDate()));
         if(elementDetails.get(position).getStatus().equalsIgnoreCase("true"))
             status.setImageResource(R.drawable.homework_send);

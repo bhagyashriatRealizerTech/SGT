@@ -381,10 +381,12 @@ public class ChatSectionIndexer extends AppCompatActivity implements OnTouchList
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
+                Singlton.setSelectedFragment(Singlton.getMainFragment());
                 Singlton.setSelectedStudentList(Singlton.getSelectedStudentList());
                 finish();
                 return true;
             case R.id.add_contact_done:
+                Singlton.setSelectedFragment(Singlton.getMainFragment());
                 Singlton.setSelectedStudentList(selectedTeam);
                 Singlton.setIsDonclick(Boolean.TRUE);
                 finish();
@@ -522,6 +524,7 @@ public class ChatSectionIndexer extends AppCompatActivity implements OnTouchList
     public void onBackPressed() {
         super.onBackPressed();
         Singlton.setSelectedStudentList(temp);
+        Singlton.setSelectedFragment(Singlton.getMainFragment());
         finish();
     }
 }

@@ -5,7 +5,15 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
     <LinearLayout
         android:id="@+id/layout_select_recipient"
         android:layout_width="fill_parent"
@@ -56,8 +64,7 @@
     <ListView
         android:id="@+id/ivaddedContact"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_above="@+id/ll_compose_layout"
+        android:layout_height="680dp"
         android:layout_below="@+id/layout_select_recipient"
         android:layout_weight="8.2"
         android:divider="@null"
@@ -67,14 +74,13 @@
         android:headerDividersEnabled="false"
         android:scrollbars="none"
         android:layout_marginRight="10dp"
-        android:visibility="gone"></ListView>
+        android:visibility="visible"></ListView>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="1"
-        android:layout_above="@+id/ll_compose_layout"
         android:layout_below="@+id/layout_select_recipient"
         android:layout_centerInParent="true"
         android:orientation="horizontal">
@@ -94,6 +100,8 @@
         android:scrollbars="vertical"
         android:visibility="gone"></ListView>
     </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
     <LinearLayout
         android:id="@+id/ll_compose_layout"
         android:layout_width="fill_parent"

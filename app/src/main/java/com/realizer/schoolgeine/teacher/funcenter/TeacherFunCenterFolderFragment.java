@@ -3,6 +3,8 @@ package com.realizer.schoolgeine.teacher.funcenter;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +20,7 @@ import android.widget.GridView;
 
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
+import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgeine.teacher.funcenter.adapter.TeacherFunCenterGalleryAdapter;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterGalleryModel;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
@@ -29,6 +32,7 @@ import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.funcenter.adapter.TeacherFunCenterFolderAdapter;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterModel;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -141,6 +145,7 @@ public class TeacherFunCenterFolderFragment extends Fragment implements Fragment
             super.onPreExecute();
             loading.setVisibility(View.VISIBLE);
             allData1 = new ArrayList<>();
+
         }
 
 
@@ -149,6 +154,23 @@ public class TeacherFunCenterFolderFragment extends Fragment implements Fragment
 
             //setting list to adapter
             allData1=qr.GetEvent();
+
+            for(int i=0;i<allData1.size();i++)
+            {
+
+                String image1 =allData1.get(i).getImage();
+                File file = ImageStorage.getEventImage(image1);
+
+                if(file != null) {
+                   /* BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                    Bitmap bitmap = BitmapFactory.decodeFile(image1, bmOptions);*/
+                    Bitmap bitmap = ImageStorage.decodeSampledBitmapFromPath(image1,150,150);
+                    TeacherFunCenterModel obj = new TeacherFunCenterModel();
+                    obj = allData1.get(i);
+                    obj.setBitmap(bitmap);
+                    allData1.set(i,obj);
+                }
+            }
 
             return null;
         }

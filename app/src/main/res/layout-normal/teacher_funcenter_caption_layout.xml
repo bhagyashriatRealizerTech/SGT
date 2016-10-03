@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:padding="5dp"
+        android:textSize="16sp"
         android:background="@drawable/rectangleshape"
         android:maxLines="3"/>
 </LinearLayout>

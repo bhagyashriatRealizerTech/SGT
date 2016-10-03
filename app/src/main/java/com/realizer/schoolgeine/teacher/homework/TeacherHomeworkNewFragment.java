@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -100,8 +101,10 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getActivity()));
         final View rootView = inflater.inflate(R.layout.teacher_newhomework_layout, container, false);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setHasOptionsMenu(true);
+
         btnCapturePicture = (ImageView) rootView.findViewById(R.id.btnCapturePicture1);
         btnCapturePicture1 = (ImageView) rootView.findViewById(R.id.btnCapturePicture2);
         btnCapturePicture2 = (ImageView) rootView.findViewById(R.id.btnCapturePicture3);
@@ -141,8 +144,13 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
             @Override
             public void onClick(View v) {
                 // capture picture
-                cpature1 = 1;
-                getOption();
+                if (cpature1 != 2) {
+                    cpature1 = 1;
+                    getOption();
+                }
+                else {
+                    open(btnCapturePicture);
+                }
             }
         });
         btnCapturePicture1.setOnClickListener(new View.OnClickListener() {
@@ -150,8 +158,13 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
             @Override
             public void onClick(View v) {
                 // capture picture
-                cpature2=1;
-                getOption();
+                if (cpature2 != 2) {
+                    cpature2 = 1;
+                    getOption();
+                }
+                else {
+                    open(btnCapturePicture1);
+                }
             }
         });
         btnCapturePicture2.setOnClickListener(new View.OnClickListener() {
@@ -159,51 +172,15 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
             @Override
             public void onClick(View v) {
                 // capture picture
-                cpature3=1;
-                getOption();
+                if (cpature3 != 2) {
+                    cpature3 = 1;
+                    getOption();
+                }
+                else {
+                    open(btnCapturePicture2);
+                }
             }
         });
-
-
-        btnCapturePicture.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                //Toast.makeText(getActivity(),"Long Click",Toast.LENGTH_SHORT).show();
-                if(cpature1==2)
-                open(btnCapturePicture);
-                return true;
-            }
-        });
-
-        btnCapturePicture1.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                if(cpature2==2)
-                open(btnCapturePicture1);
-                return true;
-            }
-        });
-        btnCapturePicture2.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                if(cpature3==2)
-                open(btnCapturePicture2);
-                return true;
-            }
-        });
-
-
-        /*// Checking camera availability
-        if (!isDeviceSupportCamera()) {
-            Toast.makeText(getActivity(),
-                    "Sorry! Your device doesn't support camera",
-                    Toast.LENGTH_LONG).show();
-            // will close the app if the device does't have camera
-            //finish();
-        }*/
 
 
         return rootView;
@@ -364,7 +341,10 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
 public void getOption() {
     Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT, null);
     galleryIntent.setType("image/*");
-    galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
+    galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+    galleryIntent.setAction(Intent.ACTION_GET_CONTENT);//
+    //startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"),'a' );
+   // galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
 
 
     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -467,8 +447,134 @@ public void getOption() {
 
 
     private void launchUploadActivity(Intent data){
+        ClipData clipData = data.getClipData();
 
-        if(data.getData()!=null)
+        if(clipData != null)
+        {
+            try
+            {
+                int lengthCount = clipData.getItemCount();
+                if(lengthCount==1)
+                {
+                    ClipData.Item item = clipData.getItemAt(0);
+                    InputStream stream = getActivity().getContentResolver().openInputStream(item.getUri());
+                    bitmap = BitmapFactory.decodeStream(stream);
+                    if(cpature1 != 2) {
+                        btnCapturePicture.setImageBitmap(bitmap);
+                        cpature1=2;
+                    }
+                    else if(cpature2 != 2){
+                        btnCapturePicture1.setImageBitmap(bitmap);
+                        cpature2=2;
+                    }
+                    else if(cpature3 != 2){
+                        btnCapturePicture2.setImageBitmap(bitmap);
+                        cpature3=2;
+                    }
+
+                    stream.close();
+                }
+                else if(lengthCount==2)
+                {
+                    ClipData.Item item = clipData.getItemAt(0);
+                    InputStream stream = getActivity().getContentResolver().openInputStream(item.getUri());
+                    bitmap = BitmapFactory.decodeStream(stream);
+                    if(cpature1 != 2) {
+                        btnCapturePicture.setImageBitmap(bitmap);
+                        cpature1=2;
+                    }
+                    else if(cpature2 != 2){
+                        btnCapturePicture1.setImageBitmap(bitmap);
+                        cpature2=2;
+                    }
+                    else if(cpature3 != 2){
+                        btnCapturePicture2.setImageBitmap(bitmap);
+                        cpature3=2;
+                    }
+
+                    ClipData.Item item1 = clipData.getItemAt(1);
+                    InputStream stream1 = getActivity().getContentResolver().openInputStream(item1.getUri());
+                    bitmap = BitmapFactory.decodeStream(stream1);
+                    if(cpature1 != 2) {
+                        btnCapturePicture.setImageBitmap(bitmap);
+                        cpature1=2;
+                    }
+                    else if(cpature2 != 2){
+                        btnCapturePicture1.setImageBitmap(bitmap);
+                        cpature2=2;
+                    }
+                    else if(cpature3 != 2){
+                        btnCapturePicture2.setImageBitmap(bitmap);
+                        cpature3=2;
+                    }
+                    stream.close();
+
+                }
+                else if(lengthCount==3)
+                {
+                    ClipData.Item item = clipData.getItemAt(0);
+                    InputStream stream = getActivity().getContentResolver().openInputStream(item.getUri());
+                    bitmap = BitmapFactory.decodeStream(stream);
+                    if(cpature1 != 2) {
+                        btnCapturePicture.setImageBitmap(bitmap);
+                        cpature1=2;
+                    }
+                    else if(cpature2 != 2){
+                        btnCapturePicture1.setImageBitmap(bitmap);
+                        cpature2=2;
+                    }
+                    else if(cpature3 != 2){
+                        btnCapturePicture2.setImageBitmap(bitmap);
+                        cpature3=2;
+                    }
+
+                    ClipData.Item item1 = clipData.getItemAt(1);
+                    InputStream stream1 = getActivity().getContentResolver().openInputStream(item1.getUri());
+                    bitmap = BitmapFactory.decodeStream(stream1);
+                    if(cpature1 != 2) {
+                        btnCapturePicture.setImageBitmap(bitmap);
+                        cpature1=2;
+                    }
+                    else if(cpature2 != 2){
+                        btnCapturePicture1.setImageBitmap(bitmap);
+                        cpature2=2;
+                    }
+                    else if(cpature3 != 2){
+                        btnCapturePicture2.setImageBitmap(bitmap);
+                        cpature3=2;
+                    }
+
+
+                    ClipData.Item item2 = clipData.getItemAt(2);
+                    InputStream stream2 = getActivity().getContentResolver().openInputStream(item2.getUri());
+                    bitmap = BitmapFactory.decodeStream(stream2);
+                    if(cpature1 != 2) {
+                        btnCapturePicture.setImageBitmap(bitmap);
+                        cpature1=2;
+                    }
+                    else if(cpature2 != 2){
+                        btnCapturePicture1.setImageBitmap(bitmap);
+                        cpature2=2;
+                    }
+                    else if(cpature3 != 2){
+                        btnCapturePicture2.setImageBitmap(bitmap);
+                        cpature3=2;
+                    }
+                    stream.close();
+
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+       else if(data.getData()!=null)
         {
             try
             {
@@ -724,9 +830,9 @@ public void getOption() {
 
     public void open(final ImageView v){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setTitle("Remove Image");
+        alertDialogBuilder.setTitle("Delete Image");
 
-        alertDialogBuilder.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
                 if (v == btnCapturePicture) {
@@ -759,6 +865,7 @@ public void getOption() {
         Bundle b =new Bundle();
         b.putString("StudentClassList", classList);
         b.putInt("MYCLASS",10);
+        b.putString("HeaderText",htext);
         newTermDialogFragment.setArguments(b);
         newTermDialogFragment.setCancelable(false);
         newTermDialogFragment.show(fragmentManager, "Dialog!");

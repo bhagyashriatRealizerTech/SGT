@@ -1,5 +1,7 @@
 package com.realizer.schoolgeine.teacher.funcenter.model;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Win on 20/04/2016.
  */
@@ -8,6 +10,7 @@ public class TeacherFunCenterGalleryModel
     String image;
     String date;
     String status;
+    Bitmap bitmap;
 
     public String getImage() {
         return image;
@@ -31,5 +34,13 @@ public class TeacherFunCenterGalleryModel
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

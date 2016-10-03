@@ -27,7 +27,7 @@ public class Config {
     //public static final String URL ="http://192.168.1.14/SJRestWCF/svcEmp.svc/";
 
     // Directory name to store captured images and videos
-    public static final String IMAGE_DIRECTORY_NAME = "School Diary";
+    public static final String IMAGE_DIRECTORY_NAME = "School Genie";
 
     public static final String SENDER_ID = "817406839541";
 
@@ -117,17 +117,6 @@ public class Config {
                 else if(time.length>0)
                     outtime = "" + time[0] ;
 
-               /* String time[] = date.split(" ")[1].split(":");
-                int t1 = Integer.valueOf(time[0]);
-                String tp = "";
-                if (t1 >= 12) {
-                    int t2 = t1 - 12;
-                    tp = "PM";
-                    outtime = "" + t2 + ":" + time[1] + " " + tp;
-                } else {
-                    tp = "AM";
-                    outtime = time[0] + ":" + time[1] + " " + tp;
-                }*/
             }
 
             if (FLAG.equals("D") || FLAG.equalsIgnoreCase("DT")) {

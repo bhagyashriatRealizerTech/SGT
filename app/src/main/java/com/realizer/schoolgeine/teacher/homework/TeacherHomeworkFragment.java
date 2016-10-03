@@ -285,6 +285,7 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
         Bundle b =new Bundle();
         b.putString("StudentClassList", classList);
         b.putInt("MYCLASS",2);
+        b.putString("HeaderText",htext);
         newTermDialogFragment.setArguments(b);
         newTermDialogFragment.setCancelable(false);
         newTermDialogFragment.show(fragmentManager, "Dialog!");

@@ -6,52 +6,66 @@
     android:background="@color/white"
     android:weightSum="15">
 
-    <FrameLayout style="@style/SubFrameLayoutWeight1"
-        android:background="#ffffff"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView style="@style/TextViewFontStyle"
-            android:layout_gravity="left"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:textStyle="bold"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:textSize="20dp"
-            android:text="Class :"/>
-        <TextView style="@style/TextViewFontStyle"
-            android:layout_gravity="left"
-            android:id="@+id/txttclassname"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:textStyle="normal"
+            >
+            <TextView style="@style/TextViewFontStyle"
+                android:textColor="@color/black"
+                android:id="@+id/headingstd"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="20sp"
+                android:text="Standard :"/>
+            <TextView style="@style/TextViewFontStyle"
+                android:id="@+id/txttclassname"
+                android:textColor="@color/black"
+                android:gravity="left"
+                android:textStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="20sp"
+                android:text="Playgroup"
+                android:layout_marginLeft="5dp"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/headingstd" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="70dp"
-            android:textSize="20dp"
-            android:text="Playgroup"/>
-        <TextView style="@style/TextViewFontStyle"
-            android:layout_gravity="right"
-            android:textColor="#000000"
-            android:gravity="center_vertical"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginRight="90dp"
-            android:textSize="20dp"
-            android:text="Div :"/>
-        <TextView style="@style/TextViewFontStyle"
-            android:layout_gravity="right"
-            android:id="@+id/txttdivname"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:textStyle="normal"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginRight="10dp"
-            android:textSize="20dp"
-            android:text="A"/>
-    </FrameLayout>
+            android:layout_height="wrap_content"
+            >
+            <TextView style="@style/TextViewFontStyle"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="20sp"
+                android:text="Div :"
+                android:layout_toLeftOf="@+id/txttdivname"
+                android:layout_toStartOf="@+id/txttdivname" />
+            <TextView style="@style/TextViewFontStyle"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/txttdivname"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="20sp"
+                android:text="Buntings"/>
+        </RelativeLayout>
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="match_parent"
@@ -71,6 +85,7 @@
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
             android:layout_gravity="center_vertical"
+            android:textSize="16sp"
             />
         <TextView style="@style/NormalFontAndSize.MarginLeft170"
             android:text=": English"
@@ -79,6 +94,7 @@
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
             android:layout_gravity="center_vertical"
+            android:textSize="16sp"
             android:id="@+id/txtcatname"/>
 
     </FrameLayout>
@@ -100,6 +116,7 @@
             android:textColor="@color/black"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
+            android:textSize="16sp"
             android:layout_gravity="center_vertical"
             />
         <TextView style="@style/NormalFontAndSize.MarginLeft170"
@@ -108,6 +125,7 @@
             android:layout_marginLeft="175dp"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
+            android:textSize="16sp"
             android:layout_gravity="center_vertical"
             android:id="@+id/txtalertdate"/>
 
@@ -131,6 +149,7 @@
             android:textColor="@color/black"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
+            android:textSize="16sp"
             android:layout_gravity="center_vertical"
             />
         <TextView style="@style/NormalFontAndSize.MarginLeft170"
@@ -139,6 +158,7 @@
             android:layout_marginLeft="175dp"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
+            android:textSize="16sp"
             android:layout_gravity="center_vertical"
             android:id="@+id/txtteacherName"/>
 
@@ -171,6 +191,7 @@
             android:layout_margin="0dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
+            android:textSize="16sp"
             android:id="@+id/txtdescription"
             />
         </ScrollView>

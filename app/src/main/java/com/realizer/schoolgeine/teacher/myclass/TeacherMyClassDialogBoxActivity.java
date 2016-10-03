@@ -57,7 +57,7 @@ public class TeacherMyClassDialogBoxActivity extends DialogFragment implements F
         cancel.setTypeface(face);
         dailyClassList =qr.GetAllSubDivStd();
         lstClassList.setAdapter(new TeacherMyClassListAdapter(getActivity(), dailyClassList));
-        Bundle b = this.getArguments();
+        final Bundle b = this.getArguments();
         final int k = b.getInt("MYCLASS",0);
         lstClassList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -78,7 +78,8 @@ public class TeacherMyClassDialogBoxActivity extends DialogFragment implements F
                 }
                 else if(k==2)
                 {
-                    RefreshHomework(std,div);
+                    String headertext = b.getString("HeaderText");
+                    RefreshHomework(std,div,headertext);
                 }
                 else if(k==3)
                 {
@@ -112,7 +113,8 @@ public class TeacherMyClassDialogBoxActivity extends DialogFragment implements F
 
                 else if(k==10)
                 {
-                    RefreshNewHomework(std,div);
+                    String headertext = b.getString("HeaderText");
+                    RefreshNewHomework(std,div,headertext);
                 }
 
                 else if(k==11)
@@ -223,7 +225,7 @@ public class TeacherMyClassDialogBoxActivity extends DialogFragment implements F
     }
 
     //Homework
-    public void RefreshHomework(String std,String div)
+    public void RefreshHomework(String std,String div,String headetText)
     {
         TeacherHomeworkFragment fragment = new TeacherHomeworkFragment();
         Singlton.setSelectedFragment(fragment);
@@ -232,7 +234,7 @@ public class TeacherMyClassDialogBoxActivity extends DialogFragment implements F
         Bundle bundle = new Bundle();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         bundle.putString("HomeworkList", homewrklist);
-        bundle.putString("HEADERTEXT","Homework");
+        bundle.putString("HEADERTEXT",headetText);
         fragment.setArguments(bundle);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.frame_container, fragment);
@@ -242,7 +244,7 @@ public class TeacherMyClassDialogBoxActivity extends DialogFragment implements F
     //New Homework
 
     //Homework
-    public void RefreshNewHomework(String std,String div)
+    public void RefreshNewHomework(String std,String div,String headetText)
     {
         TeacherHomeworkNewFragment fragment = new TeacherHomeworkNewFragment();
         Singlton.setSelectedFragment(fragment);
@@ -250,7 +252,7 @@ public class TeacherMyClassDialogBoxActivity extends DialogFragment implements F
         Bundle bundle = new Bundle();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         bundle.putString("HomeworkList", homewrklist);
-        bundle.putString("HEADERTEXT", "Homework");
+        bundle.putString("HEADERTEXT", headetText);
         fragment.setArguments(bundle);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.frame_container, fragment);

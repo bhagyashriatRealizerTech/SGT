@@ -60,7 +60,7 @@ public class TeacherGCommunicationNewFragment extends Fragment implements OnTask
         //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getActivity()));
         View rootView = inflater.inflate(R.layout.teacher_newgcommunication_layout, container, false);
 
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE| WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+       // getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE| WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         ((DrawerActivity) getActivity()).getSupportActionBar().setTitle(Config.actionBarTitle("Add Alert", getActivity()));
         ((DrawerActivity) getActivity()).getSupportActionBar().show();

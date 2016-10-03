@@ -36,7 +36,7 @@
                 android:singleLine="true"
                 android:text="New Message"
                 android:textColor="@color/colorAccent"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textStyle="normal" />
 
             <TextView
@@ -77,7 +77,7 @@
                 android:singleLine="true"
                 android:text="27/02/2016"
                 android:textColor="@color/darkgreycolor"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textStyle="normal" />
 
             <TextView
@@ -127,15 +127,15 @@
                     android:visibility="gone"
                     />
                 <TextView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
                     android:id="@+id/txtinitial"
                     android:background="@drawable/profilepic_circle"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="15dp"
+                    android:textSize="16sp"
                     android:visibility="visible"
                     android:text="SD"/>
 
@@ -200,7 +200,7 @@
                             android:autoLink="web|phone|email"
                             android:linksClickable="true"
                             android:textColor="@color/black"
-                            android:textSize="17sp"
+                            android:textSize="16sp"
                             android:visibility="visible" />
 
                     </LinearLayout>

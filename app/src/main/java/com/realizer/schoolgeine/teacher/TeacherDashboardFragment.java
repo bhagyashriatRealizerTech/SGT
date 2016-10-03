@@ -119,15 +119,15 @@ public class TeacherDashboardFragment extends Fragment implements View.OnClickLi
 
                             @Override
                             public void run() {
-
+                                if(notificationData.size() >0) {
                                 DatabaseQueries qr = new DatabaseQueries(getActivity());
                                 qr.deleteNotificationRow(notificationData.get(position).getId());
-                                // new GetNotificationList().execute();
-                                if(notificationData.size() ==1)
-                                    new GetNotificationList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                                else {
-                                    notificationData.remove(position);
-                                    notificationAdapter.notifyDataSetChanged();
+                                    if (notificationData.size() == 1)
+                                        new GetNotificationList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                                    else {
+                                        notificationData.remove(position);
+                                        notificationAdapter.notifyDataSetChanged();
+                                    }
                                 }
 
                             }
@@ -147,60 +147,58 @@ public class TeacherDashboardFragment extends Fragment implements View.OnClickLi
                     }
 
                 }
-                else
-                {
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                    DatabaseQueries qr = new DatabaseQueries(getActivity());
+                else {
 
-                    if(notificationData.get(position).getNotificationtype().equalsIgnoreCase("Homework")
-                            || notificationData.get(position).getNotificationtype().equalsIgnoreCase("Classwork")) {
+                    if (position<notificationData.size()){
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        DatabaseQueries qr = new DatabaseQueries(getActivity());
 
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("STANDARD",notificationData.get(position).getAdditionalData1().split("@@@")[0]);
-                        editor.putString("DIVISION",notificationData.get(position).getAdditionalData1().split("@@@")[1]);
-                        editor.commit();
+                        if (notificationData.get(position).getNotificationtype().equalsIgnoreCase("Homework")
+                                || notificationData.get(position).getNotificationtype().equalsIgnoreCase("Classwork")) {
 
-                        qr.deleteNotificationRow(notificationData.get(position).getId());
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("STANDARD", notificationData.get(position).getAdditionalData1().split("@@@")[0]);
+                            editor.putString("DIVISION", notificationData.get(position).getAdditionalData1().split("@@@")[1]);
+                            editor.commit();
 
-                        Homework(notificationData.get(position).getNotificationtype());
+                            qr.deleteNotificationRow(notificationData.get(position).getId());
+
+                            Homework(notificationData.get(position).getNotificationtype());
+                        } else if (notificationData.get(position).getNotificationtype().equalsIgnoreCase("TimeTable")) {
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("STANDARD", notificationData.get(position).getAdditionalData1().split("@@@")[1]);
+                            editor.putString("DIVISION", notificationData.get(position).getAdditionalData1().split("@@@")[2]);
+                            editor.commit();
+
+                            qr.deleteNotificationRow(notificationData.get(position).getId());
+                            TimeTable("b");
+                        } else if (notificationData.get(position).getNotificationtype().equalsIgnoreCase("Query")) {
+                            String uid = notificationData.get(position).getAdditionalData2();
+                            String urlImage = null;
+                            String userData[] = notificationData.get(position).getAdditionalData1().trim().split("@@@");
+                            if (userData.length > 2)
+                                urlImage = userData[2];
+
+                            qr.updateInitiatechat(preferences.getString("STANDARD", ""), preferences.getString("DIVISION", ""), userData[0], "true", uid, 0, urlImage);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("USERID", uid);
+                            bundle.putString("SENDERNAME", userData[0]);
+                            bundle.putString("Stand", preferences.getString("STANDARD", ""));
+                            bundle.putString("Divi", preferences.getString("DIVISION", ""));
+                            bundle.putString("UrlImage", urlImage);
+
+                            qr.deleteNotificationRow(notificationData.get(position).getId());
+
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            TeacherQueryViewFragment fragment = new TeacherQueryViewFragment();
+                            Singlton.setSelectedFragment(fragment);
+                            fragment.setArguments(bundle);
+                            transaction.replace(R.id.frame_container, fragment);
+                            transaction.addToBackStack(null);
+                            transaction.commit();
+                        }
+
                     }
-                    else if(notificationData.get(position).getNotificationtype().equalsIgnoreCase("TimeTable"))
-                    {
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("STANDARD",notificationData.get(position).getAdditionalData1().split("@@@")[1]);
-                        editor.putString("DIVISION",notificationData.get(position).getAdditionalData1().split("@@@")[2]);
-                        editor.commit();
-
-                        qr.deleteNotificationRow(notificationData.get(position).getId());
-                        TimeTable("b");
-                    }
-                    else if(notificationData.get(position).getNotificationtype().equalsIgnoreCase("Query"))
-                    {
-                        String uid = notificationData.get(position).getAdditionalData2();
-                        String urlImage = null;
-                        String userData[] = notificationData.get(position).getAdditionalData1().trim().split("@@@");
-                        if(userData.length >2 )
-                            urlImage = userData[2];
-
-                        qr.updateInitiatechat(preferences.getString("STANDARD",""),preferences.getString("DIVISION",""),userData[0],"true",uid,0,urlImage);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("USERID", uid);
-                        bundle.putString("SENDERNAME",userData[0]);
-                        bundle.putString("Stand",preferences.getString("STANDARD",""));
-                        bundle.putString("Divi",preferences.getString("DIVISION",""));
-                        bundle.putString("UrlImage",urlImage);
-
-                        qr.deleteNotificationRow(notificationData.get(position).getId());
-
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        TeacherQueryViewFragment fragment = new TeacherQueryViewFragment();
-                        Singlton.setSelectedFragment(fragment);
-                        fragment.setArguments(bundle);
-                        transaction.replace(R.id.frame_container, fragment);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
-                    }
-
                 }
             }
         });

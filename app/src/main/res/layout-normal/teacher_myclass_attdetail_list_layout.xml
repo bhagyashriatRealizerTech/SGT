@@ -43,7 +43,7 @@
         android:layout_gravity="center_vertical"
         android:paddingLeft="10dp"
         android:id="@+id/txtname"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textColor="@color/black"
         android:layout_marginLeft="7dp"
         android:text="Name"/>
@@ -70,7 +70,7 @@
         android:id="@+id/txtstatus"
         android:layout_gravity="center_vertical"
         android:paddingRight="10dp"
-        android:textSize="14dp"
+        android:textSize="18sp"
         android:text="Status"/>
 
 

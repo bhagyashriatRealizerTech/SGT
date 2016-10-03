@@ -96,61 +96,7 @@
                             android:layout_gravity="left|center_vertical"
                             android:id="@+id/txtRollNo"/>
                     </FrameLayout>
-                   <!-- <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Class"
-                            android:textSize="16sp"
-                            android:gravity="left"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:textColor="#ffffff"
-                            android:layout_gravity="left|center_vertical"
-                            android:id="@+id/txtClassT"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="LKG"
-                            android:textSize="16sp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:textColor="#ffffff"
-                            android:layout_marginLeft="180dp"
-                            android:layout_gravity="left|center_vertical"
-                            android:id="@+id/txtClass"/>
-                    </FrameLayout>
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Division"
-                            android:textSize="16sp"
-                            android:gravity="left"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:textColor="#ffffff"
-                            android:layout_gravity="left|center_vertical"
-                            android:id="@+id/txtDivisionT"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="A"
-                            android:textSize="16sp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:gravity="left"
-                            android:textColor="#ffffff"
-                            android:layout_marginLeft="180dp"
-                            android:layout_gravity="left|center_vertical"
-                            android:id="@+id/txtDivision"/>
-                    </FrameLayout>-->
+
                     <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

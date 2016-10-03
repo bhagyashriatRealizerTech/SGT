@@ -29,7 +29,7 @@
         android:textStyle="normal"
         android:ellipsize="marquee"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:layout_marginBottom="4dp"/>
     <TextView
         android:id="@+id/event_date"
@@ -39,7 +39,7 @@
         android:singleLine="true"
         android:textStyle="normal"
         android:ellipsize="marquee"
-        android:textColor="@color/black"
+        android:textColor="@color/greycolor"
         android:textSize="18sp"
         android:layout_marginBottom="15dp"/>
 </LinearLayout>

@@ -3,6 +3,8 @@ package com.realizer.schoolgeine.teacher.funcenter;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
+import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
+import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterModel;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
@@ -28,6 +32,7 @@ import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.funcenter.adapter.TeacherFunCenterGalleryAdapter;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterGalleryModel;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -85,6 +90,7 @@ public class TeacherFunCenterGalleryFragment extends Fragment implements Fragmen
                 b.putString("EventName", getevntName);
                 intent.putExtras(b);
                 getActivity().startActivity(intent);
+
 
             }
         });
@@ -184,6 +190,24 @@ public class TeacherFunCenterGalleryFragment extends Fragment implements Fragmen
         protected Void doInBackground(Void... params) {
 
             allData=qr.GetImage(getid);
+
+            for(int i=0;i<allData.size();i++)
+            {
+
+                String image1 =allData.get(i).getImage();
+                File file = ImageStorage.getEventImage(image1);
+
+                if(file != null) {
+                   // BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                  //  Bitmap bitmap = BitmapFactory.decodeFile(image1, bmOptions);
+                    Bitmap bitmap = ImageStorage.decodeSampledBitmapFromPath(image1,150,150);
+                    TeacherFunCenterGalleryModel obj = new TeacherFunCenterGalleryModel();
+                    obj = allData.get(i);
+                    obj.setBitmap(bitmap);
+                    allData.set(i,obj);
+                }
+            }
+
             return null;
         }
 
@@ -196,7 +220,6 @@ public class TeacherFunCenterGalleryFragment extends Fragment implements Fragmen
                 gridView.setAdapter(adapter1);
                 gridView.setFastScrollEnabled(true);
             }
-
             else
             {
                 noDataText.setVisibility(View.VISIBLE);

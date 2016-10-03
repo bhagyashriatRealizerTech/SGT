@@ -29,7 +29,7 @@
         android:textStyle="normal"
         android:ellipsize="marquee"
         android:textColor="@color/black"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:layout_marginBottom="3dp"/>
 
     <TextView
@@ -40,7 +40,7 @@
         android:singleLine="true"
         android:textStyle="normal"
         android:ellipsize="marquee"
-        android:textColor="@color/black"
-        android:textSize="15sp"
+        android:textColor="@color/greycolor"
+        android:textSize="14sp"
         android:layout_marginBottom="15dp"/>
 </LinearLayout>

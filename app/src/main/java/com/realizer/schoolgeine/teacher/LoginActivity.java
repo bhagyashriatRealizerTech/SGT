@@ -211,6 +211,9 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                 final RadioButton magicword = (RadioButton)dialoglayout.findViewById(R.id.rb_option_magic_word);
                 submit.setTypeface(face);
                 cancel.setTypeface(face);
+
+                mail.setChecked(true);
+
                 final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                 builder.setView(dialoglayout);
 
@@ -476,7 +479,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                    }
                    else
                    {
-                       Intent i = new Intent(LoginActivity.this, TeacherActivity.class);
+                       Intent i = new Intent(LoginActivity.this, DrawerActivity.class);
                        startActivity(i);
                    }
 */
@@ -497,7 +500,21 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
             }
         } else {
             loading.setVisibility(View.GONE);
-            if(mWord.trim().length()>0) {
+            String Schoolcode = null;
+            if(mWord.trim().length()>0 && !mWord.equalsIgnoreCase("null")) {
+                try {
+
+                    if (validate.equalsIgnoreCase("valid")) {
+                        num =0;
+                        Schoolcode = rootObj.getString("SchoolCode");
+                        if(Schoolcode.length()==0 || Schoolcode.equalsIgnoreCase("null"))
+                            num =1;
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                  b = parsData(s);
                 if (b == true) {
                     GCMReg();
@@ -568,7 +585,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                 String holiday= obj.getString("Holiday");
                 //\/Date(1452188220000-0600)\/
                 String jsondate= obj.getString("PHStartDate").split("\\(")[1].split("\\-")[0];
-                String jsondate1= obj.getString("PHStartDate").split("\\(")[1].split("\\-")[0];
+                String jsondate1= obj.getString("PHEndDate").split("\\(")[1].split("\\-")[0];
                 Log.d("JSONDATE", jsondate);
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");

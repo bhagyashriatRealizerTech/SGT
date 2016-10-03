@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.database.MergeCursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -25,6 +26,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
@@ -56,12 +58,13 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
     String eventuuid,grid,upload,isupload,image1,imagecaption,eventName;
     DatabaseQueries qr;
     int imgId,acadmicyear,evntgetid;
-    Cursor imagecursor;
+    Cursor imagecursor[],cursor;
     Calendar c;
     SimpleDateFormat df;
     long m;
     int totalselectedImageCount;
     ProgressWheel loading;
+    Bitmap bitma[];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,25 +81,20 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
         qr = new DatabaseQueries(CustomPhotoGalleryActivity.this);
         totalselectedImageCount = 0;
 
-        final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
-        final String orderBy = MediaStore.Images.Media._ID;
+        final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Thumbnails._ID };
+        final String orderBy = MediaStore.Images.Thumbnails._ID;
 
-        imagecursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
-        int image_column_index = imagecursor.getColumnIndex(MediaStore.Images.Media._ID);
-        this.count = imagecursor.getCount();
-        this.arrPath = new String[this.count];
-        ids = new int[count];
-        this.thumbnailsselection = new boolean[this.count];
-        for (int i = 0; i < this.count; i++) {
-            imagecursor.moveToPosition(i);
-            ids[i] = imagecursor.getInt(image_column_index);
-            int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
-            arrPath[i] = imagecursor.getString(dataColumnIndex);
-        }
+        imagecursor = new Cursor[2];
+        imagecursor[0] = getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, columns, null, null,  MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
+        imagecursor[1] = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null,  MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
+
+        cursor =  new MergeCursor(imagecursor);
+
+
         loading = (ProgressWheel) findViewById(R.id.loading);
-        imageAdapter = new ImageAdapter(CustomPhotoGalleryActivity.this);
-        grdImages.setAdapter(imageAdapter);
-        imagecursor.close();
+        loading.setVisibility(View.VISIBLE);
+        setBitmaps(cursor);
+
 
     }
 
@@ -186,6 +184,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             loading.setVisibility(View.GONE);
+            Singlton.setSelectedFragment(Singlton.getMainFragment());
             finish();
         }
 
@@ -218,13 +217,12 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                 grid = String.valueOf(selectedItems.get(i));
                 imguuid = UUID.randomUUID();
                 File f=new File(grid);
+                Bitmap bitmap = BitmapFactory.decodeFile(grid);
+
+               image1 = ImageStorage.saveEventToSdCard(bitmap, eventName, CustomPhotoGalleryActivity.this);
+                String f2[] = image1.split(File.separator);
                 String filename=f.getName();
 
-                Bitmap bm1 = BitmapFactory.decodeFile(grid);
-                ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-                bm1.compress(Bitmap.CompressFormat.JPEG, 100, baos1); //bm is the bitmap object
-                byte[] b1 = baos1.toByteArray();
-                image1 = Base64.encodeToString(b1, Base64.DEFAULT);
                 acadmicyear = Calendar.getInstance().get(Calendar.YEAR);
                 imagecaption = caption;
 
@@ -285,6 +283,46 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                 super.onPostExecute(result);
                 iv.setImageBitmap(result);
             }
+        }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    private void setBitmaps(final Cursor cursor) {
+
+        new AsyncTask<Void, Void, Void>() {
+
+
+            @Override
+            protected Void doInBackground(Void... params) {
+
+                int image_column_index = cursor.getColumnIndex(MediaStore.Images.Thumbnails._ID);
+                count = cursor.getCount();
+                arrPath = new String[count];
+                ids = new int[count];
+                thumbnailsselection = new boolean[count];
+                bitma = new Bitmap[count];
+
+                for (int i = 0; i < count; i++) {
+                    cursor.moveToPosition(i);
+                    ids[i] = cursor.getInt(image_column_index);
+                    int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
+                    arrPath[i] = cursor.getString(dataColumnIndex);
+                    bitma[i] = MediaStore.Images.Thumbnails.getThumbnail(
+                            getApplicationContext().getContentResolver(), cursor.getInt(image_column_index),
+                            MediaStore.Images.Thumbnails.MICRO_KIND, null);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+                loading.setVisibility(View.GONE);
+                imageAdapter = new ImageAdapter(CustomPhotoGalleryActivity.this);
+                grdImages.setAdapter(imageAdapter);
+                imagecursor[0].close();
+                imagecursor[1].close();
+                cursor.close();
+            }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
@@ -301,6 +339,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                     if (m > 0) {
 
                         if(imgid == imgId) {
+                            Singlton.setSelectedFragment(Singlton.getMainFragment());
                             finish();
                         }
                     }
@@ -346,10 +385,12 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
+
             holder.chkImage.setId(position);
             holder.imgThumb.setId(position);
-            holder.chkImage.setOnClickListener(new View.OnClickListener() {
 
+
+            holder.chkImage.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     CheckBox cb = (CheckBox) v;
                     int id = cb.getId();
@@ -371,6 +412,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                     }
                 }
             });
+
             holder.imgThumb.setOnClickListener(new View.OnClickListener() {
 
                 public void onClick(View v) {
@@ -393,10 +435,19 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                     }
                 }
             });
-            try {
-                setBitmap(holder.imgThumb, ids[position]);
+
+
+          /*  try {
+               // if(!holder.isSet) {
+                    //setBitmap(holder.imgThumb, ids[position]);
+                    Bitmap bitmap = ImageStorage.decodeSampledBitmapFromPath(arrPath[position],150,150);
+                    holder.imgThumb.setImageBitmap(bitmap);
+                    bitmap = null;
+                    holder.isSet = true;
+                //}
             } catch (Throwable e) {
-            }
+            }*/
+            holder.imgThumb.setImageBitmap(bitma[position]);
             holder.chkImage.setChecked(thumbnailsselection[position]);
             holder.id = position;
             return convertView;
@@ -405,6 +456,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
 
     @Override
     public void onBackPressed() {
+        Singlton.setSelectedFragment(Singlton.getMainFragment());
         setResult(Activity.RESULT_CANCELED);
         super.onBackPressed();
 
@@ -417,6 +469,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
         ImageView imgThumb;
         CheckBox chkImage;
         int id;
+        boolean isSet;
     }
 
     @Override

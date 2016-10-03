@@ -3,11 +3,15 @@ package com.realizer.schoolgeine.teacher.funcenter.asynctask;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
 
 import com.realizer.schoolgeine.teacher.Utils.Config;
+import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterImageModel;
 import com.realizer.schoolgeine.teacher.queue.QueueListModel;
@@ -23,6 +27,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -77,6 +83,17 @@ public class TeacherFunCenterImageAsynckPost extends AsyncTask<Void, Void,String
         SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(myContext);
         String scode = sharedpreferences.getString("SchoolCode", "");
 
+        File file = ImageStorage.getEventImage(obj.getImage());
+        String imagebse64= "";
+        if(file != null) {
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(obj.getImage(), bmOptions);
+            ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos1); //bm is the bitmap object
+            byte[] b1 = baos1.toByteArray();
+            imagebse64 = Base64.encodeToString(b1, Base64.DEFAULT);
+        }
+
         JSONObject jobj = new JSONObject();
         try {
             jobj.put("SchoolCode",scode);
@@ -89,7 +106,7 @@ public class TeacherFunCenterImageAsynckPost extends AsyncTask<Void, Void,String
             jobj.put("SrNo", obj.getSrno());
             String date = obj.getUpload_Date();
             jobj.put("uploadDate",date);
-            jobj.put("Base64Image",obj.getImage());
+            jobj.put("Base64Image",imagebse64);
             jobj.put("fileName",obj.getFilename());
 
             json = jobj.toString();

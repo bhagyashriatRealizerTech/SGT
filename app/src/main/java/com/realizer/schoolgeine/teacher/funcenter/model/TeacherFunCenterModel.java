@@ -1,5 +1,7 @@
 package com.realizer.schoolgeine.teacher.funcenter.model;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Win on 28/03/2016.
  */
@@ -9,6 +11,7 @@ public class TeacherFunCenterModel {
     String Date;
     String eventuuid;
     int eventid;
+    Bitmap bitmap;
 
     public String getEventuuid() {
         return eventuuid;
@@ -50,5 +53,13 @@ public class TeacherFunCenterModel {
 
     public void setDate(String date) {
         Date = date;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

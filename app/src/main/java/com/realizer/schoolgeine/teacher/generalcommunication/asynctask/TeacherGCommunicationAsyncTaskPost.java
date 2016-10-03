@@ -110,6 +110,7 @@ public class TeacherGCommunicationAsyncTaskPost extends AsyncTask<Void, Void,Str
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
                 String line;
                 while((line=reader.readLine()) != null)
+
                 {
                     resultLogin.append(line);
                 }

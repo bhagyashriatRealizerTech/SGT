@@ -3,11 +3,15 @@ package com.realizer.schoolgeine.teacher.funcenter.asynctask;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
 
 import com.realizer.schoolgeine.teacher.Utils.Config;
+import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterEventModel;
 import com.realizer.schoolgeine.teacher.queue.QueueListModel;
@@ -23,6 +27,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -71,6 +77,17 @@ public class TeacherFunCenterAsyncTaskPost extends AsyncTask<Void, Void,StringBu
         String scode = sharedpreferences.getString("SchoolCode", "");
         JSONObject jobj = new JSONObject();
 
+        File file = ImageStorage.getEventImage(obj.getThumbNailImage());
+        String imagebse64= "";
+        if(file != null) {
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(obj.getThumbNailImage(), bmOptions);
+            ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos1); //bm is the bitmap object
+            byte[] b1 = baos1.toByteArray();
+            imagebse64 = Base64.encodeToString(b1, Base64.DEFAULT);
+        }
+
         try
         {
             jobj.put("SchoolCode",scode);
@@ -81,7 +98,7 @@ public class TeacherFunCenterAsyncTaskPost extends AsyncTask<Void, Void,StringBu
             jobj.put("EventName",obj.getEventName());
             String date = obj.getEventDate();
             jobj.put("EventDate",date);
-            jobj.put("ThumbNailImage",obj.getThumbNailImage());
+            jobj.put("ThumbNailImage",imagebse64);
             jobj.put("fileName",obj.getFilename());
 
            json = jobj.toString();
