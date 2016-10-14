@@ -455,7 +455,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if(mWord.trim().length()>0) {
+            if(mWord.trim().length()>0 && !mWord.equalsIgnoreCase("null")) {
                 if (b == true) {
 
                     loading.setVisibility(View.GONE);
