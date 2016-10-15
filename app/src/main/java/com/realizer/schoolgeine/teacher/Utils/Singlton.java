@@ -1,10 +1,12 @@
 package com.realizer.schoolgeine.teacher.Utils;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.ResultReceiver;
 
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.realizer.schoolgeine.teacher.chat.model.AddedContactModel;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 
@@ -27,6 +29,8 @@ public class Singlton {
     public static Intent manualserviceIntent = null;
     public static ProgressWheel initiateChat = null;
     public static ProgressWheel messageCenter = null;
+    public static GoogleAccountCredential mCredential = null;
+    public static Activity activity= null;
 
     private Singlton()
     {
@@ -128,6 +132,22 @@ public class Singlton {
 
     public static void setMessageCenter(ProgressWheel messageCenter) {
         Singlton.messageCenter = messageCenter;
+    }
+
+    public static GoogleAccountCredential getmCredential() {
+        return mCredential;
+    }
+
+    public static void setmCredential(GoogleAccountCredential mCredential) {
+        Singlton.mCredential = mCredential;
+    }
+
+    public static Activity getActivity() {
+        return activity;
+    }
+
+    public static void setActivity(Activity activity) {
+        Singlton.activity = activity;
     }
 }
 

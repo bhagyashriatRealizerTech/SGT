@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.myclass.model.TeacherMyClassStudentModel;

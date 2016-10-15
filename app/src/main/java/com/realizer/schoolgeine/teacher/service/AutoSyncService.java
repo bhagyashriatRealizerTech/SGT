@@ -9,9 +9,11 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.gson.Gson;
 import com.realizer.schoolgeine.teacher.Notification.NotificationModel;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
@@ -19,8 +21,10 @@ import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.chat.asynctask.TeacherQueryAsyncTaskPost;
 import com.realizer.schoolgeine.teacher.chat.model.TeacherQuerySendModel;
+import com.realizer.schoolgeine.teacher.funcenter.asynctask.GoogleDriveImageUploadAsyncTask;
 import com.realizer.schoolgeine.teacher.funcenter.asynctask.TeacherFunCenterAsyncTaskPost;
 import com.realizer.schoolgeine.teacher.funcenter.asynctask.TeacherFunCenterImageAsynckPost;
+import com.realizer.schoolgeine.teacher.funcenter.model.GoogleDriveUploadClass;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterEventModel;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterImageModel;
 import com.realizer.schoolgeine.teacher.generalcommunication.asynctask.TeacherGCommunicationAsyncTaskPost;
@@ -202,6 +206,31 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                 }
             }
         }
+        else if(s.equalsIgnoreCase("done"))
+        {
+
+            if(queueListModel.getType().equalsIgnoreCase("EventImages")) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AutoSyncService.this);
+                TeacherFunCenterImageModel o = qr.getImageById(queueListModel.getId());
+                o.setSharedlink(queueListModel.getTime());
+                qr.updateSharedImageLink(o);
+                if(!TextUtils.isEmpty(o.getSharedlink())) {
+                    TeacherFunCenterImageAsynckPost objasync = new TeacherFunCenterImageAsynckPost(o, preferences.getString("STANDARD", ""), preferences.getString("DIVISION", ""), AutoSyncService.this, AutoSyncService.this, "false");
+                    objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                }
+            }
+            else if(queueListModel.getType().equalsIgnoreCase("EventMaster")) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AutoSyncService.this);
+                TeacherFunCenterEventModel o = qr.GetEventByID(queueListModel.getId());
+               // o.setSharedlink(queueListModel.getTime());
+              //  qr.updateSharedImageLink(o);
+               // if(!TextUtils.isEmpty(o.getSharedlink())) {
+                    TeacherFunCenterAsyncTaskPost objasync = new TeacherFunCenterAsyncTaskPost(o, AutoSyncService.this, AutoSyncService.this, "false");
+                    objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+              //  }
+            }
+
+        }
 
 
         else {
@@ -217,6 +246,7 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
 
             if(isConnectingToInternet())
             {
+                if(Singlton.getManualserviceIntent() == null)
               Syncdata();
             }
         }
@@ -282,15 +312,30 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                 else if(type.equals("EventMaster"))
                 {
                     TeacherFunCenterEventModel o = qr.GetEventByID(id);
-                    TeacherFunCenterAsyncTaskPost objasync = new TeacherFunCenterAsyncTaskPost(o, AutoSyncService.this, AutoSyncService.this, "false");
+                    GoogleDriveUploadClass o1 = new GoogleDriveUploadClass();
+                    o1.setGdID(Integer.valueOf(o.getEventId()));
+                    o1.setFilepath(o.getThumbNailImage());
+                    o1.setFoldername(Config.FUN_CENTER_FOLDER);
+                    o1.setGdfilename(o.getFilename());
+                    o1.setGdtype("EventMaster");
+                    GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
                     objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                    /*TeacherFunCenterAsyncTaskPost objasync = new TeacherFunCenterAsyncTaskPost(o, AutoSyncService.this, AutoSyncService.this, "false");
+                    objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);*/
                 }
                 else if(type.equals("EventImages"))
                 {
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AutoSyncService.this);
-                    TeacherFunCenterImageModel o = qr. getImageById(id);
-                    TeacherFunCenterImageAsynckPost objasync = new TeacherFunCenterImageAsynckPost(o,preferences.getString("STANDARD", ""),preferences.getString("DIVISION", ""), AutoSyncService.this, AutoSyncService.this,"false");
-                    objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                  if(Singlton.getmCredential()!=null) {
+                      TeacherFunCenterImageModel o = qr.getImageById(id);
+                      GoogleDriveUploadClass o1 = new GoogleDriveUploadClass();
+                      o1.setGdID(Integer.valueOf(o.getImageid()));
+                      o1.setFilepath(o.getImage());
+                      o1.setFoldername(Config.FUN_CENTER_FOLDER);
+                      o1.setGdfilename(o.getFilename());
+                      o1.setGdtype("EventImages");
+                      GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
+                      objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                  }
                 }
                 else if(type.equals("TimeTable"))
                 {

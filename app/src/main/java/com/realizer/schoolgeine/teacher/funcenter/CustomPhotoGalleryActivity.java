@@ -3,6 +3,7 @@ package com.realizer.schoolgeine.teacher.funcenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.MergeCursor;
 import android.graphics.Bitmap;
@@ -12,7 +13,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,8 +24,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
+import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 import com.realizer.schoolgenie.teacher.R;
@@ -36,7 +36,6 @@ import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.queue.QueueListModel;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -226,6 +225,8 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                 acadmicyear = Calendar.getInstance().get(Calendar.YEAR);
                 imagecaption = caption;
 
+
+
                 m = qr.InsertImage(evntgetid, image1, upload, isupload, acadmicyear, i, imagecaption, imguuid.toString(),filename,eventuuid.toString());
                 if (m > 0)
                 {
@@ -233,25 +234,6 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                     SimpleDateFormat df1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
                     m = qr.insertQueue(imgId, "EventImages", "7", df1.format(Calendar.getInstance().getTime()));
 
-
-                    /*try {
-                        if (m  > 0)
-                        {
-                            m  = -1;
-
-                            if (Config.isConnectingToInternet(CustomPhotoGalleryActivity.this))
-                            {
-
-                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CustomPhotoGalleryActivity.this);
-                                TeacherFunCenterImageModel o = qr. getImageById(imgId);
-                                TeacherFunCenterImageAsynckPost objasync = new TeacherFunCenterImageAsynckPost(o,preferences.getString("STANDARD", ""),preferences.getString("DIVISION", ""), CustomPhotoGalleryActivity.this, CustomPhotoGalleryActivity.this,"true");
-                                objasync.execute();
-
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
                 }
 
             }
@@ -478,5 +460,6 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
        getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
+
 
 }

@@ -38,8 +38,6 @@ import android.widget.ToggleButton;
 
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
-import com.realizer.schoolgeine.teacher.funcenter.adapter.TeacherFunCenterGalleryAdapter;
-import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterGalleryModel;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.AlphabetListAdapter;

@@ -12,8 +12,6 @@ import android.text.Spanned;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.realizer.schoolgenie.teacher.R;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,6 +31,9 @@ public class Config {
 
     public static final int DRAWABLE_RIGHT = 2;
 
+    public static final String Account_Name = "realizertech1@gmail.com";
+
+    public static final String FUN_CENTER_FOLDER = "0B9pJvqDPmAzZTkMta29fQ2ZqLTA";
     /**
      * Tag used on log messages.
      */

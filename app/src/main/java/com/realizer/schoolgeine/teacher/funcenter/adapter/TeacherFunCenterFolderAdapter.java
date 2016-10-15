@@ -1,11 +1,7 @@
 package com.realizer.schoolgeine.teacher.funcenter.adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.Utils.Config;
-import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterModel;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 

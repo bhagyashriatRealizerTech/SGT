@@ -13,7 +13,7 @@ public class TeacherFunCenterImageModel
     String imagecaption;
     String imguuid;
     String eventuuid;
-    String image,std,div,filename;
+    String image,std,div,filename,sharedlink;
 
 
     public String getEventuuid() {
@@ -112,4 +112,11 @@ public class TeacherFunCenterImageModel
         this.imguuid = imguuid;
     }
 
+    public String getSharedlink() {
+        return sharedlink;
+    }
+
+    public void setSharedlink(String sharedlink) {
+        this.sharedlink = sharedlink;
+    }
 }

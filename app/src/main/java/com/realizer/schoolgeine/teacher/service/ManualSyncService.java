@@ -6,18 +6,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.Toast;
 
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.gson.Gson;
 import com.realizer.schoolgeine.teacher.Notification.NotificationModel;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
@@ -25,8 +24,10 @@ import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.chat.asynctask.TeacherQueryAsyncTaskPost;
 import com.realizer.schoolgeine.teacher.chat.model.TeacherQuerySendModel;
+import com.realizer.schoolgeine.teacher.funcenter.asynctask.GoogleDriveImageUploadAsyncTask;
 import com.realizer.schoolgeine.teacher.funcenter.asynctask.TeacherFunCenterAsyncTaskPost;
 import com.realizer.schoolgeine.teacher.funcenter.asynctask.TeacherFunCenterImageAsynckPost;
+import com.realizer.schoolgeine.teacher.funcenter.model.GoogleDriveUploadClass;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterEventModel;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterImageModel;
 import com.realizer.schoolgeine.teacher.generalcommunication.asynctask.TeacherGCommunicationAsyncTaskPost;
@@ -75,6 +76,7 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Singlton.setManualserviceIntent(null);
         Log.d("ManualSyncService", "Stop");
        // Toast.makeText(this, "Service Destroy", Toast.LENGTH_LONG).show();
     }
@@ -184,7 +186,11 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                 @Override
                 public void run() {
                     if (id == queueListModel.getId()) {
-                        Config.alertDialog(Singlton.getContext(),"Manual Sync","Sync Completed Successfully");
+                        Config.alertDialog(Singlton.getContext(), "Manual Sync", "Sync Completed Successfully");
+                        Intent intent = Singlton.getManualserviceIntent();
+                        Singlton.setManualserviceIntent(null);
+                        stopService(intent);
+
                         //Toast.makeText(Singlton.getContext(),"Sync Completed Successfully",Toast.LENGTH_SHORT).show();
                         if(Singlton.getResultReceiver() != null)
                             Singlton.getResultReceiver().send(1000,null);
@@ -252,10 +258,10 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                 @Override
                 public void run() {
                     if (id == queueListModel.getId()) {
-                        Config.alertDialog(Singlton.getContext(),"Manual Sync","Sync Completed Successfully");
+                        Config.alertDialog(Singlton.getContext(), "Manual Sync", "Sync Completed Successfully");
                         //Toast.makeText(Singlton.getContext(),"Sync Completed Successfully",Toast.LENGTH_SHORT).show();
-                        if(Singlton.getResultReceiver() != null)
-                            Singlton.getResultReceiver().send(1000,null);
+                        if (Singlton.getResultReceiver() != null)
+                            Singlton.getResultReceiver().send(1000, null);
                    /* if (dialog != null && dialog.isShowing())
                         dialog.dismiss();*/
                     }
@@ -263,9 +269,24 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
             });
 
         }
+        else if(s.equalsIgnoreCase("done"))
+        {
+
+            if(queueListModel.getType().equalsIgnoreCase("EventImages")) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ManualSyncService.this);
+                TeacherFunCenterImageModel o = qr.getImageById(queueListModel.getId());
+                o.setSharedlink(queueListModel.getTime());
+                qr.updateSharedImageLink(o);
+
+                if(!TextUtils.isEmpty(o.getSharedlink())) {
+                    TeacherFunCenterImageAsynckPost objasync = new TeacherFunCenterImageAsynckPost(o, preferences.getString("STANDARD", ""), preferences.getString("DIVISION", ""), ManualSyncService.this, ManualSyncService.this, "false");
+                    objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                }
+            }
+
+        }
         else {
             Config.alertDialog(Singlton.getContext(),"Network Error","Server Not Responding");
-            //Toast.makeText(this, "Server not responding please wait...", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -351,10 +372,19 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                 }
                                 else if(type.equals("EventImages"))
                                 {
-                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ManualSyncService.this);
-                                    TeacherFunCenterImageModel o = qr. getImageById(id);
-                                    TeacherFunCenterImageAsynckPost objasync = new TeacherFunCenterImageAsynckPost(o,preferences.getString("STANDARD", ""),preferences.getString("DIVISION", ""), ManualSyncService.this, ManualSyncService.this,"false");
-                                    objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+
+                                    if(Singlton.getmCredential()!=null) {
+                                        TeacherFunCenterImageModel o = qr.getImageById(id);
+                                        GoogleDriveUploadClass o1 = new GoogleDriveUploadClass();
+                                        o1.setGdID(Integer.valueOf(o.getImageid()));
+                                        o1.setFilepath(o.getImage());
+                                        o1.setFoldername(Config.FUN_CENTER_FOLDER);
+                                        o1.setGdfilename(o.getFilename());
+                                        o1.setGdtype("EventImages");
+                                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), ManualSyncService.this, o1);
+                                        objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                    }
+
                                 }
                                 else if(type.equals("TimeTable"))
                                 {
@@ -384,7 +414,7 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Config.alertDialog(Singlton.getContext(),"Manual Sync","There is No Data to Sync");
+                    Config.alertDialog(Singlton.getContext(), "Manual Sync", "There is No Data to Sync");
                     //Toast.makeText(Singlton.getContext(), "No Data to Sync", Toast.LENGTH_SHORT).show();
                 }
             });

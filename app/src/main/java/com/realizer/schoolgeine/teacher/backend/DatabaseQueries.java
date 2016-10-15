@@ -1470,6 +1470,7 @@ public class DatabaseQueries {
         conV.put("ImageCaption",imagecaption);
         conV.put("Imguuid", imguuid);
         conV.put("File_Name",filename);
+        conV.put("ShredLink", "NoData");
         conV.put("HasSyncedUp", "false");
 
 
@@ -1503,6 +1504,25 @@ public class DatabaseQueries {
     }
 
     //Update Images
+    public long updateSharedImageLink(TeacherFunCenterImageModel obj)
+    {
+        ContentValues conV = new ContentValues();
+        conV.put("Eventid",obj.getEventId());
+        conV.put("Image",obj.getImage());
+        conV.put("Upload_Date",obj.getUpload_Date());
+        conV.put("AcademicYear",obj.getAcademic_year());
+        conV.put("SrNo",obj.getSrno());
+        conV.put("ImageCaption",obj.getImagecaption());
+        conV.put("Imguuid",obj.getImguuid());
+        conV.put("File_Name",obj.getFilename());
+        conV.put("ShredLink",obj.getSharedlink());
+        conV.put("HasSyncedUp", "false");
+
+        long newRowUpdate = db.update("EventImages", conV, "Image_id=" + obj.getImageid(), null);
+        return newRowUpdate;
+    }
+
+    //Update Images
     public long updateImageSyncFlag(TeacherFunCenterImageModel obj)
     {
         ContentValues conV = new ContentValues();
@@ -1514,6 +1534,7 @@ public class DatabaseQueries {
         conV.put("ImageCaption",obj.getImagecaption());
         conV.put("Imguuid",obj.getImguuid());
         conV.put("File_Name",obj.getFilename());
+        conV.put("ShredLink",obj.getSharedlink());
         conV.put("HasSyncedUp", "true");
 
         long newRowUpdate = db.update("EventImages", conV, "Image_id=" + obj.getImageid(), null);
@@ -1539,6 +1560,7 @@ public class DatabaseQueries {
                     o.setImguuid(c.getString(c.getColumnIndex("Imguuid")));
                     o.setEventuuid(c.getString(c.getColumnIndex("EventUUID")));
                     o.setFilename(c.getString(c.getColumnIndex("File_Name")));
+                    o.setSharedlink(c.getString(c.getColumnIndex("ShredLink")));
                     cnt = cnt+1;
                 }
                 while (c.moveToNext());

@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.Menu;
@@ -17,18 +16,14 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.chat.model.AddedContactModel;
-import com.realizer.schoolgeine.teacher.selectstudentdialog.model.TeacherQuery1model;
 
 import org.json.JSONArray;
 import org.json.JSONException;

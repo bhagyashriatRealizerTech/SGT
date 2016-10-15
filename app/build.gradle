@@ -5,11 +5,12 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.realizer.schoolgeine.teacher"
+        applicationId "com.realizer.schoolgenie.teacher"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -28,4 +29,18 @@ dependencies {
     compile files('libs/gcm.jar')
     compile files('libs/library-1.2.1.jar')
     compile files('libs/picasso-2.5.2.jar')
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'pub.devrel:easypermissions:0.1.5'
+    compile 'com.google.android.gms:play-services-auth:9.0.2'
+
+    compile('com.google.api-client:google-api-client-android:1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    compile('com.google.apis:google-api-services-drive:v2-rev240-1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    dependencies {
+        compile 'com.android.support:multidex:1.0.0'
+    }
+
 }

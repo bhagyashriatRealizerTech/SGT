@@ -106,7 +106,7 @@ public class TeacherFunCenterImageAsynckPost extends AsyncTask<Void, Void,String
             jobj.put("SrNo", obj.getSrno());
             String date = obj.getUpload_Date();
             jobj.put("uploadDate",date);
-            jobj.put("Base64Image",imagebse64);
+            jobj.put("Base64Image",obj.getSharedlink());
             jobj.put("fileName",obj.getFilename());
 
             json = jobj.toString();

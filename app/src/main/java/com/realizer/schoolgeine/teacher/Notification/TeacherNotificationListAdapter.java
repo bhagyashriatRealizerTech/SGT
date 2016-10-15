@@ -1,32 +1,24 @@
 package com.realizer.schoolgeine.teacher.Notification;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.GetImages;
 import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
-import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkListModel;
 import com.realizer.schoolgeine.teacher.view.SwipeLayout;
 import com.realizer.schoolgenie.teacher.R;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 public class TeacherNotificationListAdapter extends BaseAdapter {
 
