@@ -11,7 +11,7 @@ import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
  */
 public class SqliteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SchoolDiaryTeacher";
-    private static final int DATABASE_VERSION =42;
+    private static final int DATABASE_VERSION =43;
     static Context mycontext;
     private static SqliteHelper mInstance = null;
     private static final String STUDINFO ="CREATE TABLE StudInfo(Std TEXT,Div TEXT, StudArr TEXT)";
@@ -28,7 +28,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
     private static final String Homework ="CREATE TABLE Homework(HomeworkId INTEGER PRIMARY KEY   AUTOINCREMENT,Std Text,Div Text,subject TEXT,textlst TEXT,Imglst TEXT,Givenby TEXT,hwDate TEXT,HasSyncedUp TEXT,Work TEXT)";
     private static final String InitiatedChat ="CREATE TABLE InitiatedChat(Id INTEGER,Useranme TEXT,Initiated TEXT,STD TEXT,Div TEXT,Uid TEXT,UnreadCount INTEGER,ThumbnailUrl TEXT)";
     private static final String TIMETABLE ="CREATE TABLE TimeTable(TTId INTEGER PRIMARY KEY   AUTOINCREMENT,Std Text,Div Text,TmTbleName TEXT,Imglst TEXT,Givenby TEXT,TTDate TEXT,HasSyncedUp TEXT,Description TEXT)";
-    private static final String FunCenter ="CREATE TABLE EventMaster(Class TEXT,Div TEXT,Event_Id INTEGER PRIMARY KEY   AUTOINCREMENT,Event TEXT,Date TEXT,Thumbnail TEXT,Create_Date TEXT,HasSyncedUp TEXT,AcademicYear INTEGER,EvntuuId TEXT,FileName TEXT)";
+    private static final String FunCenter ="CREATE TABLE EventMaster(Class TEXT,Div TEXT,Event_Id INTEGER PRIMARY KEY   AUTOINCREMENT,Event TEXT,Date TEXT,Thumbnail TEXT,Create_Date TEXT,HasSyncedUp TEXT,AcademicYear INTEGER,EvntuuId TEXT,FileName TEXT,ShredLink TEXT)";
     private static final String FunCenter1 ="CREATE TABLE EventImages(Image_id INTEGER PRIMARY KEY   AUTOINCREMENT,Eventid INTEGER ,EventUUID TEXT,Image TEXT,Upload_Date  TEXT,Is_Uploaded TEXT,HasSyncedUp TEXT,AcademicYear INTEGER,SrNo INTEGER,ImageCaption TEXT,Imguuid TEXT,File_Name TEXT,ShredLink TEXT)";
     private static final String TEACHERFULLINFO ="CREATE TABLE TeacherFullInfo(ActiveDate TEXT,ClassTeacherOn TEXT,Name TEXT,Qualification TEXT,ThumbnailURL TEXT,UserId TEXT,ContactNo TEXT,DOB TEXT,EmailId TEXT,IsActive TEXT)";
     private static final String Notification ="CREATE TABLE Notification(ID INTEGER PRIMARY KEY   AUTOINCREMENT,NotificationId INTEGER,Type TEXT,Message TEXT,Date TEXT,AdditionalData1 TEXT,AdditionalData2 TEXT,IsRead TEXT)";

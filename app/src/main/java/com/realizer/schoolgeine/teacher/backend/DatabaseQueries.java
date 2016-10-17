@@ -1395,6 +1395,7 @@ public class DatabaseQueries {
         conV.put("AcademicYear",academicyear);
         conV.put("EvntuuId",eventuuid);
         conV.put("FileName",getimag);
+        conV.put("ShredLink","");
         conV.put("HasSyncedUp", "false");
         long newRow = db.insert("EventMaster", null, conV);
 
@@ -1413,7 +1414,29 @@ public class DatabaseQueries {
         conV.put("AcademicYear",obj.getAcademicYear());
         conV.put("EvntuuId",obj.getEventUUID());
         conV.put("FileName",obj.getFilename());
+        conV.put("ShredLink",obj.getSharedlink());
         conV.put("HasSyncedUp", "true");
+
+        long newRowUpdate = db.update("EventMaster", conV, "Event_Id=" + obj.getEventId(), null);
+
+
+        return newRowUpdate;
+    }
+
+    //Update Event
+    public long updateEventSharedLink(TeacherFunCenterEventModel obj) {
+        ContentValues conV = new ContentValues();
+        conV.put("Class", obj.getStd());
+        conV.put("Div",obj.getDiv());
+        conV.put("Event",obj.getEventName());
+        conV.put("Date",obj.getEventDate());
+        conV.put("Thumbnail",obj.getThumbNailImage());
+        conV.put("Create_Date",obj.getEventDate());
+        conV.put("AcademicYear",obj.getAcademicYear());
+        conV.put("EvntuuId",obj.getEventUUID());
+        conV.put("FileName",obj.getFilename());
+        conV.put("ShredLink",obj.getSharedlink());
+        conV.put("HasSyncedUp", "false");
 
         long newRowUpdate = db.update("EventMaster", conV, "Event_Id=" + obj.getEventId(), null);
 
@@ -1442,6 +1465,7 @@ public class DatabaseQueries {
                     o.setEventName(c.getString(c.getColumnIndex("Event")));
                     o.setThumbNailImage(c.getString(c.getColumnIndex("Thumbnail")));
                     o.setFilename(c.getString(c.getColumnIndex("FileName")));
+                    o.setSharedlink(c.getString(c.getColumnIndex("ShredLink")));
                     cnt = cnt+1;
                 }
                 while (c.moveToNext());

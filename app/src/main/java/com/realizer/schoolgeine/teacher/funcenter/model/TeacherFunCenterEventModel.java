@@ -16,6 +16,7 @@ public class TeacherFunCenterEventModel {
     public String ThumbNailImage;
     public String EventUUID;
     public String filename;
+    public String sharedlink;
 
     public String getFilename() {
         return filename;
@@ -95,5 +96,13 @@ public class TeacherFunCenterEventModel {
 
     public void setEventUUID(String eventUUID) {
         EventUUID = eventUUID;
+    }
+
+    public String getSharedlink() {
+        return sharedlink;
+    }
+
+    public void setSharedlink(String sharedlink) {
+        this.sharedlink = sharedlink;
     }
 }

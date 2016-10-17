@@ -283,6 +283,16 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                     objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                 }
             }
+            else if(queueListModel.getType().equalsIgnoreCase("EventMaster")) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ManualSyncService.this);
+                TeacherFunCenterEventModel o = qr.GetEventByID(queueListModel.getId());
+                o.setSharedlink(queueListModel.getTime());
+                //  qr.updateSharedImageLink(o);
+                if(!TextUtils.isEmpty(o.getSharedlink())) {
+                    TeacherFunCenterAsyncTaskPost objasync = new TeacherFunCenterAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
+                    objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                }
+            }
 
         }
         else {
@@ -367,7 +377,13 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                 else if(type.equals("EventMaster"))
                                 {
                                     TeacherFunCenterEventModel o = qr.GetEventByID(id);
-                                    TeacherFunCenterAsyncTaskPost objasync = new TeacherFunCenterAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
+                                    GoogleDriveUploadClass o1 = new GoogleDriveUploadClass();
+                                    o1.setGdID(Integer.valueOf(o.getEventId()));
+                                    o1.setFilepath(o.getThumbNailImage());
+                                    o1.setFoldername(Config.FUN_CENTER_FOLDER);
+                                    o1.setGdfilename(o.getFilename());
+                                    o1.setGdtype("EventMaster");
+                                    GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), ManualSyncService.this, o1);
                                     objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                                 }
                                 else if(type.equals("EventImages"))

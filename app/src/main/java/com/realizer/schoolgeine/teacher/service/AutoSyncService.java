@@ -220,14 +220,13 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                 }
             }
             else if(queueListModel.getType().equalsIgnoreCase("EventMaster")) {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AutoSyncService.this);
                 TeacherFunCenterEventModel o = qr.GetEventByID(queueListModel.getId());
-               // o.setSharedlink(queueListModel.getTime());
-              //  qr.updateSharedImageLink(o);
-               // if(!TextUtils.isEmpty(o.getSharedlink())) {
+                o.setSharedlink(queueListModel.getTime());
+                qr.updateEventSharedLink(o);
+                if(!TextUtils.isEmpty(o.getSharedlink())) {
                     TeacherFunCenterAsyncTaskPost objasync = new TeacherFunCenterAsyncTaskPost(o, AutoSyncService.this, AutoSyncService.this, "false");
                     objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-              //  }
+               }
             }
 
         }
@@ -243,7 +242,6 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
     {
         @Override
         public void run() {
-
             if(isConnectingToInternet())
             {
                 if(Singlton.getManualserviceIntent() == null)
@@ -255,8 +253,6 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
 
     public void Syncdata()
     {
-
-
         ArrayList<QueueListModel> lst = qr.GetQueueData();
         Log.d("TIMER", " " + Calendar.getInstance().getTime() + ": " + lst.size());
         if(lst.size()>0)
@@ -320,8 +316,6 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                     o1.setGdtype("EventMaster");
                     GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
                     objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                    /*TeacherFunCenterAsyncTaskPost objasync = new TeacherFunCenterAsyncTaskPost(o, AutoSyncService.this, AutoSyncService.this, "false");
-                    objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);*/
                 }
                 else if(type.equals("EventImages"))
                 {
