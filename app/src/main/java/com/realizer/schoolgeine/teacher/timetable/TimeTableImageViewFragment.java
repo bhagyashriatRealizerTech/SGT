@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
+import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
@@ -27,8 +28,8 @@ public class TimeTableImageViewFragment extends Fragment implements FragmentBack
     static ActionBar bar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getActivity()));
         View rootView = inflater.inflate(R.layout.timetable_image_view, container, false);
-
         ((DrawerActivity) getActivity()).getSupportActionBar().setTitle(Config.actionBarTitle("Time Table", getActivity()));
         ((DrawerActivity) getActivity()).getSupportActionBar().hide();
 

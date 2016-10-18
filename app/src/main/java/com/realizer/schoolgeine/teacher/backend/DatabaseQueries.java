@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.realizer.schoolgeine.teacher.Notification.NotificationModel;
 import com.realizer.schoolgeine.teacher.chat.model.TeacherQuerySendModel;
+import com.realizer.schoolgeine.teacher.exceptionhandler.model.ExceptionModel;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterEventModel;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterGalleryModel;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterImageModel;
@@ -599,7 +600,7 @@ public class DatabaseQueries {
     //Select By Date
 
     public TeacherAttendanceListModel GetAttendanceByDate(String date) {
-        Cursor c = db.rawQuery("SELECT * FROM Attendance WHERE attendanceDate= '"+date+"' ", null);
+        Cursor c = db.rawQuery("SELECT * FROM Attendance WHERE attendanceDate= '" + date + "' ", null);
         TeacherAttendanceListModel o = new TeacherAttendanceListModel();
         int cnt = 1;
         if (c != null) {
@@ -721,7 +722,7 @@ public class DatabaseQueries {
         conV.put("HasSyncedUp", flag);
         conV.put("sentDate" , sentDate.getTime());
         conV.put("ThumbnailUrl" , thumbnailurl);
-        conV.put("MsgSenderName" , senderName);
+        conV.put("MsgSenderName", senderName);
         long newRowInserted = db.insert("Query", null, conV);
 
         return newRowInserted;
@@ -893,7 +894,7 @@ public class DatabaseQueries {
         conV.put("sentTime", o.getSentTime());
         conV.put("HasSyncedUp", "true");
         conV.put("ThumbnailUrl" , o.getProfileImage());
-        conV.put("MsgSenderName" , o.getMsgSenderName());
+        conV.put("MsgSenderName", o.getMsgSenderName());
         long newRowUpdate = db.update("Query", conV, "QueryId=" + o.getConversationId(), null);
 
 
@@ -1719,14 +1720,14 @@ public class DatabaseQueries {
 
     public void deleteTable()
     {
-        db.delete("StdDivSub",null,null);
-        db.delete("StudInfo",null,null);
-        db.delete("TeacherInfo",null,null);
+        db.delete("StdDivSub", null, null);
+        db.delete("StudInfo", null, null);
+        db.delete("TeacherInfo", null, null);
         //db.delete("Announcement",null,null);
-        db.delete("Attendance",null,null);
+        db.delete("Attendance", null, null);
         //db.delete("SyncUPQueue",null,null);
-        db.delete("Holiday",null,null);
-        db.delete("GiveStar",null,null);
+        db.delete("Holiday", null, null);
+        db.delete("GiveStar", null, null);
         db.delete("InitiatedChat", null, null);
         //db.delete("Query",null,null);
         //db.delete("Homework",null,null);
@@ -1800,10 +1801,10 @@ public class DatabaseQueries {
 
         conV.put("NotificationId", obj.getNotificationId());
         conV.put("Type", obj.getNotificationtype());
-        conV.put("Message",obj.getMessage());
+        conV.put("Message", obj.getMessage());
         conV.put("Date", obj.getNotificationDate());
         conV.put("AdditionalData1", obj.getAdditionalData1());
-        conV.put("AdditionalData2",obj.getAdditionalData2());
+        conV.put("AdditionalData2", obj.getAdditionalData2());
         conV.put("IsRead", obj.isRead());
         long newRow1 = db.insert("Notification", null, conV);
 
@@ -1817,10 +1818,10 @@ public class DatabaseQueries {
         conV.put("ID", obj.getId());
         conV.put("NotificationId", obj.getNotificationId());
         conV.put("Type", obj.getNotificationtype());
-        conV.put("Message",obj.getMessage());
+        conV.put("Message", obj.getMessage());
         conV.put("Date", obj.getNotificationDate());
         conV.put("AdditionalData1", obj.getAdditionalData1());
-        conV.put("AdditionalData2",obj.getAdditionalData2());
+        conV.put("AdditionalData2", obj.getAdditionalData2());
         conV.put("IsRead", obj.isRead());
 
         long newRowUpdate = db.update("Notification", conV, "ID=" + obj.getId(), null);
@@ -1933,6 +1934,95 @@ public class DatabaseQueries {
         c.close();
         //dbClose(db);
         return result;
+    }
+
+
+    //Insert Homework data
+    public long insertException(ExceptionModel obj)
+    {
+        ContentValues conV = new ContentValues();
+        conV.put("UserId", obj.getUserId());
+        conV.put("ExceptionDetails", obj.getExceptionDetails());
+        conV.put("DeviceModel",obj.getDeviceModel());
+        conV.put("AndroidVersion", obj.getAndroidVersion());
+        conV.put("ApplicationSource", obj.getApplicationSource());
+        conV.put("DeviceBrand", obj.getDeviceBrand());
+        conV.put("HasSyncedUp","false");
+        long newRowInserted = db.insert("Exception", null, conV);
+
+        return newRowInserted;
+    }
+
+    public long updateException(ExceptionModel obj)
+    {
+
+        ContentValues conV = new ContentValues();
+        conV.put("ExceptionId", obj.getExceptionID());
+        conV.put("UserId", obj.getUserId());
+        conV.put("ExceptionDetails", obj.getExceptionDetails());
+        conV.put("DeviceModel",obj.getDeviceModel());
+        conV.put("AndroidVersion", obj.getAndroidVersion());
+        conV.put("ApplicationSource", obj.getApplicationSource());
+        conV.put("DeviceBrand", obj.getDeviceBrand());
+        conV.put("HasSyncedUp", "true");
+
+        long newRowUpdate = db.update("Exception", conV, "ExceptionId=" + obj.getExceptionID(), null);
+
+        return newRowUpdate;
+    }
+
+    public ExceptionModel GetException(int ID) {
+
+        Cursor c = db.rawQuery("SELECT * FROM Exception WHERE ExceptionId="+ID+"", null);
+        ExceptionModel result = new ExceptionModel();
+
+        int cnt = 1;
+        if (c != null) {
+            if (c.moveToFirst()) {
+                System.out.print("while moving  - C != null");
+                do {
+                    ExceptionModel obj = new ExceptionModel();
+                    obj.setExceptionID(c.getInt(c.getColumnIndex("ExceptionId")));
+                    obj.setUserId(c.getString(c.getColumnIndex("UserId")));
+                    obj.setExceptionDetails(c.getString(c.getColumnIndex("ExceptionDetails")));
+                    obj.setDeviceModel(c.getString(c.getColumnIndex("DeviceModel")));
+                    obj.setAndroidVersion(c.getString(c.getColumnIndex("AndroidVersion")));
+                    obj.setApplicationSource(c.getString(c.getColumnIndex("ApplicationSource")));
+                    obj.setDeviceBrand(c.getString(c.getColumnIndex("DeviceBrand")));
+                    result = obj;
+
+                    cnt = cnt+1;
+                }
+                while (c.moveToNext());
+            }
+        } else {
+            // mToast("Table Has No contain");
+        }
+        c.close();
+        //dbClose(db);
+        return result;
+    }
+
+    public int getExceptionId() {
+        Cursor c = db.rawQuery("SELECT ExceptionId FROM Exception ORDER BY ExceptionId DESC LIMIT 1;", null);
+        int cnt = 1;
+        int att=0;
+        if (c != null) {
+            if (c.moveToFirst()) {
+                System.out.print("while moving  - C != null");
+                do {
+
+                    att = c.getInt(0);
+                    cnt = cnt+1;
+                }
+                while (c.moveToNext());
+            }
+        } else {
+            // mToast("Table Has No contain");
+        }
+        c.close();
+        //dbClose(db);
+        return att;
     }
 
     public void deleteAllData()

@@ -2,10 +2,19 @@ package com.realizer.schoolgeine.teacher.exceptionhandler;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
+
+import com.realizer.schoolgeine.teacher.DrawerActivity;
+import com.realizer.schoolgeine.teacher.Utils.Config;
+import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
+import com.realizer.schoolgeine.teacher.exceptionhandler.model.ExceptionModel;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class ExceptionHandler implements
 		Thread.UncaughtExceptionHandler {
@@ -50,10 +59,30 @@ public class ExceptionHandler implements
 		errorReport.append(Build.VERSION.INCREMENTAL);
 		errorReport.append(LINE_SEPARATOR);
 
-		Intent intent = new Intent(myContext, AnotherActivity.class);
-		intent.putExtra("error", errorReport.toString());
-		myContext.startActivity(intent);
+		DatabaseQueries qr = new DatabaseQueries(myContext);
+		SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(myContext);
+		ExceptionModel obj = new ExceptionModel();
+		obj.setUserId(sharedpreferences.getString("UidName",""));
+		obj.setExceptionDetails(stackTrace.toString());
+		obj.setDeviceModel(Build.MODEL);
+		obj.setAndroidVersion(Build.VERSION.SDK);
+		obj.setApplicationSource("Teacher");
+		obj.setDeviceBrand(Build.BRAND);
 
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy kk:mm:ss");
+		String date = df.format(Calendar.getInstance().getTime());
+
+		long n = qr.insertException(obj);
+		if(n>0)
+		{
+			n =0;
+			n = qr.insertQueue(qr.getExceptionId(),"Exception","1",date);
+		}
+
+
+		Intent i = new Intent(myContext,AnotherActivity.class);
+		i.putExtra("error", errorReport.toString());
+		myContext.startActivity(i);
 		android.os.Process.killProcess(android.os.Process.myPid());
 		System.exit(10);
 	}

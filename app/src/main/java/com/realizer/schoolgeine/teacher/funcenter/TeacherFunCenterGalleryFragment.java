@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
 import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
+import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
@@ -50,7 +51,7 @@ public class TeacherFunCenterGalleryFragment extends Fragment implements Fragmen
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getActivity()));
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getActivity()));
         final View rootView = inflater.inflate(R.layout.showimage_gallery_fragment, container, false);
         setHasOptionsMenu(true);
         gridView= (GridView) rootView.findViewById(R.id.gallerygridView);

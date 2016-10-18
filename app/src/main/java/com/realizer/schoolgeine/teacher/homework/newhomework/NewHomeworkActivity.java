@@ -29,6 +29,7 @@ import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
+import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.homework.TeacherHomeworkFragment;
 import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
 import com.realizer.schoolgeine.teacher.homework.newhomework.adapter.NewHomeworkGalleryAdapter;
@@ -66,7 +67,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getActivity()));
         final View rootView = inflater.inflate(R.layout.new_homework_layout, container, false);
         setHasOptionsMenu(true);
         Singlton.setFialbitmaplist(new ArrayList<TeacherHomeworkModel>());

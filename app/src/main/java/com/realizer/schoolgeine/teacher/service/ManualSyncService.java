@@ -24,6 +24,8 @@ import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.chat.asynctask.TeacherQueryAsyncTaskPost;
 import com.realizer.schoolgeine.teacher.chat.model.TeacherQuerySendModel;
+import com.realizer.schoolgeine.teacher.exceptionhandler.asynctask.ExceptionAsyncTaskPost;
+import com.realizer.schoolgeine.teacher.exceptionhandler.model.ExceptionModel;
 import com.realizer.schoolgeine.teacher.funcenter.asynctask.GoogleDriveImageUploadAsyncTask;
 import com.realizer.schoolgeine.teacher.funcenter.asynctask.TeacherFunCenterAsyncTaskPost;
 import com.realizer.schoolgeine.teacher.funcenter.asynctask.TeacherFunCenterImageAsynckPost;
@@ -180,6 +182,14 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                         if(Singlton.getResultReceiver() != null)
                             Singlton.getResultReceiver().send(1,null);
                     }
+                }
+            }
+            else if(queueListModel.getType().equalsIgnoreCase("Exception"))
+            {
+                long n = qr.deleteQueueRow(queueListModel.getId(),queueListModel.getType());
+                if(n>=0) {
+                    ExceptionModel obj = qr.GetException(queueListModel.getId());
+                    n = qr.updateException(obj);
                 }
             }
             runOnUiThread(new Runnable() {
@@ -442,6 +452,13 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                     TeacherTimeTableAsyncTask obj = new TeacherTimeTableAsyncTask(o, ManualSyncService.this, ManualSyncService.this, "false");
                                     obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                                 }
+                                else if(type.equals("Exception"))
+                                {
+                                    ExceptionModel o = qr.GetException(id);
+                                    ExceptionAsyncTaskPost obj = new ExceptionAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this);
+                                    obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                }
+
 
                             }
 

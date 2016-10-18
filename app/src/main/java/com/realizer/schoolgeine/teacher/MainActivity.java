@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 
+import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
+
 /**
  * Created by Win on 1/15/2016.
  */
@@ -15,6 +17,7 @@ public class MainActivity extends Activity {
     private boolean isBackPressed = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(MainActivity.this));
         super.onCreate(savedInstanceState);
         SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String getValueBack = sharedpreferences.getString("Login", "");

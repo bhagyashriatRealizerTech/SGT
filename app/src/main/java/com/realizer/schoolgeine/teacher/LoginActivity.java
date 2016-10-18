@@ -377,8 +377,12 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
                 {
 
                 }
-                boolean b = parsData(queueListModel.getTime());
-                if (b == true) {
+                boolean b = false;
+                if(queueListModel.getTime().equalsIgnoreCase("true"))
+                    b= true;
+
+
+                if (b) {
                     loading.setVisibility(View.GONE);
                     GCMReg();
                     SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
@@ -440,7 +444,8 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
 
             }
         }
-        else{
+        else
+        {
         boolean b = false;
         final SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -483,8 +488,9 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if(mWord.trim().length()>0 && !mWord.equalsIgnoreCase("null")) {
-                if (b == true) {
+            if (b == true) {
+                if (mWord.trim().length() > 0 && !mWord.equalsIgnoreCase("null")) {
+                    // if (b == true) {
 
                     loading.setVisibility(View.GONE);
                     GCMReg();
@@ -516,38 +522,45 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
 */
                 } else {
                     loading.setVisibility(View.GONE);
-                    if (num == 0)
-                        Config.alertDialog(LoginActivity.this, "Login", "Invalid credentials, Please Try Again");
-                        //Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
-                    else if (num == 1)
-                        Config.alertDialog(LoginActivity.this, "Network Error", "Server Not Responding Please Try After Some Time");
-                        //Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                    recoverPasswordByMagicWord("FirstLogin", b, s);
                 }
             }
-            else
-            {
+            else {
                 loading.setVisibility(View.GONE);
-                recoverPasswordByMagicWord("FirstLogin", b, s);
+                if (num == 0)
+                    Config.alertDialog(LoginActivity.this, "Login", "Invalid credentials, Please Try Again");
+                    //Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+                else if (num == 1)
+                    Config.alertDialog(LoginActivity.this, "Network Error", "Server Not Responding Please Try After Some Time");
+                //Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
             }
+
+
+
         } else {
             loading.setVisibility(View.GONE);
             String Schoolcode = null;
-            if(mWord.trim().length()>0 && !mWord.equalsIgnoreCase("null")) {
-                try {
+            try {
 
-                    if (validate.equalsIgnoreCase("valid")) {
-                        num =0;
-                        Schoolcode = rootObj.getString("SchoolCode");
-                        if(Schoolcode.length()==0 || Schoolcode.equalsIgnoreCase("null"))
-                            num =1;
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (validate.equalsIgnoreCase("valid")) {
+                    num = 0;
+                    Schoolcode = rootObj.getString("SchoolCode");
+                    if (Schoolcode.length() == 0 || Schoolcode.equalsIgnoreCase("null"))
+                        num = 1;
                 }
 
-                 b = parsData(s);
-                if (b == true) {
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if(num==0)
+            b = parsData(s);
+            else
+            b= false;
+
+            if (b) {
+            if (mWord.trim().length() > 0 && !mWord.equalsIgnoreCase("null")) {
+
+               // if (b == true) {
                     GCMReg();
                     edit.putString("Login", "true");
                     edit.commit();
@@ -560,17 +573,35 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
                     Intent i = new Intent(LoginActivity.this, DrawerActivity.class);
                     startActivity(i);*/
 
-                } else {
+               /* } else {
                     if (num == 0)
                         Config.alertDialog(LoginActivity.this, "Login", "Invalid credentials, Please Try Again");
                         //Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
                     else if (num == 1)
                         Config.alertDialog(LoginActivity.this, "Network Error", "Server Not Responding Please Try After Some Time");
-                        //Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
-                }
+                    //Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                }*/
+            } else {
+               // if (b)
+                    recoverPasswordByMagicWord("FirstLogin", b, s);
+               /* else {
+                    if (num == 0)
+                        Config.alertDialog(LoginActivity.this, "Login", "Invalid credentials, Please Try Again");
+                        //Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+                    else if (num == 1)
+                        Config.alertDialog(LoginActivity.this, "Network Error", "Server Not Responding Please Try After Some Time");
+                    //Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+                }*/
             }
-            else
-            recoverPasswordByMagicWord("FirstLogin", b, s);
+        }
+            else {
+                if (num == 0)
+                    Config.alertDialog(LoginActivity.this, "Login", "Invalid credentials, Please Try Again");
+                    //Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
+                else if (num == 1)
+                    Config.alertDialog(LoginActivity.this, "Network Error", "Server Not Responding Please Try After Some Time");
+                //Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
+            }
         }
     }
     }
@@ -896,7 +927,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
     }
 
 
-    public void recoverPasswordByMagicWord(final String from, boolean b1,final String s)
+    public void recoverPasswordByMagicWord(final String from, final boolean b1,final String s)
     {
         final Typeface face= Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/font.ttf");
 
@@ -934,7 +965,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
                 if (from.equalsIgnoreCase("FirstLogin")) {
                     if(userId.length()>0 && wordMagic.length()>0)
 
-                    new SetMagicWordAsyncTaskGet(userId,wordMagic,s,LoginActivity.this,LoginActivity.this).execute();
+                    new SetMagicWordAsyncTaskGet(userId,wordMagic,String.valueOf(b1),LoginActivity.this,LoginActivity.this).execute();
                 }
                 else
                 {
@@ -1174,6 +1205,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
                             data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
                         Singlton.setmCredential(mCredential);
+                        mCredential.setSelectedAccountName(accountName);
                         getResultsFromApi();
                     }
                 }

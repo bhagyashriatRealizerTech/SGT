@@ -21,6 +21,8 @@ import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.chat.asynctask.TeacherQueryAsyncTaskPost;
 import com.realizer.schoolgeine.teacher.chat.model.TeacherQuerySendModel;
+import com.realizer.schoolgeine.teacher.exceptionhandler.asynctask.ExceptionAsyncTaskPost;
+import com.realizer.schoolgeine.teacher.exceptionhandler.model.ExceptionModel;
 import com.realizer.schoolgeine.teacher.funcenter.asynctask.GoogleDriveImageUploadAsyncTask;
 import com.realizer.schoolgeine.teacher.funcenter.asynctask.TeacherFunCenterAsyncTaskPost;
 import com.realizer.schoolgeine.teacher.funcenter.asynctask.TeacherFunCenterImageAsynckPost;
@@ -163,6 +165,14 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                                 timeTableObj.getDivision());
                         n = qr.InsertNotification(obj);
                     }
+                }
+            }
+            else if(queueListModel.getType().equalsIgnoreCase("Exception"))
+            {
+                long n = qr.deleteQueueRow(queueListModel.getId(),queueListModel.getType());
+                if(n>=0) {
+                    ExceptionModel obj = qr.GetException(queueListModel.getId());
+                    n = qr.updateException(obj);
                 }
             }
 
@@ -370,6 +380,12 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                 {
                     TeacherTimeTableExamListModel o = qr.GetTimeTable(id);
                     TeacherTimeTableAsyncTask obj = new TeacherTimeTableAsyncTask(o, AutoSyncService.this, AutoSyncService.this, "false");
+                    obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                }
+                else if(type.equals("Exception"))
+                {
+                    ExceptionModel o = qr.GetException(id);
+                    ExceptionAsyncTaskPost obj = new ExceptionAsyncTaskPost(o, AutoSyncService.this, AutoSyncService.this);
                     obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                 }
 

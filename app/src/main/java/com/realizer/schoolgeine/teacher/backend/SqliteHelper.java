@@ -11,7 +11,7 @@ import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
  */
 public class SqliteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SchoolDiaryTeacher";
-    private static final int DATABASE_VERSION =44;
+    private static final int DATABASE_VERSION =45;
     static Context mycontext;
     private static SqliteHelper mInstance = null;
     private static final String STUDINFO ="CREATE TABLE StudInfo(Std TEXT,Div TEXT, StudArr TEXT)";
@@ -32,6 +32,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
     private static final String FunCenter1 ="CREATE TABLE EventImages(Image_id INTEGER PRIMARY KEY   AUTOINCREMENT,Eventid INTEGER ,EventUUID TEXT,Image TEXT,Upload_Date  TEXT,Is_Uploaded TEXT,HasSyncedUp TEXT,AcademicYear INTEGER,SrNo INTEGER,ImageCaption TEXT,Imguuid TEXT,File_Name TEXT,ShredLink TEXT)";
     private static final String TEACHERFULLINFO ="CREATE TABLE TeacherFullInfo(ActiveDate TEXT,ClassTeacherOn TEXT,Name TEXT,Qualification TEXT,ThumbnailURL TEXT,UserId TEXT,ContactNo TEXT,DOB TEXT,EmailId TEXT,IsActive TEXT)";
     private static final String Notification ="CREATE TABLE Notification(ID INTEGER PRIMARY KEY   AUTOINCREMENT,NotificationId INTEGER,Type TEXT,Message TEXT,Date TEXT,AdditionalData1 TEXT,AdditionalData2 TEXT,IsRead TEXT)";
+    private static final String ExceptionHandler = "CREATE TABLE Exception(ExceptionId INTEGER PRIMARY KEY   AUTOINCREMENT,UserId TEXT,ExceptionDetails TEXT,DeviceModel TEXT,AndroidVersion TEXT,ApplicationSource TEXT,DeviceBrand TEXT,HasSyncedUp TEXT)";
 
     private SqliteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -73,6 +74,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         db.execSQL(TIMETABLE);
         db.execSQL(TEACHERFULLINFO);
         db.execSQL(Notification);
+        db.execSQL(ExceptionHandler);
     }
 
     @Override
@@ -97,6 +99,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE if exists " + "TimeTable");
         db.execSQL("DROP TABLE if exists " + "TeacherFullInfo");
         db.execSQL("DROP TABLE if exists " + "Notification");
+        db.execSQL("DROP TABLE if exists " + "Exception");
         onCreate(db);
     }
 }

@@ -134,7 +134,7 @@ public final class ServerUtilities {
         SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(ctx);
         String did = sharedpreferences.getString("DeviceId", "");
 
-       String my = "http://104.217.254.180/SJRestWCF/svcEmp.svc/RegisterTeacherDevice/" + EmpId + "/"+did+"/" + regID;
+       String my = Config.URL+"RegisterTeacherDevice/" + EmpId + "/"+did+"/" + regID;
 
        // String my = "http://192.168.1.14/SJRestWCF/svcEmp.svc/registerDevice/" + EmpId + "/" + regID;
         Log.d("MYU", my);

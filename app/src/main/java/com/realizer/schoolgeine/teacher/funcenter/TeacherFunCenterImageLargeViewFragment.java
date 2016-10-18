@@ -47,7 +47,7 @@ public class TeacherFunCenterImageLargeViewFragment extends FragmentActivity imp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(TeacherFunCenterImageLargeViewFragment.this));
         Bundle b = getIntent().getExtras();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String path = preferences.getString("Image","");

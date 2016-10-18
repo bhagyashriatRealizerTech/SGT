@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
+import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.AlphabetListAdapter;
 import com.realizer.schoolgeine.teacher.Utils.Config;
@@ -167,8 +168,8 @@ public class TeacherMyClassAttenadanceActivity extends AppCompatActivity impleme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(TeacherMyClassAttenadanceActivity.this));
         setContentView(R.layout.list_alphabet);
-
         //In select contact screen, there should be cross icon instead of back icon.
        // getSupportActionBar().setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_action_cancel));
         getSupportActionBar().setTitle(Config.actionBarTitle("Attendance", TeacherMyClassAttenadanceActivity.this));

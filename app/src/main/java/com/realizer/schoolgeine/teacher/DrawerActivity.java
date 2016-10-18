@@ -43,6 +43,7 @@ import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.chat.TeacherQueryFragment1;
+import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.funcenter.TeacherFunCenterFolderFragment;
 import com.realizer.schoolgeine.teacher.generalcommunication.TeacherGeneralCommunicationFragment;
 import com.realizer.schoolgeine.teacher.holiday.TeacherPublicHolidayFragment;
@@ -104,6 +105,7 @@ public class DrawerActivity extends AppCompatActivity
     private Uri fileUri; // file url to store image/video
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(DrawerActivity.this));
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
         setContentView(R.layout.activity_drawer);

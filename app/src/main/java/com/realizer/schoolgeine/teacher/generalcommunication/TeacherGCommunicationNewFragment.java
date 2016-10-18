@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
+import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
@@ -56,7 +57,7 @@ public class TeacherGCommunicationNewFragment extends Fragment implements OnTask
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getActivity()));
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getActivity()));
         View rootView = inflater.inflate(R.layout.teacher_newgcommunication_layout, container, false);
 
        // getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE| WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
