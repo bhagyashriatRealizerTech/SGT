@@ -33,13 +33,13 @@ import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
+import com.realizer.schoolgeine.teacher.homework.newhomework.NewHomeworkActivity;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
-import com.realizer.schoolgeine.teacher.homework.TeacherHomeworkNewFragment;
 import com.realizer.schoolgeine.teacher.myclass.TeacherMyClassDialogBoxActivity;
 import com.realizer.schoolgeine.teacher.queue.QueueListModel;
 import com.realizer.schoolgeine.teacher.timetable.model.TeacherTimeTableExamListModel;
@@ -60,7 +60,7 @@ import java.util.Locale;
 public class TeacherTimeTableNewFragment extends Fragment implements View.OnClickListener,OnTaskCompleted , FragmentBackPressedListener {
 
     // LogCat tag
-    private static final String TAG = TeacherHomeworkNewFragment.class.getSimpleName();
+    private static final String TAG = NewHomeworkActivity.class.getSimpleName();
 
     // Camera activity request codes
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;

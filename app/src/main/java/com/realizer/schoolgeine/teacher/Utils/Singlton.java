@@ -8,6 +8,7 @@ import android.os.ResultReceiver;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.realizer.schoolgeine.teacher.chat.model.AddedContactModel;
+import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class Singlton {
     public static ProgressWheel messageCenter = null;
     public static GoogleAccountCredential mCredential = null;
     public static Activity activity= null;
+
+    public static ArrayList<String> imageList = new ArrayList<>();
+    public  static ArrayList<TeacherHomeworkModel> fialbitmaplist = new ArrayList<>();
 
     private Singlton()
     {
@@ -148,6 +152,23 @@ public class Singlton {
 
     public static void setActivity(Activity activity) {
         Singlton.activity = activity;
+    }
+
+
+    public static ArrayList<String> getImageList() {
+        return imageList;
+    }
+
+    public static void setImageList(ArrayList<String> imageList) {
+        Singlton.imageList = imageList;
+    }
+
+    public static ArrayList<TeacherHomeworkModel> getFialbitmaplist() {
+        return fialbitmaplist;
+    }
+
+    public static void setFialbitmaplist(ArrayList<TeacherHomeworkModel> fialbitmaplist) {
+        Singlton.fialbitmaplist = fialbitmaplist;
     }
 }
 

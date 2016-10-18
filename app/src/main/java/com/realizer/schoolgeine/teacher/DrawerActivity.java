@@ -47,7 +47,6 @@ import com.realizer.schoolgeine.teacher.funcenter.TeacherFunCenterFolderFragment
 import com.realizer.schoolgeine.teacher.generalcommunication.TeacherGeneralCommunicationFragment;
 import com.realizer.schoolgeine.teacher.holiday.TeacherPublicHolidayFragment;
 import com.realizer.schoolgeine.teacher.homework.TeacherHomeworkFragment;
-import com.realizer.schoolgeine.teacher.homework.TeacherHomeworkNewFragment;
 import com.realizer.schoolgeine.teacher.myclass.TeacherMyClassStudentFragment;
 import com.realizer.schoolgeine.teacher.service.AutoSyncService;
 import com.realizer.schoolgeine.teacher.service.ManualSyncService;
@@ -73,7 +72,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = TeacherHomeworkNewFragment.class.getSimpleName();
+    private static final String TAG = TeacherHomeworkFragment.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;

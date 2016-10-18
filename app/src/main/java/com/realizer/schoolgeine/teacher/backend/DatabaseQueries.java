@@ -1102,7 +1102,7 @@ public class DatabaseQueries {
     }
 
 //Insert Homework data
-    public long insertHomework(String givenby,String subject,String hdate,String txtlst,String imglst,String std,String div,String work)
+    public long insertHomework(String givenby,String subject,String hdate,String txtlst,String imglst,String std,String div,String work,String msguuid)
     {
 
         ContentValues conV = new ContentValues();
@@ -1115,6 +1115,7 @@ public class DatabaseQueries {
         conV.put("hwDate", hdate);
         conV.put("HasSyncedUp","false");
         conV.put("Work", work);
+        conV.put("ShredLink", "");
         long newRowInserted = db.insert("Homework", null, conV);
 
         return newRowInserted;
@@ -1164,6 +1165,7 @@ public class DatabaseQueries {
                     o.setGivenBy(c.getString(c.getColumnIndex("Givenby")));
                     o.setHwDate(c.getString(c.getColumnIndex("hwDate")));
                     o.setWork(c.getString(c.getColumnIndex("Work")));
+                    o.setSharedLink(c.getString(c.getColumnIndex("ShredLink")));
                     cnt = cnt+1;
 
                 }
@@ -1204,6 +1206,7 @@ public class DatabaseQueries {
                     o.setHwDate(c.getString(c.getColumnIndex("hwDate")));
                     o.setWork(c.getString(c.getColumnIndex("Work")));
                     o.setIsSync(c.getString(c.getColumnIndex("HasSyncedUp")));
+                    o.setSharedLink(c.getString(c.getColumnIndex("ShredLink")));
                     result.add(o);
                     cnt = cnt+1;
                 }
@@ -1230,6 +1233,27 @@ public class DatabaseQueries {
         conV.put("hwDate", o.getHwDate());
         conV.put("HasSyncedUp","true");
         conV.put("Work", o.getWork());
+        conV.put("ShredLink", o.getSharedLink());
+
+        long newRowUpdate = db.update("Homework", conV, "HomeworkId=" + o.getHid(), null);
+
+        return newRowUpdate;
+    }
+
+    public long updateHomeworkSharedLink(TeacherHomeworkModel o)
+    {
+
+        ContentValues conV = new ContentValues();
+        conV.put("Std", o.getStd());
+        conV.put("Div", o.getDiv());
+        conV.put("subject", o.getSubject());
+        conV.put("textlst", o.getHwTxtLst());
+        conV.put("Imglst", o.getHwImage64Lst());
+        conV.put("Givenby", o.getGivenBy());
+        conV.put("hwDate", o.getHwDate());
+        conV.put("HasSyncedUp","true");
+        conV.put("Work", o.getWork());
+        conV.put("ShredLink", o.getSharedLink());
 
         long newRowUpdate = db.update("Homework", conV, "HomeworkId=" + o.getHid(), null);
 

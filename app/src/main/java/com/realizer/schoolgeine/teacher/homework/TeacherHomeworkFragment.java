@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
+import com.realizer.schoolgeine.teacher.homework.newhomework.NewHomeworkActivity;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
@@ -162,7 +163,7 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
                 Bundle b = getArguments();
                 String htext = b.getString("HEADERTEXT");
 
-                TeacherHomeworkNewFragment fragment = new TeacherHomeworkNewFragment();
+                NewHomeworkActivity fragment = new NewHomeworkActivity();
                 Singlton.setSelectedFragment(fragment);
                 Bundle bundle = new Bundle();
                 bundle.putString("HEADERTEXT",htext);
@@ -191,22 +192,20 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
             hDetail.setSubject(obj.getSubject());
             hDetail.setGivenBy(obj.getGivenBy());
             hDetail.setHasSync(obj.getIsSync());
-            try {
 
                 if(obj.getHwTxtLst().length()==0)
                     hDetail.setHomework("NoText");
                 else
             hDetail.setHomework(obj.getHwTxtLst());
 
-                JSONArray jarr1 = new JSONArray(obj.getHwImage64Lst());
-            if(jarr1.length()==0)
+
+            if(obj.getHwImage64Lst().length()==0)
             hDetail.setImage("NoImage");
-            else
-            hDetail.setImage(obj.getHwImage64Lst());
-            results.add(hDetail);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            else {
+                hDetail.setImage(obj.getHwImage64Lst());
             }
+            results.add(hDetail);
+
         }
 
         return results;

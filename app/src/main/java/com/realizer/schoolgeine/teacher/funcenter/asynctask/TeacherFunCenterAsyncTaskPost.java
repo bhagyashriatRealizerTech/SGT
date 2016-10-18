@@ -98,7 +98,7 @@ public class TeacherFunCenterAsyncTaskPost extends AsyncTask<Void, Void,StringBu
             jobj.put("EventName",obj.getEventName());
             String date = obj.getEventDate();
             jobj.put("EventDate",date);
-            jobj.put("ThumbNailImage",imagebse64);
+            jobj.put("ThumbNailImage",obj.getSharedlink());
             jobj.put("fileName",obj.getFilename());
 
            json = jobj.toString();

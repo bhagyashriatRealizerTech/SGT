@@ -284,13 +284,36 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                 }
             }
             else if(queueListModel.getType().equalsIgnoreCase("EventMaster")) {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ManualSyncService.this);
                 TeacherFunCenterEventModel o = qr.GetEventByID(queueListModel.getId());
                 o.setSharedlink(queueListModel.getTime());
-                //  qr.updateSharedImageLink(o);
+
+                qr.updateEventSharedLink(o);
                 if(!TextUtils.isEmpty(o.getSharedlink())) {
                     TeacherFunCenterAsyncTaskPost objasync = new TeacherFunCenterAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
                     objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                }
+            }
+            else if(queueListModel.getType().equalsIgnoreCase("Homework")) {
+                TeacherHomeworkModel o = qr.GetHomework(queueListModel.getId());
+                o.setSharedLink(queueListModel.getTime());
+
+                qr.updateHomeworkSharedLink(o);
+                if(!TextUtils.isEmpty(o.getSharedLink())) {
+
+                        TeacherHomeworkAsyncTaskPost obj = new TeacherHomeworkAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
+                        obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+
+                }
+            }
+            else if(queueListModel.getType().equalsIgnoreCase("Classwork")) {
+                TeacherHomeworkModel o = qr.GetHomework(queueListModel.getId());
+                o.setSharedLink(queueListModel.getTime());
+
+                qr.updateHomeworkSharedLink(o);
+                if(!TextUtils.isEmpty(o.getSharedLink())) {
+
+                    TeacherClassworkAsyncTaskPost obj = new TeacherClassworkAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
+                    obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                 }
             }
 
@@ -341,7 +364,18 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                 else if(type.equals("Homework"))
                                 {
 
-                                    TeacherHomeworkModel o = qr.GetHomework(id);
+                                    if(Singlton.getmCredential()!=null) {
+                                        TeacherHomeworkModel o = qr.GetHomework(id);
+                                        GoogleDriveUploadClass o1 = new GoogleDriveUploadClass();
+                                        o1.setGdID(Integer.valueOf(o.getHid()));
+                                        o1.setFilepath(o.getHwImage64Lst());
+                                        o1.setFoldername(Config.FUN_CENTER_FOLDER);
+                                        o1.setGdfilename(o.getHwImage64Lst());
+                                        o1.setGdtype(o.getWork());
+                                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), ManualSyncService.this, o1);
+                                        objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                    }
+                                   /* TeacherHomeworkModel o = qr.GetHomework(id);
                                     if(o.getWork().equalsIgnoreCase("Homework")) {
                                         TeacherHomeworkAsyncTaskPost obj = new TeacherHomeworkAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
                                         obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -350,7 +384,7 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                     {
                                         TeacherClassworkAsyncTaskPost obj = new TeacherClassworkAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
                                         obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                                    }
+                                    }*/
                                 }
                                 else if(type.equals("GiveStar"))
                                 {

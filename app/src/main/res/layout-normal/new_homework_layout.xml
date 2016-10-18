@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:id="@+id/inlayout"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                >
+                <TextView style="@style/TextViewFontStyle"
+                    android:textColor="@color/black"
+                    android:id="@+id/headingstd"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textSize="22sp"
+                    android:text="Standard :"/>
+                <TextView style="@style/TextViewFontStyle"
+                    android:id="@+id/txtstdname"
+                    android:textColor="@color/black"
+                    android:gravity="left"
+                    android:textStyle="normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textSize="22sp"
+                    android:text="Playgroup"
+                    android:layout_marginLeft="5dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/headingstd" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView style="@style/TextViewFontStyle"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textSize="22sp"
+                    android:text="Div :"
+                    android:layout_toLeftOf="@+id/txttdivname"
+                    android:layout_toStartOf="@+id/txttdivname" />
+                <TextView style="@style/TextViewFontStyle"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/txttdivname"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textStyle="normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textSize="22sp"
+                    android:text="Buntings"/>
+            </RelativeLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/border_line"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+            android:background="#ffffff"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinnersub"
+                android:drawSelectorOnTop="true"
+                style="@style/FinalSpinner"
+                android:layout_width="150dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="45dp"
+                android:fontFamily="sans-serif-condensed"
+                />
+            <Spinner
+                android:id="@+id/spinnerdate"
+                android:drawSelectorOnTop="true"
+                style="@style/FinalSpinner"
+                android:layout_width="150dp"
+                android:layout_weight="1"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="0dp"
+                android:layout_height="50dp"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="45dp"
+                android:fontFamily="sans-serif-condensed"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/gallerygridView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:columnWidth="100dip"
+        android:gravity="center"
+        android:horizontalSpacing="4dip"
+        android:numColumns="3"
+        android:visibility="gone"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="13dp"
+        android:stretchMode="columnWidth"
+        android:layout_below="@+id/inlayout"
+        android:layout_above="@+id/ll_compose_layout"
+        android:verticalSpacing="2dip" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:id="@+id/addimage"
+        android:src="@drawable/noicon"
+        android:visibility="visible"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/inlayout"
+        android:layout_above="@+id/ll_compose_layout"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/ll_compose_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/edtmsgtxt"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:hint="Enter Homework Text"
+            android:textColorHint="@color/darkgreycolor"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:background="@drawable/rounded_rectangle_shape"
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

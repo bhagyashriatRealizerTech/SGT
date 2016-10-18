@@ -1,3 +1,4 @@
+/*
 package com.realizer.schoolgeine.teacher.homework;
 
 import android.app.AlertDialog;
@@ -61,9 +62,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by Win on 11/23/2015.
- */
+
+
 public class TeacherHomeworkNewFragment extends Fragment implements View.OnClickListener ,OnTaskCompleted, FragmentBackPressedListener {
 
     // LogCat tag
@@ -130,9 +130,8 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
 
         txtstd.setText(preferences.getString("STANDARD", ""));
         txtclss.setText(preferences.getString("DIVISION", ""));
-        /**
-         * Capture image button click event
-         */
+
+
 
        FillSubjectTypes();
         FillDates();
@@ -189,17 +188,17 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
     {
         if(txtstd.getText().toString().isEmpty() )
         {
-            Config.alertDialog(Singlton.getContext(), "New Homework", "Please Select Standard");
+            Config.alertDialog(Singlton.getContext(), "New "+htext, "Please Select Standard");
            // Toast.makeText(getActivity(), "Please Select Standard", Toast.LENGTH_SHORT).show();
         }
         else if(txtclss.getText().toString().isEmpty())
         {
-            Config.alertDialog(Singlton.getContext(), "New Homework", "Please Select Division");
+            Config.alertDialog(Singlton.getContext(), "New "+htext, "Please Select Division");
            // Toast.makeText(getActivity(), "Please Select Division", Toast.LENGTH_SHORT).show();
         }
         else if( spinnersub.getSelectedItem().toString().isEmpty())
         {
-            Config.alertDialog(Singlton.getContext(), "New Homework", "Please Select Subject");
+            Config.alertDialog(Singlton.getContext(), "New "+htext, "Please Select Subject");
            // Toast.makeText(getActivity(), "Please Select Subject", Toast.LENGTH_SHORT).show();
         }
         else if( spinnerdate.getSelectedItem().toString().isEmpty())
@@ -246,7 +245,7 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
                 if (n > 0) {
                     // Toast.makeText(getActivity(), "Queue Inserted Successfully", Toast.LENGTH_SHORT).show();
                     n = -1;
-                    /*if (isConnectingToInternet()) {
+if (isConnectingToInternet()) {
                         TeacherHomeworkModel o = qr.GetHomework(hid);
                         if (o.getWork().equalsIgnoreCase("Homework")) {
                             TeacherHomeworkAsyncTaskPost obj = new TeacherHomeworkAsyncTaskPost(o, getActivity(), TeacherHomeworkNewFragment.this, "true");
@@ -255,7 +254,8 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
                             TeacherClassworkAsyncTaskPost obj = new TeacherClassworkAsyncTaskPost(o, getActivity(), TeacherHomeworkNewFragment.this, "true");
                             obj.execute();
                         }
-                    } else {*/
+                    } else {
+
                         TeacherHomeworkFragment fragment = new TeacherHomeworkFragment();
                         Singlton.setMainFragment(fragment);
                         Singlton.setSelectedFragment(fragment);
@@ -321,9 +321,10 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
         return Test;
     }
 
-    /**
+*
      * Checking device has camera hardware or not
-     */
+
+
     private boolean isDeviceSupportCamera() {
         if (getActivity().getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_CAMERA)) {
@@ -339,7 +340,8 @@ public class TeacherHomeworkNewFragment extends Fragment implements View.OnClick
 
 public void getOption() {
     Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT, null);
-    galleryIntent.setType("image/*");
+    galleryIntent.setType("image
+");
     galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
     galleryIntent.setAction(Intent.ACTION_GET_CONTENT);//
     //startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"),'a' );
@@ -360,9 +362,10 @@ public void getOption() {
     chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
     startActivityForResult(chooser, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
 }
-    /**
+*
      * Launching camera app to capture image
-     */
+
+
     private void captureImage() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -374,10 +377,11 @@ public void getOption() {
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
 
-    /**
+*
      * Here we store the file url as it will be null after returning from camera
      * app
-     */
+
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -429,16 +433,18 @@ public void getOption() {
             } else if (resultCode == getActivity().RESULT_CANCELED) {
 
                 // user cancelled Image capture
-              /*  Toast.makeText(getActivity(),
+  Toast.makeText(getActivity(),
                         "User cancelled image capture", Toast.LENGTH_SHORT)
-                        .show();*/
+                        .show();
+
 
             } else {
                 // failed to capture image
                 Config.alertDialog(Singlton.getContext(), "Camera", "Sorry, Failed to Capture Image");
-             /*   Toast.makeText(getActivity(),
+   Toast.makeText(getActivity(),
                         "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();*/
+                        .show();
+
             }
 
         }
@@ -617,21 +623,24 @@ public void getOption() {
 
 
 
-    /**
+*
      * ------------ Helper Methods ----------------------
-     * */
+     *
 
-    /**
+
+*
      * Creating file uri to store image/video
-     */
+
+
     public Uri getOutputMediaFileUri(int type) {
 
         return Uri.fromFile(getOutputMediaFile(type));
     }
 
-    /**
+*
      * returning image / video
-     */
+
+
     private static File getOutputMediaFile(int type) {
 
         // External sdcard location
@@ -912,3 +921,4 @@ public void getOption() {
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 }
+*/

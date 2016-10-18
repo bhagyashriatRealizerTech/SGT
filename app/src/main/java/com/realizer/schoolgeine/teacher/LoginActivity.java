@@ -445,26 +445,27 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
         final SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         SharedPreferences.Editor edit = sharedpreferences.edit();
-        edit.putString("UidName", userName.getText().toString());
+        edit.putString("UidName", userName.getText().toString().trim());
         edit.putString("Username", userName.getText().toString().trim());
         edit.putString("Password", password.getText().toString().trim());
-
         edit.commit();
 
         String logchk = sharedpreferences.getString("LogChk", "");
         String mWord = "";
             String validate = "";
             JSONObject rootObj = null;
+            String accesstoken ="";
             try {
                 rootObj = new JSONObject(s);
                 validate = rootObj.getString("isLoginSuccessfull");
                 JSONObject teacherInfo  = rootObj.getJSONObject("Teacher");
                 mWord =teacherInfo.getString("MagicWord");
-
+                accesstoken =  rootObj.getString("AccessToken");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
+            edit.putString("AccessToken", accesstoken);
+            edit.commit();
         if (logchk.equals("true")) {
 
             try {

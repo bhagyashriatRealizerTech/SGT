@@ -1,17 +1,13 @@
-package com.realizer.schoolgeine.teacher.funcenter;
+package com.realizer.schoolgeine.teacher.homework.newhomework;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.MergeCursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,31 +17,24 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.realizer.schoolgeine.teacher.DrawerActivity;
-import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
+import com.realizer.schoolgeine.teacher.Utils.Config;
+import com.realizer.schoolgeine.teacher.Utils.Singlton;
+import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 import com.realizer.schoolgenie.teacher.R;
-import com.realizer.schoolgeine.teacher.Utils.Config;
-import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
-import com.realizer.schoolgeine.teacher.Utils.Singlton;
-import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
-import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
-import com.realizer.schoolgeine.teacher.queue.QueueListModel;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.UUID;
+
 
 /**
  * Created by Bhagyashri on 9/3/2016.
  */
-public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnTaskCompleted {
+public class CustomPhotoGalleryActivityHw extends AppCompatActivity {
     private ImageAdapter imageAdapter;
     private String[] arrPath;
     private boolean[] thumbnailsselection;
@@ -55,7 +44,6 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
     MenuItem search,switchclass;
     int eventid1;
     String eventuuid,grid,upload,isupload,image1,imagecaption,eventName;
-    DatabaseQueries qr;
     int imgId,acadmicyear,evntgetid;
     Cursor imagecursor[],cursor;
     Calendar c;
@@ -67,18 +55,17 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(CustomPhotoGalleryActivity.this));
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(CustomPhotoGalleryActivityHw.this));
         setContentView(R.layout.ac_image_grid);
-        getSupportActionBar().setTitle(Config.actionBarTitle("Select Image", CustomPhotoGalleryActivity.this));
+        getSupportActionBar().setTitle(Config.actionBarTitle("Select Image", CustomPhotoGalleryActivityHw.this));
         getSupportActionBar().show();
-        Bundle b = getIntent().getExtras();
-        eventid1=b.getInt("PassEventId");
-        eventuuid=b.getString("EventUUID");
-        eventName=b.getString("EventName");
-        evntgetid = eventid1;
+
         grdImages = (GridView) findViewById(R.id.gridview);
-        qr = new DatabaseQueries(CustomPhotoGalleryActivity.this);
-        totalselectedImageCount = 0;
+      //  qr = new DatabaseQueries(CustomPhotoGalleryActivityHw.this);
+        /*if(Singleton.getImageList().size()>0)
+            totalselectedImageCount = Singleton.getImageList().size();
+        else*/
+            totalselectedImageCount = 0;
 
         final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Thumbnails._ID };
         final String orderBy = MediaStore.Images.Thumbnails._ID;
@@ -111,8 +98,8 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_done:
-                showDialog();
-                Singlton.setIsDonclick(Boolean.TRUE);
+                new insertImageAsync().execute();
+               // Singlton.setIsDonclick(Boolean.TRUE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -120,50 +107,10 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
 
     }
 
-    public void showDialog()
-    {
-        if(totalselectedImageCount == 0)
-        {
-            Config.alertDialog(CustomPhotoGalleryActivity.this, "Gallery", "Please Select at least 1 Image");
-            //Toast.makeText(getApplicationContext(), "Please select at least one image", Toast.LENGTH_LONG).show();
-        }
-        else {
-
-            AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            LayoutInflater inflater = this.getLayoutInflater();
-            final View alertDialogView = inflater.inflate(R.layout.teacher_funcenter_caption_layout, null);
-            adb.setView(alertDialogView);
-
-            adb.setTitle("Image Caption");
-            adb.setMessage("Please Enter Caption for Images");
-            adb.setIcon(android.R.drawable.ic_dialog_info);
-
-            adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    EditText et = (EditText) alertDialogView.findViewById(R.id.edt_caption);
-                    if (et.getText().toString().trim().length() > 0)
-                        new insertImageAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, et.getText().toString().trim());
-                        //selectImages(et.getText().toString().trim());
-                    else
-                        new insertImageAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imagecaption);
-                    //selectImages(imagecaption);
-                    dialog.dismiss();
-                }
-            });
 
 
-            adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    new insertImageAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imagecaption);
-                    //selectImages(imagecaption);
-                    dialog.dismiss();
-                }
-            });
-            adb.show();
-        }
-    }
 
-    public class insertImageAsync extends AsyncTask<String,Void,Void>
+    public class insertImageAsync extends AsyncTask<Void,Void,Void>
     {
 
         @Override
@@ -173,9 +120,9 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
         }
 
         @Override
-        protected Void doInBackground(String... params) {
-            String caption = params[0];
-            selectImages(caption);
+        protected Void doInBackground(Void... params) {
+
+            selectImages("");
             return null;
         }
 
@@ -200,50 +147,17 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                 selectedItems.add(arrPath[i]);
             }
         }
-        if (cnt == 0) {
 
-        } else {
-
-            UUID imguuid = UUID.randomUUID();
-            c = Calendar.getInstance();
-            System.out.println("Current time => " + c.getTime());
-            df = new SimpleDateFormat("MM/dd/yyyy");
-            upload = df.format(c.getTime());
-
-            isupload = "false";
-
-            for (int i = 0; i < selectedItems.size(); i++) {
-                grid = String.valueOf(selectedItems.get(i));
-                imguuid = UUID.randomUUID();
-                File f=new File(grid);
-                Bitmap bitmap = BitmapFactory.decodeFile(grid);
-
-               image1 = ImageStorage.saveEventToSdCard(bitmap, eventName, CustomPhotoGalleryActivity.this);
-                String f2[] = image1.split(File.separator);
-                String filename=f.getName();
-
-                acadmicyear = Calendar.getInstance().get(Calendar.YEAR);
-                imagecaption = caption;
-
-
-
-                m = qr.InsertImage(evntgetid, image1, upload, isupload, acadmicyear, i, imagecaption, imguuid.toString(),filename,eventuuid.toString());
-                if (m > 0)
-                {
-                    imgId = qr.getImageId();
-                    SimpleDateFormat df1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-                    m = qr.insertQueue(imgId, "EventImages", "7", df1.format(Calendar.getInstance().getTime()));
-
-                }
-
-            }
-
+        if(Singlton.getImageList().size()>0)
+        {
+            ArrayList<String> newList =  new ArrayList<>();
+            newList.addAll(selectedItems);
+            newList.addAll(Singlton.getImageList());
+            Singlton.setImageList(newList);
         }
+        else
+            Singlton.setImageList(selectedItems);
     }
-
-    /**
-     * Class method
-     */
 
     /**
      * This method used to set bitmap.
@@ -299,7 +213,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
             protected void onPostExecute(Void result) {
                 super.onPostExecute(result);
                 loading.setVisibility(View.GONE);
-                imageAdapter = new ImageAdapter(CustomPhotoGalleryActivity.this);
+                imageAdapter = new ImageAdapter(CustomPhotoGalleryActivityHw.this);
                 grdImages.setAdapter(imageAdapter);
                 imagecursor[0].close();
                 imagecursor[1].close();
@@ -308,27 +222,6 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    @Override
-    public void onTaskCompleted(String s,QueueListModel queueListModel) {
-        try{
-            s =s.replace("\"","");
-            String splitData[]=s.split("@@");
-            int imgid=Integer.valueOf(splitData[1]);
-            if(splitData[0].equalsIgnoreCase("success")) {
-                long m = qr.deleteQueueRow(imgid, "EventImages");
-                if (m > 0) {
-                    m=qr.updateImageSyncFlag(qr.getImageById(imgid));
-                    if (m > 0) {
-
-                        if(imgid == imgId) {
-                            Singlton.setSelectedFragment(Singlton.getMainFragment());
-                            finish();
-                        }
-                    }
-                }
-            }
-        }catch (Exception e){e.printStackTrace();}
-    }
 
 
     /**
@@ -383,7 +276,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                     } else {
                         if(totalselectedImageCount == 10)
                         {
-                            Config.alertDialog(CustomPhotoGalleryActivity.this, "Gallery", "Please Select only 10 image");
+                            Config.alertDialog(CustomPhotoGalleryActivityHw.this, "Gallery", "Please Select only 10 image");
                             //Toast.makeText(CustomPhotoGalleryActivityHw.this,"Please Select only 10 image",Toast.LENGTH_SHORT).show();
                         }
                         else {
@@ -406,7 +299,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
                     } else {
                         if(totalselectedImageCount == 10)
                         {
-                            Config.alertDialog(CustomPhotoGalleryActivity.this, "Gallery", "Please Select only 10 image");
+                            Config.alertDialog(CustomPhotoGalleryActivityHw.this, "Gallery", "Please Select only 10 image");
                             //Toast.makeText(CustomPhotoGalleryActivityHw.this,"Please Select only 10 image",Toast.LENGTH_SHORT).show();
                         }
                         else {
@@ -443,10 +336,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
         super.onBackPressed();
 
     }
-    /**
-     * Inner class
-     * @author tasol
-     */
+
     class ViewHolder {
         ImageView imgThumb;
         CheckBox chkImage;
@@ -460,6 +350,5 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity implements OnT
        getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
-
 
 }

@@ -2,7 +2,9 @@ package com.realizer.schoolgeine.teacher;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.realizer.schoolgeine.teacher.Utils.Config;
@@ -28,6 +30,7 @@ public class LoginAsyncTaskGet extends AsyncTask<Void, Void,StringBuilder>
     String uName, password;
     Context myContext;
     private OnTaskCompleted callback;
+    String deviceID;
 
     public LoginAsyncTaskGet(String uName, String password, Context myContext, OnTaskCompleted cb)
     {
@@ -35,6 +38,8 @@ public class LoginAsyncTaskGet extends AsyncTask<Void, Void,StringBuilder>
         this.password = password;
         this.myContext = myContext;
         this.callback = cb;
+        SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(myContext);
+        deviceID = sharedpreferences.getString("DeviceId","");
     }
 
     @Override
@@ -48,7 +53,8 @@ public class LoginAsyncTaskGet extends AsyncTask<Void, Void,StringBuilder>
     protected StringBuilder doInBackground(Void... params) {
         resultLogin = new StringBuilder();
 
-        String my= Config.URL+"TeacherLogin/"+ uName + "/" +password;
+        String my= Config.URL+"TeacherLogin/"+ uName + "/" +password+ "/" +deviceID;;
+        //String my= Config.URL+"TeacherLogin/"+ uName + "/" +password;
         Log.d("URL", my);
         HttpGet httpGet = new HttpGet(my);
         HttpClient client = new DefaultHttpClient();

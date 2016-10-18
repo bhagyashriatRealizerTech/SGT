@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
+import com.realizer.schoolgeine.teacher.homework.newhomework.NewHomeworkActivity;
 import com.realizer.schoolgenie.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
@@ -25,7 +26,6 @@ import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.generalcommunication.TeacherGCommunicationNewFragment;
 import com.realizer.schoolgeine.teacher.generalcommunication.TeacherGeneralCommunicationFragment;
 import com.realizer.schoolgeine.teacher.homework.TeacherHomeworkFragment;
-import com.realizer.schoolgeine.teacher.homework.TeacherHomeworkNewFragment;
 import com.realizer.schoolgeine.teacher.myclass.adapter.TeacherMyClassListAdapter;
 import com.realizer.schoolgeine.teacher.myclass.model.TeacherMyClassModel;
 import com.realizer.schoolgeine.teacher.star.TeacherGiveStarFragment;
@@ -246,7 +246,7 @@ public class TeacherMyClassDialogBoxActivity extends DialogFragment implements F
     //Homework
     public void RefreshNewHomework(String std,String div,String headetText)
     {
-        TeacherHomeworkNewFragment fragment = new TeacherHomeworkNewFragment();
+        NewHomeworkActivity fragment = new NewHomeworkActivity();
         Singlton.setSelectedFragment(fragment);
         String homewrklist = "Marathi,,lesson no 2 and 3 lesson no 2 and 3 lesson no 2 and 3,,NoImage,,20/11/2015_English,,NoText,,Image,,19/11/2015_Hindi,,hindi homework,,NoImage,,18/11/2015_History,,history homework lesson no 2 and 3,,NoImage,,17/11/2015_Math,,Math homework,,Image,,16/11/2015";
         Bundle bundle = new Bundle();

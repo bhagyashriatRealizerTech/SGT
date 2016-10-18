@@ -65,9 +65,9 @@ public class GoogleDriveImageUploadAsyncTask extends AsyncTask<Void,Void,File>
     protected File doInBackground(Void... params) {
 
         File file = null;
-        String filename1[] = o.getGdfilename().split(".");
+        String filename1[] = o.getGdfilename().split("\\.");
         try {
-            file = insertFile(mService,o.getGdfilename(),"", o.getFoldername(),"image/jpeg",filename1[0]);
+            file = insertFile(mService,filename1[filename1.length-1],"", o.getFoldername(),"image/jpeg",o.getFilepath());
         } catch (Exception e) {
             mLastError = e;
             cancel(true);
@@ -91,7 +91,6 @@ public class GoogleDriveImageUploadAsyncTask extends AsyncTask<Void,Void,File>
                              String parentId, String mimeType, String filename) {
         // File's metadata.
         File file = null;
-        filename = o.getGdfilename();
         File body = new File();
         body.setTitle(title);
         body.setDescription(description);

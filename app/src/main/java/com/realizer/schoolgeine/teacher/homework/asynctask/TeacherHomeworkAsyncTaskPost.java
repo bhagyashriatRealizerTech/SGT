@@ -42,7 +42,7 @@ public class TeacherHomeworkAsyncTaskPost extends AsyncTask<Void, Void,StringBui
     ArrayList<String> absent;
     int precount, abcount;
     private OnTaskCompleted callback;
-    String flag;
+    String flag,accesstoken;
 
     public TeacherHomeworkAsyncTaskPost(TeacherHomeworkModel o, Context myContext, OnTaskCompleted cb, String flag) {
 
@@ -76,11 +76,13 @@ public class TeacherHomeworkAsyncTaskPost extends AsyncTask<Void, Void,StringBui
 
         SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(myContext);
         String scode = sharedpreferences.getString("SchoolCode", "");
-
+        accesstoken = sharedpreferences.getString("AccessToken","");
 
         JSONObject jobj = new JSONObject();
         try {
             jobj.put("SchoolCode",scode);
+            jobj.put("UserId",sharedpreferences.getString("UidName",""));
+            jobj.put("DeviceId",sharedpreferences.getString("DeviceId",""));
             String date = obj.getHwDate();
             String date1[] = date.split("/");
             String resdate = date1[1]+"/"+date1[0]+"/"+date1[2];
@@ -90,7 +92,8 @@ public class TeacherHomeworkAsyncTaskPost extends AsyncTask<Void, Void,StringBui
             jobj.put("subject",obj.getSubject());
             jobj.put("givenBy",obj.getGivenBy());
 
-            JSONArray arr = new JSONArray(obj.getHwImage64Lst());
+            JSONArray arr = new JSONArray();
+            arr.put(0,obj.getSharedLink());
            /* arr.put(0,encodedImage);
 
             arr.put(1,encodedImage);*/
@@ -112,6 +115,7 @@ public class TeacherHomeworkAsyncTaskPost extends AsyncTask<Void, Void,StringBui
             se = new StringEntity(json);
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
+            httpPost.setHeader("AccessToken", accesstoken);
 
             httpPost.setEntity(se);
             HttpResponse httpResponse = httpclient.execute(httpPost);

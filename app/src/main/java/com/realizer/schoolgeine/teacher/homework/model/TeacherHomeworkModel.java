@@ -1,5 +1,7 @@
 package com.realizer.schoolgeine.teacher.homework.model;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Win on 1/8/2016.
  */
@@ -17,6 +19,9 @@ public class TeacherHomeworkModel {
     public int hid =0;
     public String Work="";
     public String isSync="";
+    public Bitmap pic;
+    public String hwUUID="";
+    public String sharedLink="";
 
     public String getSchoolCode() {
         return SchoolCode;
@@ -104,5 +109,29 @@ public class TeacherHomeworkModel {
 
     public void setIsSync(String isSync) {
         this.isSync = isSync;
+    }
+
+    public Bitmap getPic() {
+        return pic;
+    }
+
+    public void setPic(Bitmap pic) {
+        this.pic = pic;
+    }
+
+    public String getHwUUID() {
+        return hwUUID;
+    }
+
+    public void setHwUUID(String hwUUID) {
+        this.hwUUID = hwUUID;
+    }
+
+    public String getSharedLink() {
+        return sharedLink;
+    }
+
+    public void setSharedLink(String sharedLink) {
+        this.sharedLink = sharedLink;
     }
 }

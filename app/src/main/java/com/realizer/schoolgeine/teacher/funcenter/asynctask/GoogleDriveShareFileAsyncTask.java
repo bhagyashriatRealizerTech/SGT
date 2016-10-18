@@ -72,8 +72,6 @@ public class GoogleDriveShareFileAsyncTask extends AsyncTask<Void,Void,File>
             public void onSuccess(Permission permission,
                                   HttpHeaders responseHeaders)
                     throws IOException {
-                System.out.println("Permission ID: " + permission.getId());
-                System.out.println("WithLink: " + permission.getWithLink());
                 sharedLink = "https://drive.google.com/uc?id=" + fileId;
                 tempString = "done";
                 Log.d("SharableLink", "https://drive.google.com/uc?id=" + fileId);

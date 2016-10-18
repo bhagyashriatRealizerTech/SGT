@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="5dp"
+    android:background="#00ffffff"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgThumb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/f2"
+        android:scaleType="fitXY"
+        android:background="@drawable/outer_rect"/>
+
+    <ImageButton
+        android:id="@+id/chkImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="left|top"
+        android:paddingBottom="7dp"
+        android:paddingLeft="7dp"
+        android:background="#00ffffff"
+        android:src="@drawable/ic_close_black"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/imgThumb"
+        android:layout_alignEnd="@+id/imgThumb" />
+</RelativeLayout>
