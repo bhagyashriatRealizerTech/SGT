@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 
 import java.util.ArrayList;
 

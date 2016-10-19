@@ -26,7 +26,6 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         final NetworkInfo mobile = connMgr
                 .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-        Singlton obj = Singlton.getInstance();
 
         if (wifi.getState().equals(NetworkInfo.State.CONNECTED) || mobile.getState().equals(NetworkInfo.State.CONNECTED)) {
 

@@ -21,7 +21,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gcm.GCMRegistrar;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 
 import org.apache.http.HttpEntity;

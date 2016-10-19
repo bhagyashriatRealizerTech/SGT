@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.view.FixedSpeedScroller;

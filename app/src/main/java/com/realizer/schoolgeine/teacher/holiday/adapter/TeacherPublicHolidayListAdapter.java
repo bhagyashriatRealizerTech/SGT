@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.holiday.model.TeacherPublicHolidayListModel;
 
 import java.util.ArrayList;

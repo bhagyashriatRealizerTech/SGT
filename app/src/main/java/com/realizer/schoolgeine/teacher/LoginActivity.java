@@ -50,7 +50,7 @@ import com.realizer.schoolgeine.teacher.forgotpassword.SetPasswordAsyncTaskGet;
 import com.realizer.schoolgeine.teacher.forgotpassword.SetPasswordByEmailAsyncTaskGet;
 import com.realizer.schoolgeine.teacher.forgotpassword.ValidateMagicWordAsyncTaskGet;
 import com.realizer.schoolgeine.teacher.service.AutoSyncService;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
@@ -608,7 +608,6 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
 
     public void GCMReg()
     {
-
         registerReceiver(mHandleMessageReceiver,
                 new IntentFilter(Config.DISPLAY_MESSAGE_ACTION));
         GCMRegistrar.register(LoginActivity.this, Config.SENDER_ID);

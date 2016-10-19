@@ -33,7 +33,7 @@ import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.homework.TeacherHomeworkFragment;
 import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
 import com.realizer.schoolgeine.teacher.homework.newhomework.adapter.NewHomeworkGalleryAdapter;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

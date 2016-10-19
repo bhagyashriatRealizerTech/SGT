@@ -97,6 +97,8 @@ public class TeacherFunCenterImageAsynckPost extends AsyncTask<Void, Void,String
         JSONObject jobj = new JSONObject();
         try {
             jobj.put("SchoolCode",scode);
+            jobj.put("UserId",sharedpreferences.getString("UidName",""));
+            jobj.put("DeviceId",sharedpreferences.getString("DeviceId",""));
             jobj.put("AcademicYear",obj.getAcademic_year());
             jobj.put("Std",standard);
             jobj.put("Div",division);
@@ -115,6 +117,7 @@ public class TeacherFunCenterImageAsynckPost extends AsyncTask<Void, Void,String
             se = new StringEntity(json);
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
+            httpPost.setHeader("AccessToken", sharedpreferences.getString("AccessToken",""));
 
             httpPost.setEntity(se);
             HttpResponse httpResponse = httpclient.execute(httpPost);

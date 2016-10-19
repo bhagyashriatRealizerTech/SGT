@@ -20,7 +20,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

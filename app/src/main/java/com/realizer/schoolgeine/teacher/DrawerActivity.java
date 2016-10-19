@@ -53,7 +53,7 @@ import com.realizer.schoolgeine.teacher.service.AutoSyncService;
 import com.realizer.schoolgeine.teacher.service.ManualSyncService;
 import com.realizer.schoolgeine.teacher.star.TeacherViewStarFragment;
 import com.realizer.schoolgeine.teacher.timetable.TeacherTimeTableFragment;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

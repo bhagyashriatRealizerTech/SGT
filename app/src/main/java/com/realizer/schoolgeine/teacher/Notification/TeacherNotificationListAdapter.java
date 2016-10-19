@@ -15,7 +15,7 @@ import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.GetImages;
 import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgeine.teacher.view.SwipeLayout;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 
 import java.io.File;
 import java.util.ArrayList;

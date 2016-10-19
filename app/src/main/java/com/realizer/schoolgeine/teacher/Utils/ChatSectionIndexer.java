@@ -20,8 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.chat.model.AddedContactModel;
 

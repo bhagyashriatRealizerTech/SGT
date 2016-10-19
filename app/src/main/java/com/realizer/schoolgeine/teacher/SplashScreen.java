@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 
 /**
  * Created by Bhagyashri on 4/5/2016.

@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.view.SelectStudentCheckBox;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.chat.model.AddedContactModel;
 import com.realizer.schoolgeine.teacher.view.CheckableRelativeLayout;
 

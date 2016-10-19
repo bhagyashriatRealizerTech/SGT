@@ -29,7 +29,7 @@ import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.homework.newhomework.NewHomeworkActivity;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
@@ -185,6 +185,7 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
         ArrayList<TeacherHomeworkModel> hwlst = qr.GetHomeworkData(date, htext, txtstd.getText().toString(), txtclss.getText().toString());
 
         ArrayList<TeacherHomeworkListModel> results = new ArrayList<>();
+        ArrayList<TeacherHomeworkListModel> result1 = new ArrayList<>();
 
         for(int i=0;i<hwlst.size();i++)
         {
@@ -203,13 +204,67 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
             if(obj.getHwImage64Lst().length()==0)
             hDetail.setImage("NoImage");
             else {
+
                 hDetail.setImage(obj.getHwImage64Lst());
             }
             results.add(hDetail);
 
         }
 
-        return results;
+if(results.size()>1) {
+    String sub = results.get(0).getSubject();
+    JSONArray arr = new JSONArray();
+    try {
+        arr.put(0, results.get(0).getImage());
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+    String images = arr.toString();
+    JSONArray arr1 = new JSONArray();
+    int forcounter = 0;
+    TeacherHomeworkListModel hD = results.get(0);
+    hD.setImage(arr.toString());
+    result1.add(forcounter, hD);
+
+    for (int j = 1; j < results.size(); j++) {
+        TeacherHomeworkListModel hDetail = results.get(j);
+        if (sub.equalsIgnoreCase(results.get(j).getSubject())) {
+            try {
+                if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
+
+                } else {
+                    arr1 = new JSONArray(images);
+                    arr1.put(arr1.length(), results.get(j).getImage());
+                    hDetail.setImage(arr1.toString());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            result1.remove(forcounter);
+        } else {
+            forcounter = forcounter + 1;
+            try {
+                if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
+
+                } else {
+                    arr1 = new JSONArray();
+                    arr1.put(0, results.get(j).getImage());
+                    hDetail.setImage(arr1.toString());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        result1.add(forcounter, hDetail);
+        sub = results.get(j).getSubject();
+        images = arr1.toString();
+    }
+}
+        else
+           result1 = results;
+
+        return result1;
     }
 
 

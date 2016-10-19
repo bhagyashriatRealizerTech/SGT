@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 
 /**
  * Created by Win on 02/04/2016.

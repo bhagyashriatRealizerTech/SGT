@@ -1124,7 +1124,7 @@ public class DatabaseQueries {
 
     // get ID
     public int getHomeworkId() {
-        Cursor c = db.rawQuery("SELECT HomeworkId FROM Homework ORDER BY HomeworkId ASC;", null);
+        Cursor c = db.rawQuery("SELECT HomeworkId FROM Homework ORDER BY HomeworkId ASC", null);
         int cnt = 1;
         int att=0;
         if (c != null) {
@@ -1185,7 +1185,7 @@ public class DatabaseQueries {
     public ArrayList<TeacherHomeworkModel> GetHomeworkData( String date,String work,String std,String div) {
 
         Cursor c = db.rawQuery("SELECT * FROM Homework WHERE hwDate='"+date+"' AND Work='"+work+"' " +
-                "AND Std= '"+std+"' AND Div= '"+div+"'", null);
+                "AND Std= '"+std+"' AND Div= '"+div+"' ORDER BY HomeworkId DESC", null);
 
 
         ArrayList<TeacherHomeworkModel> result = new ArrayList<>();

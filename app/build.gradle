@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.realizer.schoolgenie.teacher"
+        applicationId "com.realizer.schoolgeine.teacher"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1

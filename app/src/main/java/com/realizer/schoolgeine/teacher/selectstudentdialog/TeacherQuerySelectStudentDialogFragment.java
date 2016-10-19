@@ -22,7 +22,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.chat.TeacherQueryFragment;

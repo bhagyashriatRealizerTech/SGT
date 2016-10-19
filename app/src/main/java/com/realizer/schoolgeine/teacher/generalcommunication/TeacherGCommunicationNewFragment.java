@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;

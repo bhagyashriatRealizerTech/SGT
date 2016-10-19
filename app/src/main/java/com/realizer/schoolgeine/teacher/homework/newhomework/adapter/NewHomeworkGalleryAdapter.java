@@ -15,7 +15,7 @@ import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.funcenter.CustomPhotoGalleryActivity;
 import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
 import com.realizer.schoolgeine.teacher.homework.newhomework.CustomPhotoGalleryActivityHw;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 
 import java.util.ArrayList;
 

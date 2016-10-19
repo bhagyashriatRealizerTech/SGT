@@ -32,7 +32,7 @@ import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.chat.TeacherQueryViewFragment;
 import com.realizer.schoolgeine.teacher.view.Action;
 import com.realizer.schoolgeine.teacher.view.SwipeDetector;
-import com.realizer.schoolgenie.teacher.R;
+import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.chat.TeacherQueryFragment1;
