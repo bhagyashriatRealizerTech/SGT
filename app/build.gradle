@@ -32,6 +32,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'pub.devrel:easypermissions:0.1.5'
     compile 'com.google.android.gms:play-services-auth:9.0.2'
+    compile 'com.android.support:palette-v7:23.0.1'
 
     compile('com.google.api-client:google-api-client-android:1.22.0') {
         exclude group: 'org.apache.httpcomponents'

@@ -21,7 +21,7 @@ import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
 import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
-import com.realizer.schoolgeine.teacher.gallarypicker.MainActivity1;
+import com.realizer.schoolgeine.teacher.gallaryimagepicker.PhotoAlbumActivity;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
@@ -80,15 +80,13 @@ public class TeacherFunCenterGalleryFragment extends Fragment implements Fragmen
         btnadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                /*Intent intent = new Intent(getActivity(),CustomPhotoGalleryActivity.class);
+                Intent intent = new Intent(getActivity(), PhotoAlbumActivity.class);
                 Bundle b = new Bundle();
+                b.putBoolean("FunCenter", true);
                 b.putInt("PassEventId", getid);
                 b.putString("EventUUID", eventuuid);
                 b.putString("EventName", getevntName);
                 intent.putExtras(b);
-                getActivity().startActivity(intent);*/
-                Intent intent = new Intent(getActivity(), MainActivity1.class);
                 startActivity(intent);
 
 

@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -37,12 +38,15 @@ import com.realizer.schoolgeine.teacher.homework.adapter.TeacherHomeworkListAdap
 import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkListModel;
 import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
 import com.realizer.schoolgeine.teacher.myclass.TeacherMyClassDialogBoxActivity;
+import com.realizer.schoolgeine.teacher.view.FullImageViewPager;
+import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Win on 11/26/2015.
@@ -60,6 +64,9 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
     String selectedDate;
     MenuItem done,search;
     MessageResultReceiver resultReceiver;
+    List<TeacherHomeworkModel> homeworkImageList;
+    int datePos=0;
+    ProgressWheel loading;
 
 
     @Nullable
@@ -77,6 +84,7 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
         qr = new DatabaseQueries(getActivity());
         spinner = (Spinner) rootView.findViewById(R.id.spLeaveType);
         listHoliday = (ListView) rootView.findViewById(R.id.lstthomework);
+        loading = (ProgressWheel) rootView.findViewById(R.id.loading);
        // header = (TextView) rootView.findViewById(R.id.txtheadtext);
         noHwMsg=(TextView) rootView.findViewById(R.id.tvNoDataMsg);
         newHomework = (FloatingActionButton) rootView.findViewById(R.id.imgbtnAddHw);
@@ -93,18 +101,10 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedDate = listofDate.get(position);
-                ArrayList<TeacherHomeworkListModel> homewok = GetHomeWorkList(listofDate.get(position));
-                if (homewok.size()!=0) {
-                    listHoliday.setVisibility(View.VISIBLE);
-                    listHoliday.setAdapter(new TeacherHomeworkListAdapter(getActivity(), homewok,htext));
-                    noHwMsg.setVisibility(View.GONE);
-                }
-                else
-                {
-                    noHwMsg.setVisibility(View.VISIBLE);
-                    noHwMsg.setText("No "+htext+" Provided");
-                    listHoliday.setVisibility(View.GONE);
-                }
+                datePos = position;
+                loading.setVisibility(View.VISIBLE);
+                new GetHomeworkAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
             }
 
             @Override
@@ -123,9 +123,11 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
 
         //populate list
         selectedDate = listofDate.get(listofDate.size()-1);
-        ArrayList<TeacherHomeworkListModel> homewok = GetHomeWorkList(listofDate.get(listofDate.size()-1));
+        datePos = listofDate.size()-1;
+        new GetHomeworkAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+       /* ArrayList<TeacherHomeworkListModel> homewok = GetHomeWorkList(listofDate.get(listofDate.size()-1));
             if(homewok.size()>0)
-        listHoliday.setAdapter(new TeacherHomeworkListAdapter(getActivity(), homewok,htext));
+        listHoliday.setAdapter(new TeacherHomeworkListAdapter(getActivity(), homewok,htext));*/
 
 
 
@@ -134,23 +136,27 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object o = listHoliday.getItemAtPosition(position);
                 TeacherHomeworkListModel homeworkObj = (TeacherHomeworkListModel) o;
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                Intent i = new Intent(getActivity(),FullImageViewPager.class);
+                i.putExtra("HEADERTEXT",htext);
+                i.putExtra("HWUUID",homeworkObj.getHwid());
+                startActivity(i);
+                /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
                 TeacherHomeworkDetailFragment fragment = new TeacherHomeworkDetailFragment();
                 Singlton.setSelectedFragment(fragment);
                 Bundle bundle = new Bundle();
-                bundle.putString("HEADERTEXT",htext);
-                bundle.putString("SubjectName",homeworkObj.getSubject());
-                bundle.putString("HomeworkDate",listofDate.get(spinner.getSelectedItemPosition()));
-                bundle.putString("TeacherName",preferences.getString("DisplayName", ""));
-                bundle.putString("Status",homeworkObj.getHasSync());
-                bundle.putString("HomeworkImage",homeworkObj.getImage());
-                bundle.putString("HomeworkText",homeworkObj.getHomework());
+                bundle.putString("HEADERTEXT", htext);
+                bundle.putString("SubjectName", homeworkObj.getSubject());
+                bundle.putString("HomeworkDate", listofDate.get(spinner.getSelectedItemPosition()));
+                bundle.putString("TeacherName", preferences.getString("DisplayName", ""));
+                bundle.putString("Status", homeworkObj.getHasSync());
+                bundle.putString("HomeworkImage", homeworkObj.getImage());
+                bundle.putString("HomeworkText", homeworkObj.getHomework());
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_container,fragment);
+                fragmentTransaction.replace(R.id.frame_container, fragment);
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
 
             }
         });
@@ -183,7 +189,8 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
     {
         Bundle b = this.getArguments();
         ArrayList<TeacherHomeworkModel> hwlst = qr.GetHomeworkData(date, htext, txtstd.getText().toString(), txtclss.getText().toString());
-
+        homeworkImageList = hwlst;
+        Singlton.setHomeworkthumbnailList(homeworkImageList);
         ArrayList<TeacherHomeworkListModel> results = new ArrayList<>();
         ArrayList<TeacherHomeworkListModel> result1 = new ArrayList<>();
 
@@ -222,28 +229,29 @@ if(results.size()>1) {
     String images = arr.toString();
     JSONArray arr1 = new JSONArray();
     int forcounter = 0;
+    int tempcounter=0;
     TeacherHomeworkListModel hD = results.get(0);
     hD.setImage(arr.toString());
+    hD.setHwid(0);
     result1.add(forcounter, hD);
-
+    try {
     for (int j = 1; j < results.size(); j++) {
         TeacherHomeworkListModel hDetail = results.get(j);
         if (sub.equalsIgnoreCase(results.get(j).getSubject())) {
-            try {
                 if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
 
-                } else {
+                }
+
+                else {
                     arr1 = new JSONArray(images);
                     arr1.put(arr1.length(), results.get(j).getImage());
                     hDetail.setImage(arr1.toString());
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
             result1.remove(forcounter);
         } else {
             forcounter = forcounter + 1;
-            try {
+
                 if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
 
                 } else {
@@ -251,14 +259,26 @@ if(results.size()>1) {
                     arr1.put(0, results.get(j).getImage());
                     hDetail.setImage(arr1.toString());
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
+       if(forcounter != 0) {
+             if (results.get(forcounter - 1).getImage().equalsIgnoreCase("NoImage")) {
+                 hDetail.setHwid(0);
+               } else {
+                     JSONArray temp = new JSONArray(results.get(forcounter - 1).getImage());
+                     hDetail.setHwid(results.get(forcounter - 1).getHwid() + temp.length());
+                     }
+               }
+        else
+       {
+           hDetail.setHwid(0);
+       }
 
         result1.add(forcounter, hDetail);
         sub = results.get(j).getSubject();
         images = arr1.toString();
+    }
+    } catch (JSONException e) {
+        e.printStackTrace();
     }
 }
         else
@@ -415,6 +435,41 @@ if(results.size()>1) {
                 }
             }
 
+        }
+    }
+
+
+    public class GetHomeworkAsyncTask extends AsyncTask<Void,Void,Void>
+    {
+        ArrayList<TeacherHomeworkListModel> homewok = new ArrayList<>();
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            homewok = GetHomeWorkList(listofDate.get(datePos));
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            loading.setVisibility(View.GONE);
+            if (homewok.size()!=0) {
+                listHoliday.setVisibility(View.VISIBLE);
+                listHoliday.setAdapter(new TeacherHomeworkListAdapter(getActivity(), homewok,htext));
+                noHwMsg.setVisibility(View.GONE);
+            }
+            else
+            {
+                noHwMsg.setVisibility(View.VISIBLE);
+                noHwMsg.setText("No "+htext+" Provided");
+                listHoliday.setVisibility(View.GONE);
+            }
         }
     }
 

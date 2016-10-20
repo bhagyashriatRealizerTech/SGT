@@ -107,16 +107,23 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" ></activity>
 
-        <activity android:name="com.realizer.schoolgeine.teacher.funcenter.CustomPhotoGalleryActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" ></activity>
 
-        <activity android:name="com.realizer.schoolgeine.teacher.homework.newhomework.CustomPhotoGalleryActivityHw"
+        <activity android:name=".view.FullImageViewPager"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" ></activity>
-        <activity android:name="com.realizer.schoolgeine.teacher.gallarypicker.MainActivity1"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" ></activity>
+            android:configChanges="orientation"
+            ></activity>
+
+        <activity android:name=".gallaryimagepicker.PhotoAlbumActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gallaryimagepicker.SelectPhotoActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".funcenter.SelectPhotoActivityFunCenter"
+            android:screenOrientation="portrait" />
+
 
         <meta-data
             android:name="com.google.android.gms.version"

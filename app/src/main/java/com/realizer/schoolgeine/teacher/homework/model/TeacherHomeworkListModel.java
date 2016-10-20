@@ -10,6 +10,7 @@ public class TeacherHomeworkListModel {
     private String image="";
     private String givenBy="";
     private String hasSync="";
+    private int hwid=0;
 
     public String getSubject() {
         return subject;
@@ -49,5 +50,13 @@ public class TeacherHomeworkListModel {
 
     public void setHasSync(String hasSync) {
         this.hasSync = hasSync;
+    }
+
+    public int getHwid() {
+        return hwid;
+    }
+
+    public void setHwid(int hwid) {
+        this.hwid = hwid;
     }
 }

@@ -1,6 +1,7 @@
 package com.realizer.schoolgeine.teacher.homework.newhomework;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,10 +31,12 @@ import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
+import com.realizer.schoolgeine.teacher.gallaryimagepicker.PhotoAlbumActivity;
 import com.realizer.schoolgeine.teacher.homework.TeacherHomeworkFragment;
 import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
 import com.realizer.schoolgeine.teacher.homework.newhomework.adapter.NewHomeworkGalleryAdapter;
 import com.realizer.schoolgeine.teacher.R;
+import com.realizer.schoolgeine.teacher.myclass.TeacherMyClassDialogBoxActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,6 +94,22 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
 
 
         return rootView;
+    }
+
+    public void SwitchClass()
+    {
+
+        String classList="1.,,2nd,,B,,Hindi@@@2.,,4th,,A,,English@@@3.,,2nd,,A,,English@@@4.,,7th,,B,,History@@@5.,,3rd,,B,,English@@@6.,,6th,,B,,History";
+        TeacherMyClassDialogBoxActivity newTermDialogFragment = new TeacherMyClassDialogBoxActivity();
+        Singlton.setSelectedFragment(newTermDialogFragment);
+        FragmentManager fragmentManager = getFragmentManager();
+        Bundle b =new Bundle();
+        b.putString("StudentClassList", classList);
+        b.putInt("MYCLASS", 10);
+        b.putString("HeaderText", htext);
+        newTermDialogFragment.setArguments(b);
+        newTermDialogFragment.setCancelable(false);
+        newTermDialogFragment.show(fragmentManager, "Dialog!");
     }
 
 
@@ -177,7 +196,10 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),CustomPhotoGalleryActivityHw.class);
+                Intent intent = new Intent(getActivity(),PhotoAlbumActivity.class);
+                Bundle b = new Bundle();
+                b.putBoolean("FunCenter", false);
+                intent.putExtras(b);
                 getActivity().startActivity(intent);
             }
         });
@@ -289,7 +311,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
                 return true;
             case R.id.action_switchclass:
                 Config.hideSoftKeyboardWithoutReq(getActivity(), homeworktext);
-                //SwitchClass();
+                SwitchClass();
                 return true;
             case R.id.action_done:
                 Config.hideSoftKeyboardWithoutReq(getActivity(), homeworktext);

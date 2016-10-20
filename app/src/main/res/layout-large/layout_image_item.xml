@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="7dp"
+    android:background="@drawable/outer_rect"
+    android:orientation="vertical">
+
+    <com.realizer.schoolgeine.teacher.gallaryimagepicker.utils.SquareImageView
+        android:id="@+id/bucket_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:padding="1dp"
+        android:scaleType="centerCrop" />
+    <CheckBox
+        android:id="@+id/select_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/select_image_checkbox_selector"
+        android:layout_gravity="right|top"
+        android:layout_margin="7dp"/>
+</FrameLayout>

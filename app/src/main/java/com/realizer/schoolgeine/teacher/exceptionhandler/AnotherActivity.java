@@ -24,7 +24,7 @@ public class AnotherActivity extends Activity {
 
 		AlertDialog.Builder	adbdialog = new AlertDialog.Builder(AnotherActivity.this);
 		adbdialog.setTitle("Sorry");
-		adbdialog.setMessage("The application Parent to Parent has stopped unexpectedly. Please try again.");
+		adbdialog.setMessage("The application Teacher has stopped unexpectedly. Please try again.");
 		adbdialog.setIcon(android.R.drawable.ic_dialog_alert);
 		adbdialog.setCancelable(false);
 		adbdialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {

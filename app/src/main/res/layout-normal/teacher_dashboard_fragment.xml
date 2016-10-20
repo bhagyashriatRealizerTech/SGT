@@ -55,6 +55,7 @@
         android:divider="@color/white"
         android:layout_alignParentTop="true"
         android:layout_above="@+id/linlayout"
+        android:scrollbarStyle="outsideInset"
         android:visibility="gone"
         android:id="@+id/lst_notification"/>
 

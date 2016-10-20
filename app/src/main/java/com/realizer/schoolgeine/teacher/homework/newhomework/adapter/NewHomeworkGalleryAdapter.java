@@ -3,6 +3,7 @@ package com.realizer.schoolgeine.teacher.homework.newhomework.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
-import com.realizer.schoolgeine.teacher.funcenter.CustomPhotoGalleryActivity;
+import com.realizer.schoolgeine.teacher.gallaryimagepicker.PhotoAlbumActivity;
 import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
-import com.realizer.schoolgeine.teacher.homework.newhomework.CustomPhotoGalleryActivityHw;
 import com.realizer.schoolgeine.teacher.R;
 
 import java.util.ArrayList;
@@ -71,7 +71,10 @@ public class NewHomeworkGalleryAdapter extends BaseAdapter
                 @Override
                 public void onClick(View v) {
                     Singlton.setImageList(imageList);
-                    Intent intent = new Intent(context, CustomPhotoGalleryActivityHw.class);
+                    Intent intent = new Intent(context, PhotoAlbumActivity.class);
+                    Bundle b = new Bundle();
+                    b.putBoolean("FunCenter", false);
+                    intent.putExtras(b);
                     context.startActivity(intent);
                 }
             });

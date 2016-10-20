@@ -221,7 +221,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"></ScrollView>
+            android:scrollbars="vertical">
 
         <TextView style="@style/NormalFontAndSize.MarginLeft40"
             android:layout_width="match_parent"
@@ -234,6 +234,7 @@
             android:textSize="16sp"
             android:id="@+id/txtdescription"
             android:layout_gravity="left|top" />
+        </ScrollView>
 
     </LinearLayout>
     <TextView

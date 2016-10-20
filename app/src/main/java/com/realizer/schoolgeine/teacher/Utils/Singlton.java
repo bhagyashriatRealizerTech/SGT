@@ -12,6 +12,7 @@ import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Bhagyashri on 4/2/2016.
@@ -35,6 +36,7 @@ public class Singlton {
 
     public static ArrayList<String> imageList = new ArrayList<>();
     public  static ArrayList<TeacherHomeworkModel> fialbitmaplist = new ArrayList<>();
+    public  static List<TeacherHomeworkModel> homeworkthumbnailList = new ArrayList<>();;
 
     private Singlton()
     {
@@ -169,6 +171,14 @@ public class Singlton {
 
     public static void setFialbitmaplist(ArrayList<TeacherHomeworkModel> fialbitmaplist) {
         Singlton.fialbitmaplist = fialbitmaplist;
+    }
+
+    public  static List<TeacherHomeworkModel> getHomeworkthumbnailList() {
+        return homeworkthumbnailList;
+    }
+
+    public  static void setHomeworkthumbnailList(List<TeacherHomeworkModel> homeworkthumbnailList) {
+        Singlton.homeworkthumbnailList = homeworkthumbnailList;
     }
 }
 

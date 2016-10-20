@@ -55,6 +55,7 @@
         android:divider="@drawable/divider_notification"
         android:layout_alignParentTop="true"
         android:layout_above="@+id/linlayout"
+        android:scrollbarStyle="outsideInset"
         android:id="@+id/lst_notification"/>
 
     <LinearLayout

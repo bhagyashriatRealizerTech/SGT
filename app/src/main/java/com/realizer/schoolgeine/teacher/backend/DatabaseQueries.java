@@ -1180,11 +1180,92 @@ public class DatabaseQueries {
         return o;
     }
 
-    //Select all Holidays
+    //Select Date Wise Homework
 
     public ArrayList<TeacherHomeworkModel> GetHomeworkData( String date,String work,String std,String div) {
 
         Cursor c = db.rawQuery("SELECT * FROM Homework WHERE hwDate='"+date+"' AND Work='"+work+"' " +
+                "AND Std= '"+std+"' AND Div= '"+div+"' ORDER BY HomeworkId DESC", null);
+
+
+        ArrayList<TeacherHomeworkModel> result = new ArrayList<>();
+
+        int cnt = 1;
+        if (c != null) {
+            if (c.moveToFirst()) {
+                System.out.print("while moving  - C != null");
+                do {
+
+                    TeacherHomeworkModel o = new TeacherHomeworkModel();
+                    o.setHid(c.getInt(c.getColumnIndex("HomeworkId")));
+                    o.setSubject(c.getString(c.getColumnIndex("subject")));
+                    o.setStd(c.getString(c.getColumnIndex("Std")));
+                    o.setDiv(c.getString(c.getColumnIndex("Div")));
+                    o.setHwTxtLst(c.getString(c.getColumnIndex("textlst")));
+                    o.setHwImage64Lst(c.getString(c.getColumnIndex("Imglst")));
+                    o.setGivenBy(c.getString(c.getColumnIndex("Givenby")));
+                    o.setHwDate(c.getString(c.getColumnIndex("hwDate")));
+                    o.setWork(c.getString(c.getColumnIndex("Work")));
+                    o.setIsSync(c.getString(c.getColumnIndex("HasSyncedUp")));
+                    o.setSharedLink(c.getString(c.getColumnIndex("ShredLink")));
+                    result.add(o);
+                    cnt = cnt+1;
+                }
+                while (c.moveToNext());
+            }
+        } else {
+            // mToast("Table Has No contain");
+        }
+        c.close();
+        //dbClose(db);
+        return result;
+    }
+
+    //Select Date Wise Homework
+
+    public ArrayList<TeacherHomeworkModel> GetHomeworkDataASC( String date,String work,String std,String div) {
+
+        Cursor c = db.rawQuery("SELECT * FROM Homework WHERE hwDate='"+date+"' AND Work='"+work+"' " +
+                "AND Std= '"+std+"' AND Div= '"+div+"' ORDER BY HomeworkId ASC", null);
+
+
+        ArrayList<TeacherHomeworkModel> result = new ArrayList<>();
+
+        int cnt = 1;
+        if (c != null) {
+            if (c.moveToFirst()) {
+                System.out.print("while moving  - C != null");
+                do {
+
+                    TeacherHomeworkModel o = new TeacherHomeworkModel();
+                    o.setHid(c.getInt(c.getColumnIndex("HomeworkId")));
+                    o.setSubject(c.getString(c.getColumnIndex("subject")));
+                    o.setStd(c.getString(c.getColumnIndex("Std")));
+                    o.setDiv(c.getString(c.getColumnIndex("Div")));
+                    o.setHwTxtLst(c.getString(c.getColumnIndex("textlst")));
+                    o.setHwImage64Lst(c.getString(c.getColumnIndex("Imglst")));
+                    o.setGivenBy(c.getString(c.getColumnIndex("Givenby")));
+                    o.setHwDate(c.getString(c.getColumnIndex("hwDate")));
+                    o.setWork(c.getString(c.getColumnIndex("Work")));
+                    o.setIsSync(c.getString(c.getColumnIndex("HasSyncedUp")));
+                    o.setSharedLink(c.getString(c.getColumnIndex("ShredLink")));
+                    result.add(o);
+                    cnt = cnt+1;
+                }
+                while (c.moveToNext());
+            }
+        } else {
+            // mToast("Table Has No contain");
+        }
+        c.close();
+        //dbClose(db);
+        return result;
+    }
+
+    //Get All Homework Data
+    public ArrayList<TeacherHomeworkModel> GetAllHomeworkData(String work,String std,String div) {
+
+        Cursor c = db.rawQuery("SELECT * FROM Homework WHERE Work='"+work+"' " +
                 "AND Std= '"+std+"' AND Div= '"+div+"' ORDER BY HomeworkId DESC", null);
 
 
