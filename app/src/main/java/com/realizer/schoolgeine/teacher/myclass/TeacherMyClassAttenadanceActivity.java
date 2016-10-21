@@ -659,7 +659,8 @@ public class TeacherMyClassAttenadanceActivity extends AppCompatActivity impleme
         if(n>=0)
         {
             n=-1;
-            n = qr.insertQueue(id,"Attendance","3",time);
+            SimpleDateFormat df2 = new SimpleDateFormat("dd MMM hh:mm:ss a");
+            n = qr.insertQueue(id,"Attendance","3",df2.format(calendar.getTime()));
             if(n>=0)
             {
 

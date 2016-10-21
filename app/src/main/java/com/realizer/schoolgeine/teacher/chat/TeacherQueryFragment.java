@@ -204,7 +204,8 @@ public class TeacherQueryFragment extends Fragment implements OnTaskCompleted, F
                                     n = -1;
 
                                     qid[qidcount] = qr.getQueryId();
-                                    n = qr.insertQueue(qid[qidcount], "Query", "2", date);
+                                    SimpleDateFormat df2 = new SimpleDateFormat("dd MMM hh:mm:ss a");
+                                    n = qr.insertQueue(qid[qidcount], "Query", "2", df2.format(calendar.getTime()));
 
                                     qidcount = qidcount + 1;
 

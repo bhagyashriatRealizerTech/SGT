@@ -149,7 +149,8 @@ public class TeacherGCommunicationNewFragment extends Fragment implements OnTask
                 //Toast.makeText(getActivity(), "Announcement Inserted Successfully", Toast.LENGTH_SHORT).show();
                 n = -1;
                 int id = qr.getAnnouncementId();
-                n = qr.insertQueue(id, "Announcement", "2", time);
+                SimpleDateFormat df2 = new SimpleDateFormat("dd MMM hh:mm:ss a");
+                n = qr.insertQueue(id, "Announcement", "2", df2.format(Calendar.getInstance().getTime()));
                 if (n >= 0) {
 
                     //Toast.makeText(getActivity(), "Queue Inserted Successfully", Toast.LENGTH_SHORT).show();

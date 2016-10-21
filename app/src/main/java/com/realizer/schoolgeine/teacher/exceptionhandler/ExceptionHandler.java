@@ -69,8 +69,8 @@ public class ExceptionHandler implements
 		obj.setApplicationSource("Teacher");
 		obj.setDeviceBrand(Build.BRAND);
 
-		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy kk:mm:ss");
-		String date = df.format(Calendar.getInstance().getTime());
+		SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
+		String date = df1.format(Calendar.getInstance().getTime());
 
 		long n = qr.insertException(obj);
 		if(n>0)

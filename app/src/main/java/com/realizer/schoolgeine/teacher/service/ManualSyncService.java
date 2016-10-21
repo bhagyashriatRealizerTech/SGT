@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.gson.Gson;
+import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.Notification.NotificationModel;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
@@ -46,6 +47,7 @@ import com.realizer.schoolgeine.teacher.star.model.TeacherGiveStarModel;
 import com.realizer.schoolgeine.teacher.timetable.asynctask.TeacherTimeTableAsyncTask;
 import com.realizer.schoolgeine.teacher.timetable.model.TeacherTimeTableExamListModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -327,7 +329,16 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                     obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                 }
             }
+            else if(queueListModel.getType().equalsIgnoreCase("TimeTable")) {
 
+                TeacherTimeTableExamListModel o = qr.GetTimeTable(queueListModel.getId());
+                o.setSharedLink(queueListModel.getTime());
+
+                qr.updateTimeTableSharedLink(o);
+
+                TeacherTimeTableAsyncTask obj = new TeacherTimeTableAsyncTask(o, ManualSyncService.this, ManualSyncService.this, "false");
+                obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            }
         }
         else {
             Config.alertDialog(Singlton.getContext(),"Network Error","Server Not Responding");
@@ -344,6 +355,11 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
     public void Syncdata()
     {
 
+        SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(ManualSyncService.this);
+        SharedPreferences.Editor edit = sharedpreferences.edit();
+        SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
+        edit.putString("LastSyncUpTime", df1.format(Calendar.getInstance().getTime()));
+        edit.commit();
 
         final ArrayList<QueueListModel> lst = qr.GetQueueData();
         Log.d("TIMER", " " + Calendar.getInstance().getTime() + ": " + lst.size());
@@ -360,6 +376,9 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                     adbdialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            Intent intent = new Intent(ManualSyncService.this,DrawerActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
 
                             for(int i=0;i<lst.size();i++)
                             {
@@ -477,9 +496,26 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                 }
                                 else if(type.equals("TimeTable"))
                                 {
+
+
                                     TeacherTimeTableExamListModel o = qr.GetTimeTable(id);
-                                    TeacherTimeTableAsyncTask obj = new TeacherTimeTableAsyncTask(o, ManualSyncService.this, ManualSyncService.this, "false");
-                                    obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                    GoogleDriveUploadClass o1 = new GoogleDriveUploadClass();
+                                    o1.setGdID(Integer.valueOf(o.getTtid()));
+                                    o1.setFilepath(o.getImage());
+                                    o1.setFoldername(Config.FUN_CENTER_FOLDER);
+                                    o1.setGdfilename(o.getImage());
+                                    o1.setGdtype("TimeTable");
+                                    if(TextUtils.isEmpty(o.getSharedLink())) {
+                                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), ManualSyncService.this, o1);
+                                        objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                    }
+                                    else
+                                    {
+                                        TeacherTimeTableAsyncTask obj = new TeacherTimeTableAsyncTask(o, ManualSyncService.this, ManualSyncService.this, "false");
+                                        obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                    }
+
+
                                 }
                                 else if(type.equals("Exception"))
                                 {

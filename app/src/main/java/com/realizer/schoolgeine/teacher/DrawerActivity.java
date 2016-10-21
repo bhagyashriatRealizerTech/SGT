@@ -52,6 +52,7 @@ import com.realizer.schoolgeine.teacher.myclass.TeacherMyClassStudentFragment;
 import com.realizer.schoolgeine.teacher.service.AutoSyncService;
 import com.realizer.schoolgeine.teacher.service.ManualSyncService;
 import com.realizer.schoolgeine.teacher.star.TeacherViewStarFragment;
+import com.realizer.schoolgeine.teacher.syncup.SyncUpFragment;
 import com.realizer.schoolgeine.teacher.timetable.TeacherTimeTableFragment;
 import com.realizer.schoolgeine.teacher.R;
 
@@ -350,10 +351,10 @@ public class DrawerActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_sync)
         {
-            fragment = Singlton.getSelectedFragment();
-            Intent service = new Intent(DrawerActivity.this,ManualSyncService.class);
+            fragment = SyncUp();
+          /*  Intent service = new Intent(DrawerActivity.this,ManualSyncService.class);
             Singlton.setManualserviceIntent(service);
-            startService(service);
+            startService(service);*/
         }
         if (fragment != null)
         {
@@ -579,6 +580,13 @@ public class DrawerActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putString("PublicHolidayList", publicholiday);
         fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    // for Public Holiday List
+    public Fragment SyncUp()
+    {
+        fragment = new SyncUpFragment();
         return fragment;
     }
     // for Fun Center List

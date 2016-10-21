@@ -147,6 +147,7 @@ public class DatabaseQueries {
         conV.put("TTDate", tdate);
         conV.put("HasSyncedUp", "false");
         conV.put("Description", desc);
+        conV.put("SharedLink", "");
         long newRowInserted = db.insert("TimeTable", null, conV);
         return newRowInserted;
     }
@@ -199,6 +200,7 @@ public class DatabaseQueries {
                     o.setDate(c.getString(c.getColumnIndex("TTDate")));
                     o.setDescription(c.getString(c.getColumnIndex("Description")));
                     o.setHasUploaded(c.getString(c.getColumnIndex("HasSyncedUp")));
+                    o.setSharedLink(c.getString(c.getColumnIndex("SharedLink")));
                     result.add(o);
                     cnt = cnt+1;
                 }
@@ -229,6 +231,7 @@ public class DatabaseQueries {
                     o.setTeacher(c.getString(c.getColumnIndex("Givenby")));
                     o.setDate(c.getString(c.getColumnIndex("TTDate")));
                     o.setDescription(c.getString(c.getColumnIndex("Description")));
+                    o.setSharedLink(c.getString(c.getColumnIndex("SharedLink")));
                     cnt = cnt+1;
                 }
                 while (c.moveToNext());
@@ -251,7 +254,24 @@ public class DatabaseQueries {
         conV.put("TTDate", o.getDate());
         conV.put("HasSyncedUp","true");
         conV.put("Description", o.getDescription());
+        conV.put("SharedLink", o.getSharedLink());
+        long newRowUpdate = db.update("TimeTable", conV, "TTId=" + o.getTtid(), null);
 
+
+        return newRowUpdate;
+    }
+
+    public long updateTimeTableSharedLink(TeacherTimeTableExamListModel o) {
+        ContentValues conV = new ContentValues();
+        conV.put("Std", o.getStandard());
+        conV.put("Div", o.getDivision());
+        conV.put("TmTbleName", o.getTitle());
+        conV.put("Imglst", o.getImage());
+        conV.put("Givenby", o.getTeacher());
+        conV.put("TTDate", o.getDate());
+        conV.put("HasSyncedUp","false");
+        conV.put("Description", o.getDescription());
+        conV.put("SharedLink", o.getSharedLink());
         long newRowUpdate = db.update("TimeTable", conV, "TTId=" + o.getTtid(), null);
 
 

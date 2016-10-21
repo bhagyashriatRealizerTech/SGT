@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
+import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
 import com.realizer.schoolgeine.teacher.homework.newhomework.NewHomeworkActivity;
 import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
@@ -140,10 +141,8 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
         }
         else {
             Bitmap bitmap = ((BitmapDrawable)imgsyllabus.getDrawable()).getBitmap();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-            byte[] b = baos.toByteArray();
-            encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+            encodedImage = ImageStorage.saveEventToSdCard(bitmap, "TimeTable", getActivity());
 
             SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
             Calendar calendar1 = Calendar.getInstance();
@@ -163,7 +162,7 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
                 // Toast.makeText(getActivity(), "Homework Inserted Successfully", Toast.LENGTH_SHORT).show();
                 n = -1;
                 ttid = qr.getTimeTableId();
-                SimpleDateFormat df1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
                 Calendar calendar = Calendar.getInstance();
                 n = qr.insertQueue(ttid, "TimeTable", "1", df1.format(calendar.getTime()));
                 if (n > 0) {

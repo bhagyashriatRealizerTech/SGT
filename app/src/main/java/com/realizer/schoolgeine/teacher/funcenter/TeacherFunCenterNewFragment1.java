@@ -223,7 +223,7 @@ public class TeacherFunCenterNewFragment1 extends Fragment implements View.OnCli
             if (n > 0) {
                 n = -1;
                 eventid = qr.getEventId();
-                SimpleDateFormat df1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
                 n = qr.insertQueue(eventid, "EventMaster", "7", df1.format(Calendar.getInstance().getTime()));
 
                 try {

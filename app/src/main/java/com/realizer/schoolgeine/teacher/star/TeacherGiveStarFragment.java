@@ -193,7 +193,8 @@ public class TeacherGiveStarFragment extends Fragment implements OnTaskCompleted
                 n = -1;
                 giveid = qr.getGiveStarId();
                 TeacherGiveStarModel o1 = qr.GetStar(giveid);
-                n = qr.insertQueue(giveid,"GiveStar","4",o1.getStardate());
+                SimpleDateFormat df2 = new SimpleDateFormat("dd MMM hh:mm:ss a");
+                n = qr.insertQueue(giveid,"GiveStar","4",df2.format(calendar.getTime()));
                 if(n>0) {
                     /*if(isConnectingToInternet())
                     {

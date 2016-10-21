@@ -42,6 +42,7 @@ import com.realizer.schoolgeine.teacher.star.model.TeacherGiveStarModel;
 import com.realizer.schoolgeine.teacher.timetable.asynctask.TeacherTimeTableAsyncTask;
 import com.realizer.schoolgeine.teacher.timetable.model.TeacherTimeTableExamListModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Timer;
@@ -261,6 +262,16 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                     obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                 }
             }
+            else if(queueListModel.getType().equalsIgnoreCase("TimeTable")) {
+
+                TeacherTimeTableExamListModel o = qr.GetTimeTable(queueListModel.getId());
+                o.setSharedLink(queueListModel.getTime());
+
+                qr.updateTimeTableSharedLink(o);
+
+                TeacherTimeTableAsyncTask obj = new TeacherTimeTableAsyncTask(o, AutoSyncService.this, AutoSyncService.this, "false");
+                obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            }
 
         }
 
@@ -286,6 +297,15 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
 
     public void Syncdata()
     {
+        SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(AutoSyncService.this);
+        SharedPreferences.Editor edit = sharedpreferences.edit();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR,3);
+        SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
+        edit.putString("NextSyncUpTime", df1.format(calendar.getTime()));
+        edit.putString("LastSyncUpTime", df1.format(Calendar.getInstance().getTime()));
+        edit.commit();
+
         ArrayList<QueueListModel> lst = qr.GetQueueData();
         Log.d("TIMER", " " + Calendar.getInstance().getTime() + ": " + lst.size());
         if(lst.size()>0)
@@ -348,7 +368,6 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                 else if(type.equals("Announcement"))
                 {
                     TeacherGeneralCommunicationListModel obj = qr.GetAnnouncementID(id);
-                    SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(AutoSyncService.this);
                     String scode = sharedpreferences.getString("SchoolCode", "");
                     obj.setSchoolCode(scode);
                     TeacherGCommunicationAsyncTaskPost asyncobj = new TeacherGCommunicationAsyncTaskPost(obj, AutoSyncService.this,  AutoSyncService.this,"false");
@@ -399,8 +418,24 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                 else if(type.equals("TimeTable"))
                 {
                     TeacherTimeTableExamListModel o = qr.GetTimeTable(id);
-                    TeacherTimeTableAsyncTask obj = new TeacherTimeTableAsyncTask(o, AutoSyncService.this, AutoSyncService.this, "false");
-                    obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                    GoogleDriveUploadClass o1 = new GoogleDriveUploadClass();
+                    o1.setGdID(Integer.valueOf(o.getTtid()));
+                    o1.setFilepath(o.getImage());
+                    o1.setFoldername(Config.FUN_CENTER_FOLDER);
+                    o1.setGdfilename(o.getImage());
+                    o1.setGdtype("TimeTable");
+                    if(TextUtils.isEmpty(o.getSharedLink())) {
+                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
+                        objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                    }
+                    else
+                    {
+                        TeacherTimeTableAsyncTask obj = new TeacherTimeTableAsyncTask(o, AutoSyncService.this, AutoSyncService.this, "false");
+                        obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                    }
+
+
+
                 }
                 else if(type.equals("Exception"))
                 {

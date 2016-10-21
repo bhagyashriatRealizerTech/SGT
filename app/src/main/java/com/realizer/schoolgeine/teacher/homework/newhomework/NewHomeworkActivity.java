@@ -394,7 +394,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
                 n = -1;
 
                 hid = qr.getHomeworkId();
-                SimpleDateFormat df1 = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+                SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
                 n = qr.insertQueue(hid, "Homework", "1", df1.format(calendar.getTime()));
             }
 

@@ -186,7 +186,7 @@ public class SelectPhotoActivityFunCenter extends AppCompatActivity {
                     if (m > 0)
                     {
                         imgId = qr.getImageId();
-                        SimpleDateFormat df1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                        SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
                         m = qr.insertQueue(imgId, "EventImages", "7", df1.format(Calendar.getInstance().getTime()));
 
                     }

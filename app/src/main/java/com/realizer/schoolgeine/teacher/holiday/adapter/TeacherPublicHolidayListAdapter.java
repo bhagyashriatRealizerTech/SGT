@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.holiday.model.TeacherPublicHolidayListModel;
+import com.realizer.schoolgeine.teacher.queue.QueueListModel;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,6 @@ public class TeacherPublicHolidayListAdapter extends BaseAdapter {
     View convrtview;
     PhotoViewAttacher mAttacher;
 
-
     public TeacherPublicHolidayListAdapter(Context context, ArrayList<TeacherPublicHolidayListModel> dicatationlist) {
         pList = dicatationlist;
         publicholidayDetails = LayoutInflater.from(context);
@@ -44,6 +44,7 @@ public class TeacherPublicHolidayListAdapter extends BaseAdapter {
 
         return pList.get(position);
     }
+
 
     @Override
     public long getItemId(int position) {
@@ -72,7 +73,7 @@ public class TeacherPublicHolidayListAdapter extends BaseAdapter {
         String holidayName[] = pList.get(position).getDesc().trim().split(" ");
         if(holidayName.length>1)
         {
-            holder.initial.setText(holidayName[0].toUpperCase().charAt(0)+""+holidayName[1].toUpperCase().charAt(0));
+            holder.initial.setText(holidayName[0].toUpperCase().charAt(0) + "" + holidayName[1].toUpperCase().charAt(0));
         }
         else if(holidayName.length ==1)
         {

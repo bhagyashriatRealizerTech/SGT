@@ -450,8 +450,8 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
         final SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         SharedPreferences.Editor edit = sharedpreferences.edit();
-        edit.putString("UidName", userName.getText().toString().trim());
-        edit.putString("Username", userName.getText().toString().trim());
+        edit.putString("UidName", userName.getText().toString().trim().toLowerCase());
+        edit.putString("Username", userName.getText().toString().trim().toLowerCase());
         edit.putString("Password", password.getText().toString().trim());
         edit.commit();
 
@@ -902,7 +902,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
         if(from.equalsIgnoreCase("FirstLogin"))
         {
             titledialog.setText("Set Magic Word");
-            infodialog.setText("You  are Logged in First Time ,Please Set Your Magic Word");
+            infodialog.setText("Please Set Your Magic Word , you can use this for password recovery");
             builder.setCancelable(false);
         }
 

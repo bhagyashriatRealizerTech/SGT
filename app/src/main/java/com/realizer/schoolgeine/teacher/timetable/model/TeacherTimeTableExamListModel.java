@@ -15,6 +15,7 @@ public class TeacherTimeTableExamListModel {
     private String division = "";
     private String description="";
     private String hasUploaded = "false";
+    private String sharedLink ="";
 
     public String getTitle() {
         return title;
@@ -94,5 +95,13 @@ public class TeacherTimeTableExamListModel {
 
     public void setHasUploaded(String hasUploaded) {
         this.hasUploaded = hasUploaded;
+    }
+
+    public String getSharedLink() {
+        return sharedLink;
+    }
+
+    public void setSharedLink(String sharedLink) {
+        this.sharedLink = sharedLink;
     }
 }

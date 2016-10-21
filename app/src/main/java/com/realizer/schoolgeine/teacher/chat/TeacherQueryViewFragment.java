@@ -128,7 +128,8 @@ public class TeacherQueryViewFragment extends Fragment implements AbsListView.On
                         n = -1;
 
                         qid = qr.getQueryId();
-                        n = qr.insertQueue(qid, "Query", "2", date);
+                        SimpleDateFormat df2 = new SimpleDateFormat("dd MMM hh:mm:ss a");
+                        n = qr.insertQueue(qid, "Query", "2", df2.format(calendar.getTime()));
                         if (n > 0) {
                            // Toast.makeText(getActivity(), "Queue Inserted Successfully", Toast.LENGTH_SHORT).show();
                             n = -1;
