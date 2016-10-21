@@ -313,20 +313,24 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                         o1.setFoldername(Config.FUN_CENTER_FOLDER);
                         o1.setGdfilename(o.getHwImage64Lst());
                         o1.setGdtype(o.getWork());
-                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
-                        objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                        if(TextUtils.isEmpty(o.getSharedLink())) {
+                            GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
+                            objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                        }
+                        else
+                        {
+                            if(o.getWork().equalsIgnoreCase("Homework"))
+                            {
+                                TeacherHomeworkAsyncTaskPost obj = new TeacherHomeworkAsyncTaskPost(o, AutoSyncService.this, AutoSyncService.this, "false");
+                                obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                            }
+                            else if(o.getWork().equalsIgnoreCase("Classwork"))
+                            {
+                                TeacherClassworkAsyncTaskPost obj = new TeacherClassworkAsyncTaskPost(o, AutoSyncService.this, AutoSyncService.this, "false");
+                                obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                            }
+                        }
                     }
-
-                    /*TeacherHomeworkModel o = qr.GetHomework(id);
-                    if(o.getWork().equalsIgnoreCase("Homework")) {
-                        TeacherHomeworkAsyncTaskPost obj = new TeacherHomeworkAsyncTaskPost(o, AutoSyncService.this, AutoSyncService.this, "false");
-                        obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                    }
-                    else if(o.getWork().equalsIgnoreCase("Classwork"))
-                    {
-                        TeacherClassworkAsyncTaskPost obj = new TeacherClassworkAsyncTaskPost(o, AutoSyncService.this, AutoSyncService.this, "false");
-                        obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                    }*/
                 }
                 else if(type.equals("GiveStar"))
                 {
@@ -359,8 +363,14 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                     o1.setFoldername(Config.FUN_CENTER_FOLDER);
                     o1.setGdfilename(o.getFilename());
                     o1.setGdtype("EventMaster");
-                    GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
-                    objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                    if(TextUtils.isEmpty(o.getSharedlink())) {
+                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
+                        objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                    }
+                    else
+                    {
+
+                    }
                 }
                 else if(type.equals("EventImages"))
                 {
@@ -372,8 +382,18 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                       o1.setFoldername(Config.FUN_CENTER_FOLDER);
                       o1.setGdfilename(o.getFilename());
                       o1.setGdtype("EventImages");
-                      GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
-                      objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                      if(TextUtils.isEmpty(o.getSharedlink()) || o.getSharedlink().equalsIgnoreCase("NoData")) {
+                          GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
+                          objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+
+                      }
+                      else
+                      {
+                          SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AutoSyncService.this);
+                          TeacherFunCenterImageAsynckPost objasync = new TeacherFunCenterImageAsynckPost(o, preferences.getString("STANDARD", ""), preferences.getString("DIVISION", ""), AutoSyncService.this, AutoSyncService.this, "false");
+                          objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                      }
+
                   }
                 }
                 else if(type.equals("TimeTable"))

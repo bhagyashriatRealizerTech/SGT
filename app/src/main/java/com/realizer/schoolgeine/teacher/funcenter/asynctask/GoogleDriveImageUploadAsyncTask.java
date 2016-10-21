@@ -58,7 +58,7 @@ public class GoogleDriveImageUploadAsyncTask extends AsyncTask<Void,Void,File>
         super.onPostExecute(file);
         if(file != null)
 
-            new GoogleDriveShareFileAsyncTask(file,mService,cb,o).execute();
+            new GoogleDriveShareFileAsyncTask(file,mService,cb,o).executeOnExecutor(THREAD_POOL_EXECUTOR);
     }
 
     @Override

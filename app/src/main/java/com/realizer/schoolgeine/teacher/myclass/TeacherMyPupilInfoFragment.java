@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,10 +131,16 @@ public class TeacherMyPupilInfoFragment extends Fragment implements FragmentBack
 
                     if( !obj.getString("dob").equals("") &&  !obj.getString("dob").equals(null) &&  !obj.getString("dob").equals("null")) {
                         String timestamp = obj.getString("dob").trim().split("\\(")[1].trim().split("\\-")[0];
-                        Date createdOn = new Date(Long.parseLong(timestamp));
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
-                        String formattedDate = sdf.format(createdOn);
-                        dob.setText(formattedDate);
+                        if(TextUtils.isEmpty(timestamp))
+                        {
+                           dob.setText("No Birthday Found");
+                        }
+                        else {
+                            Date createdOn = new Date(Long.parseLong(timestamp));
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+                            String formattedDate = sdf.format(createdOn);
+                            dob.setText(formattedDate);
+                        }
                     }
                     else
                     dob.setText("No Birthday Found");

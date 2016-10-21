@@ -33,7 +33,7 @@ public class Config {
 
     public static final String Account_Name = "realizertech1@gmail.com";
 
-    public static final String FUN_CENTER_FOLDER = "0B9pJvqDPmAzZTkMta29fQ2ZqLTA";
+    public static final String FUN_CENTER_FOLDER = "0B9pJvqDPmAzZelVhNm5aRHA4Rnc";
     public static final String HOMEWORK_FOLDER = "0B9pJvqDPmAzZTkMta29fQ2ZqLTA";
     /**
      * Tag used on log messages.

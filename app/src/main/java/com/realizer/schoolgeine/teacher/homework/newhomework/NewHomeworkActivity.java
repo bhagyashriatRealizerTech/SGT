@@ -166,6 +166,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
         }
 
         spinnerdate.setSelection(0);
+        spinnerdate.setEnabled(false);
     }
 
     public void FillSubjectTypes()
@@ -238,7 +239,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
             for(int i=0;i<templist.size();i++)
             {
                 String path = templist.get(i).toString();
-                Bitmap bitmap = ImageStorage.decodeSampledBitmapFromPath(path, 150, 150);
+                Bitmap bitmap =BitmapFactory.decodeFile(path);
 
                 TeacherHomeworkModel obj = new TeacherHomeworkModel();
                 obj.setPic(bitmap);

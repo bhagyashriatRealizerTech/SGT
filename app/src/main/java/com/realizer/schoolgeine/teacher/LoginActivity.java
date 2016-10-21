@@ -499,27 +499,6 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
 
                     getResultsFromApi();
 
-                   /* Intent ser = new Intent(LoginActivity.this, AutoSyncService.class);
-                    Singlton.setAutoserviceIntent(ser);
-                    startService(ser);
-                    Intent i = new Intent(LoginActivity.this, DrawerActivity.class);
-                    startActivity(i);*/
-
-                   /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                   String temp = preferences.getString("DisplayName","");
-                   *//*Intent i = new Intent(LoginActivity.this, AddPhotDisplayNameActivity.class);
-                   startActivity(i);*//*
-                  if(temp.length()==0)
-                   {
-                       Intent i = new Intent(LoginActivity.this, AddPhotDisplayNameActivity.class);
-                       startActivity(i);
-                   }
-                   else
-                   {
-                       Intent i = new Intent(LoginActivity.this, DrawerActivity.class);
-                       startActivity(i);
-                   }
-*/
                 } else {
                     loading.setVisibility(View.GONE);
                     recoverPasswordByMagicWord("FirstLogin", b, s);
@@ -560,38 +539,17 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
             if (b) {
             if (mWord.trim().length() > 0 && !mWord.equalsIgnoreCase("null")) {
 
-               // if (b == true) {
                     GCMReg();
                     edit.putString("Login", "true");
                     edit.commit();
 
                     getResultsFromApi();
 
-                   /* Intent ser = new Intent(LoginActivity.this, AutoSyncService.class);
-                    Singlton.setAutoserviceIntent(ser);
-                    startService(ser);
-                    Intent i = new Intent(LoginActivity.this, DrawerActivity.class);
-                    startActivity(i);*/
 
-               /* } else {
-                    if (num == 0)
-                        Config.alertDialog(LoginActivity.this, "Login", "Invalid credentials, Please Try Again");
-                        //Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
-                    else if (num == 1)
-                        Config.alertDialog(LoginActivity.this, "Network Error", "Server Not Responding Please Try After Some Time");
-                    //Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
-                }*/
             } else {
-               // if (b)
+
                     recoverPasswordByMagicWord("FirstLogin", b, s);
-               /* else {
-                    if (num == 0)
-                        Config.alertDialog(LoginActivity.this, "Login", "Invalid credentials, Please Try Again");
-                        //Toast.makeText(getApplicationContext(), "Invalid credentials, Pls Try again!", Toast.LENGTH_LONG).show();
-                    else if (num == 1)
-                        Config.alertDialog(LoginActivity.this, "Network Error", "Server Not Responding Please Try After Some Time");
-                    //Toast.makeText(getApplicationContext(), "Server Not Responding Please Try After Some Time", Toast.LENGTH_SHORT).show();
-                }*/
+
             }
         }
             else {
@@ -721,10 +679,6 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
             {
                 JSONObject obj = subAllocation.getJSONObject(j);
                 teacherid = obj.getString("TeacherUserId");
-               /* SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("DisplayName", teacherid);
-                editor.commit();*/
                 Stndard=obj.getString("Std");
                 division=obj.getString("division");
                 String subject=obj.getString("subject");

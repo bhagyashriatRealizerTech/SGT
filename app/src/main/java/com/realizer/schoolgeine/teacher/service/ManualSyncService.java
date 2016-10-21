@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.gson.Gson;
@@ -382,8 +383,21 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                         o1.setFoldername(Config.FUN_CENTER_FOLDER);
                                         o1.setGdfilename(o.getHwImage64Lst());
                                         o1.setGdtype(o.getWork());
-                                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), ManualSyncService.this, o1);
-                                        objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                        if(TextUtils.isEmpty(o.getSharedLink())) {
+                                            GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), ManualSyncService.this, o1);
+                                            objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                        }
+                                        else
+                                        {
+                                            if(o.getWork().equalsIgnoreCase("Homework")) {
+                                                TeacherHomeworkAsyncTaskPost obj = new TeacherHomeworkAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
+                                                obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                            }
+                                            else if(o.getWork().equalsIgnoreCase("Classwork")) {
+                                                TeacherClassworkAsyncTaskPost obj = new TeacherClassworkAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
+                                                obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                            }
+                                        }
                                     }
                                    /* TeacherHomeworkModel o = qr.GetHomework(id);
                                     if(o.getWork().equalsIgnoreCase("Homework")) {
@@ -427,8 +441,15 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                     o1.setFoldername(Config.FUN_CENTER_FOLDER);
                                     o1.setGdfilename(o.getFilename());
                                     o1.setGdtype("EventMaster");
-                                    GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), ManualSyncService.this, o1);
-                                    objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                    if(TextUtils.isEmpty(o.getSharedlink())) {
+                                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), ManualSyncService.this, o1);
+                                        objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                    }
+                                    else
+                                    {
+                                        TeacherFunCenterAsyncTaskPost objasync = new TeacherFunCenterAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
+                                        objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                    }
                                 }
                                 else if(type.equals("EventImages"))
                                 {
@@ -441,8 +462,16 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                         o1.setFoldername(Config.FUN_CENTER_FOLDER);
                                         o1.setGdfilename(o.getFilename());
                                         o1.setGdtype("EventImages");
-                                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), ManualSyncService.this, o1);
-                                        objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                        if(TextUtils.isEmpty(o.getSharedlink()) || o.getSharedlink().equalsIgnoreCase("NoData")) {
+                                            GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), ManualSyncService.this, o1);
+                                            objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                        }
+                                        else
+                                        {
+                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ManualSyncService.this);
+                                            TeacherFunCenterImageAsynckPost objasync = new TeacherFunCenterImageAsynckPost(o, preferences.getString("STANDARD", ""), preferences.getString("DIVISION", ""), ManualSyncService.this, ManualSyncService.this, "false");
+                                            objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                        }
                                     }
 
                                 }
