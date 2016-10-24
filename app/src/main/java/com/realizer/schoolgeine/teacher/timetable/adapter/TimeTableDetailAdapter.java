@@ -1,4 +1,4 @@
-package com.realizer.schoolgeine.teacher.homework.newhomework.adapter;
+package com.realizer.schoolgeine.teacher.timetable.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,35 +12,31 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.gallaryimagepicker.PhotoAlbumActivity;
 import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
-import com.realizer.schoolgeine.teacher.R;
+import com.realizer.schoolgeine.teacher.view.FullImageViewPager;
 
 import java.util.ArrayList;
 
 /**
  * Created by Win on 08/04/2016.
  */
-public class NewHomeworkGalleryAdapter extends BaseAdapter
+public class TimeTableDetailAdapter extends BaseAdapter
 {
     private ArrayList<TeacherHomeworkModel> elementDetails;
-    private ArrayList<String> imageList;
     private LayoutInflater mInflater;
     Context context;
-    Bitmap decodedByte;
-    String data;
-    TextView datetext;
-    ImageView status;
-    boolean flag;
-    public NewHomeworkGalleryAdapter(Context context, ArrayList<TeacherHomeworkModel> results,ArrayList<String> imageList,boolean flag)
+    String imagelist;
+    String title;
+    public TimeTableDetailAdapter(Context context, ArrayList<TeacherHomeworkModel> results , String imagelist,String title)
     {
         elementDetails = results;
         mInflater = LayoutInflater.from(context);
         this.context=context;
-        this.imageList = imageList;
-        Singlton.setFialbitmaplist(elementDetails);
-        this.flag = flag;
+        this.imagelist = imagelist;
+        this.title = title;
     }
 
     @Override
@@ -64,42 +60,31 @@ public class NewHomeworkGalleryAdapter extends BaseAdapter
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imgThumb);
         ImageButton imgdelete = (ImageButton)convertView.findViewById(R.id.chkImage);
         imgdelete.setTag(position);
+        imgdelete.setVisibility(View.GONE);
+
         if(elementDetails.get(position).getPic() != null)
             imageview.setImageBitmap(elementDetails.get(position).getPic());
 
-        if(elementDetails.get(position).getHwTxtLst().equalsIgnoreCase("NoIcon")) {
-            imgdelete.setVisibility(View.GONE);
+
             imageview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Singlton.setImageList(imageList);
-                    Intent intent = new Intent(context, PhotoAlbumActivity.class);
-                    Bundle b = new Bundle();
-                    b.putBoolean("FunCenter", false);
-                    b.putBoolean("Homework",flag);
-                    intent.putExtras(b);
+
+                    Intent intent = new Intent(context,FullImageViewPager.class);
+                    intent.putExtra("HEADERTEXT",title);
+                    intent.putExtra("HWUUID", elementDetails.get(position).getHid()+position);
+
                     context.startActivity(intent);
                 }
             });
-        }
 
-        imgdelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                int pos = (Integer)v.getTag();
-
-                elementDetails.remove(pos);
-                Singlton.setFialbitmaplist(elementDetails);
-                imageList.remove(pos);
-                notifyDataSetChanged();
-
-            }
-        });
 
 
         return convertView;
     }
+
+
 
 
 }

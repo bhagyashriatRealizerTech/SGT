@@ -376,9 +376,9 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                     adbdialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            Intent intent = new Intent(ManualSyncService.this,DrawerActivity.class);
+                           /* Intent intent = new Intent(ManualSyncService.this,DrawerActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
+                            startActivity(intent);*/
 
                             for(int i=0;i<lst.size();i++)
                             {

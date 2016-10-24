@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,10 +25,14 @@ import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
+import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
+import com.realizer.schoolgeine.teacher.timetable.adapter.TimeTableDetailAdapter;
 import com.realizer.schoolgeine.teacher.view.FullImageViewActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.util.ArrayList;
 
 /**
  * Created by Bhagyashri on 8/29/2016.
@@ -36,8 +42,12 @@ public class TeacherHomeworkDetailFragment extends Fragment implements FragmentB
     TextView txtSubject,txtDate,txtTeacherName,txtUploadStatus,txtDescription,txtdevider;
     TextView txtstd ,txtclss;
     String htext,path;
-    ImageView image1,image2,image3;
     LinearLayout imagelayout;
+
+    GridView gridView;
+    TimeTableDetailAdapter adapter;
+    int imageCount;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,133 +67,19 @@ public class TeacherHomeworkDetailFragment extends Fragment implements FragmentB
         ((DrawerActivity) getActivity()).getSupportActionBar().show();
 
         txtSubject.setText(bundle.getString("SubjectName"));
-        txtDate.setText(Config.getMediumDate(bundle.getString("HomeworkDate")));
+        txtDate.setText(bundle.getString("HomeworkDate"));
         txtTeacherName.setText( bundle.getString("TeacherName"));
+
         if(bundle.getString("Status").equalsIgnoreCase("true"))
         txtUploadStatus.setText("Uploaded");
         else
         txtUploadStatus.setText("Pending");
+
         txtDescription.setText(bundle.getString("HomeworkText"));
 
-        if(path.equalsIgnoreCase("NoImage")) {
-          /*  frameimageClik.setVisibility(View.GONE);*/
-            txtdevider.setVisibility(View.GONE);
-            imagelayout.setVisibility(View.GONE);
-        }
-        else {
-          /*  frameimageClik.setVisibility(View.VISIBLE);*/
-            txtdevider.setVisibility(View.VISIBLE);
-            imagelayout.setVisibility(View.VISIBLE);
-            String[] IMG ;
-            try {
-                JSONArray jarr = new JSONArray(path);
+        imageCount = bundle.getInt("HWUUID");
 
-                IMG = new String[jarr.length()];
-                for(int i=0;i<jarr.length();i++)
-                {
-                    IMG[i] = jarr.getString(i);
-                }
-
-                if(jarr.length()==1) {
-                    image1.setVisibility(View.VISIBLE);
-                    image2.setVisibility(View.INVISIBLE);
-                    image3.setVisibility(View.INVISIBLE);
-
-                    String filePath = IMG[0];
-                    byte[] decodedString = Base64.decode(filePath, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    image1.setImageBitmap(decodedByte);
-                }
-                else if(jarr.length()==2) {
-                    image1.setVisibility(View.VISIBLE);
-                    image2.setVisibility(View.VISIBLE);
-                    image3.setVisibility(View.INVISIBLE);
-
-                    String filePath = IMG[0];
-                    byte[] decodedString = Base64.decode(filePath, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    image1.setImageBitmap(decodedByte);
-
-                     filePath = IMG[1];
-                     decodedString = Base64.decode(filePath, Base64.DEFAULT);
-                     decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                     image2.setImageBitmap(decodedByte);
-                }
-                else if(jarr.length()==3) {
-                    image1.setVisibility(View.VISIBLE);
-                    image2.setVisibility(View.VISIBLE);
-                    image3.setVisibility(View.VISIBLE);
-
-                    String filePath = IMG[0];
-                    byte[] decodedString = Base64.decode(filePath, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    image1.setImageBitmap(decodedByte);
-
-                    filePath = IMG[1];
-                    decodedString = Base64.decode(filePath, Base64.DEFAULT);
-                    decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    image2.setImageBitmap(decodedByte);
-
-                    filePath = IMG[2];
-                    decodedString = Base64.decode(filePath, Base64.DEFAULT);
-                    decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    image3.setImageBitmap(decodedByte);
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-        /*txtImageClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("ImageString", path);
-                editor.commit();
-                loadPhoto(path);
-            }
-        });*/
-
-        image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tempPath =  path+"@@@0";
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("ImageString", tempPath);
-                editor.commit();
-                loadPhoto(tempPath);
-            }
-        });
-
-        image2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tempPath =  path+"@@@1";
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("ImageString", tempPath);
-                editor.commit();
-                loadPhoto(tempPath);
-            }
-        });
-
-        image3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tempPath =  path+"@@@2";
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("ImageString", tempPath);
-                editor.commit();
-                loadPhoto(tempPath);
-            }
-        });
-
-
-
+        new GetImagesTimeTable().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         return rootView;
     }
@@ -194,25 +90,64 @@ public class TeacherHomeworkDetailFragment extends Fragment implements FragmentB
         txtDate = (TextView)view.findViewById(R.id.txthomeworkdate);
         txtTeacherName = (TextView)view.findViewById(R.id.txtteacherName);
         txtUploadStatus = (TextView)view.findViewById(R.id.txtstatus);
-     /*   txtImageClick = (TextView)view.findViewById(R.id.txtclicktoviewimage);
-        txtImageClick.setPaintFlags(txtImageClick.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);*/
         txtDescription = (TextView)view.findViewById(R.id.txtdescription);
         txtstd  = (TextView) view.findViewById(R.id.txttclassname);
         txtclss = (TextView) view.findViewById(R.id.txttdivname);
-        /*frameimageClik = (FrameLayout) view.findViewById(R.id.frameimageClik);*/
         txtdevider = (TextView)view.findViewById(R.id.txtDivider);
-        image1 = (ImageView)view.findViewById(R.id.btnCapturePicture1);
-        image2 = (ImageView)view.findViewById(R.id.btnCapturePicture2);
-        image3 = (ImageView)view.findViewById(R.id.btnCapturePicture3);
+
         imagelayout = (LinearLayout)view.findViewById(R.id.imagelayout);
+        gridView= (GridView) view.findViewById(R.id.gallerygridView);
 
     }
 
+    public class GetImagesTimeTable extends AsyncTask<Void, Void,Void>
+    {
+        private ArrayList<TeacherHomeworkModel> elementDetails = new ArrayList<>();
+        JSONArray temp;
 
-    private void loadPhoto(String path_lst) {
-        Intent i = new Intent(getActivity(),FullImageViewActivity.class);
-        i.putExtra("FLAG",1);
-        startActivity(i);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // loading.setVisibility(View.VISIBLE);
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                temp = new JSONArray(path);
+
+                for(int i=0;i<temp.length();i++)
+                {
+                    String path = temp.get(i).toString();
+                    Bitmap bitmap =BitmapFactory.decodeFile(path);
+
+                    TeacherHomeworkModel obj = new TeacherHomeworkModel();
+                    obj.setPic(bitmap);
+                    obj.setHid(imageCount);
+                    elementDetails.add(obj);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if(elementDetails.size()>0) {
+                gridView.setVisibility(View.VISIBLE);
+                adapter = new TimeTableDetailAdapter(getActivity(),elementDetails,path,"Homework");
+                gridView.setAdapter(adapter);
+                gridView.setFastScrollEnabled(true);
+            }
+
+        }
     }
 
     @Override

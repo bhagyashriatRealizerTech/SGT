@@ -16,6 +16,7 @@ public class TeacherTimeTableExamListModel {
     private String description="";
     private String hasUploaded = "false";
     private String sharedLink ="";
+    private int imageCount =0;
 
     public String getTitle() {
         return title;
@@ -103,5 +104,13 @@ public class TeacherTimeTableExamListModel {
 
     public void setSharedLink(String sharedLink) {
         this.sharedLink = sharedLink;
+    }
+
+    public int getImageCount() {
+        return imageCount;
+    }
+
+    public void setImageCount(int imageCount) {
+        this.imageCount = imageCount;
     }
 }

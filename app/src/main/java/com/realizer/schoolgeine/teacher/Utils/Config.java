@@ -21,8 +21,8 @@ import java.util.Date;
  */
 public class Config {
     // File upload url (replace the ip with your server address)
-    public static final String URL = "http://104.217.254.180/SJRestWCF/svcEmp.svc/";
-    //public static final String URL ="http://192.168.1.14/SJRestWCF/svcEmp.svc/";
+   // public static final String URL = "http://104.217.254.180/SJRestWCF/svcEmp.svc/";
+    public static final String URL ="http://45.35.4.250/SJRestWCF/svcEmp.svc/";
 
     // Directory name to store captured images and videos
     public static final String IMAGE_DIRECTORY_NAME = "School Genie";

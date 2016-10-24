@@ -10,7 +10,8 @@
  <com.realizer.schoolgeine.teacher.view.ZoomImage
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+     android:layout_above="@+id/txtcounter"/>
 
     <TextView
         android:layout_width="wrap_content"

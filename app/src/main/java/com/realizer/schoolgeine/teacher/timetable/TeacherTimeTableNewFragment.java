@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -28,12 +29,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
 import com.realizer.schoolgeine.teacher.Utils.ImageStorage;
+import com.realizer.schoolgeine.teacher.gallaryimagepicker.PhotoAlbumActivity;
+import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
 import com.realizer.schoolgeine.teacher.homework.newhomework.NewHomeworkActivity;
 import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
@@ -41,6 +45,7 @@ import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
+import com.realizer.schoolgeine.teacher.homework.newhomework.adapter.NewHomeworkGalleryAdapter;
 import com.realizer.schoolgeine.teacher.myclass.TeacherMyClassDialogBoxActivity;
 import com.realizer.schoolgeine.teacher.queue.QueueListModel;
 import com.realizer.schoolgeine.teacher.timetable.model.TeacherTimeTableExamListModel;
@@ -51,6 +56,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -79,6 +85,12 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
     TextView txtstd,txtclss;
     int ttid=0;
 
+    GridView gridView;
+    ArrayList<String> templist;
+    ArrayList<TeacherHomeworkModel> hwimage;
+    NewHomeworkGalleryAdapter adapter;
+    ArrayList<String> base64imageList;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -99,7 +111,7 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
         txtclss.setText(preferences.getString("DIVISION", ""));
          givenby = preferences.getString("UidName", "");
         setHasOptionsMenu(true);
-
+        gridView= (GridView) rootView.findViewById(R.id.gallerygridView);
         /**
          * Capture image button click event
          */
@@ -109,12 +121,85 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
             @Override
             public void onClick(View v) {
                 // capture picture
-                getOption();
+                //getOption();
+                Intent intent = new Intent(getActivity(),PhotoAlbumActivity.class);
+                Bundle b = new Bundle();
+                b.putBoolean("FunCenter", false);
+                b.putBoolean("Homework",false);
+                intent.putExtras(b);
+                getActivity().startActivity(intent);
             }
         });
 
 
         return rootView;
+    }
+
+    public class GetImagesTimeTable extends AsyncTask<Void, Void,Void>
+    {
+
+
+        ArrayList<String> temp;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // loading.setVisibility(View.VISIBLE);
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            templist = new ArrayList<>();
+            base64imageList = new ArrayList<>();
+            templist.addAll(Singlton.getImageList());
+            Singlton.setImageList(new ArrayList<String>());
+            hwimage = new ArrayList<>();
+            temp = new ArrayList<>();
+
+            for(int i=0;i<templist.size();i++)
+            {
+                String path = templist.get(i).toString();
+                Bitmap bitmap =BitmapFactory.decodeFile(path);
+
+                TeacherHomeworkModel obj = new TeacherHomeworkModel();
+                obj.setPic(bitmap);
+
+                hwimage.add(i, obj);
+                temp.add(i,path);
+            }
+            if(templist.size()<10)
+            {
+                Bitmap icon = BitmapFactory.decodeResource(TeacherTimeTableNewFragment.this.getResources(),
+                        R.drawable.noicon);
+                TeacherHomeworkModel obj = new TeacherHomeworkModel();
+                obj.setPic(icon);
+                obj.setHwTxtLst("NoIcon");
+                hwimage.add(templist.size(),obj);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+
+            if(templist.size()>0) {
+                imgsyllabus.setVisibility(View.GONE);
+                gridView.setVisibility(View.VISIBLE);
+                adapter = new NewHomeworkGalleryAdapter(getActivity(), hwimage,temp,false);
+                gridView.setAdapter(adapter);
+                gridView.setFastScrollEnabled(true);
+            }
+            else
+            {
+                imgsyllabus.setVisibility(View.VISIBLE);
+            }
+            //loading.setVisibility(View.GONE);
+        }
     }
 
     public void saveTimeTable()
@@ -134,58 +219,50 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
            // Toast.makeText(getActivity(), "Please Enter Description", Toast.LENGTH_LONG).show();
             //Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.Timetabledescription)).toString());
         }
-        if (imgsyllabus.getDrawable() == null)
+        if ( Singlton.getFialbitmaplist().size()<=0)
         {
             Config.alertDialog(Singlton.getContext(), "Time Table", "Please Add Image");
            // Toast.makeText(getActivity(), "Please insert image", Toast.LENGTH_LONG).show();
         }
         else {
-            Bitmap bitmap = ((BitmapDrawable)imgsyllabus.getDrawable()).getBitmap();
-
-            encodedImage = ImageStorage.saveEventToSdCard(bitmap, "TimeTable", getActivity());
-
+            ArrayList<TeacherHomeworkModel> tempImageList = new ArrayList<>();
+            tempImageList = Singlton.getFialbitmaplist();
+            for (int i = 0; i < tempImageList.size(); i++) {
+                if (tempImageList.get(i).getHwTxtLst().equals("NoIcon")) {
+                    tempImageList.remove(i);
+                }
+            }
             SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
             Calendar calendar1 = Calendar.getInstance();
 
+            SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
+            Calendar calendar = Calendar.getInstance();
+
+            for (int i = 0; i < tempImageList.size(); i++)
+            {
+
+            encodedImage = ImageStorage.saveEventToSdCard(tempImageList.get(i).getPic(), "TimeTable", getActivity());
+
             long n = qr.insertTimeTable(txtstd.getText().toString(), txtclss.getText().toString(), timetableName.getText().toString(), encodedImage, givenby, df2.format(calendar1.getTime()), description.getText().toString());
 
-            TeacherTimeTableExamListModel tobj=new TeacherTimeTableExamListModel();
-            tobj.setStandard(txtstd.getText().toString());
-            tobj.setDivision(txtclss.getText().toString());
-            tobj.setTitle(timetableName.getText().toString());
-            tobj.setImage(encodedImage);
-            tobj.setTeacher(givenby);
-            tobj.setDate(df2.format(calendar1.getTime()));
-            tobj.setDescription(description.getText().toString());
-
             if (n > 0) {
-                // Toast.makeText(getActivity(), "Homework Inserted Successfully", Toast.LENGTH_SHORT).show();
                 n = -1;
                 ttid = qr.getTimeTableId();
-                SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
-                Calendar calendar = Calendar.getInstance();
                 n = qr.insertQueue(ttid, "TimeTable", "1", df1.format(calendar.getTime()));
-                if (n > 0) {
-                    // Toast.makeText(getActivity(), "Queue Inserted Successfully", Toast.LENGTH_SHORT).show();
-                    n = -1;
-                   /* if (isConnectingToInternet()) {
-
-                        TeacherTimeTableAsyncTask obj = new TeacherTimeTableAsyncTask(tobj, getActivity(), TeacherTimeTableNewFragment.this, "true");
-                        obj.execute();
-                    } else {*/
-                    TeacherTimeTableFragment fragment = new TeacherTimeTableFragment();
-                    Singlton.setSelectedFragment(fragment);
-                    Singlton.setMainFragment(fragment);
-                    Bundle bundle = new Bundle();
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    bundle.putInt("Checked", 1);
-                    fragment.setArguments(bundle);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.replace(R.id.frame_container, fragment);
-                    fragmentTransaction.commit();
-                    //}
-                }
+              }
             }
+
+            TeacherTimeTableFragment fragment = new TeacherTimeTableFragment();
+            Singlton.setSelectedFragment(fragment);
+            Singlton.setMainFragment(fragment);
+            Bundle bundle = new Bundle();
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            bundle.putInt("Checked", 1);
+            fragment.setArguments(bundle);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.replace(R.id.frame_container, fragment);
+            fragmentTransaction.commit();
+
             timetableName.setText("");
             description.setText("");
             imgsyllabus.setImageResource(android.R.color.transparent);
@@ -480,5 +557,15 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
         super.onResume();
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        if(Singlton.getImageList().size()>0)
+        {
+            new GetImagesTimeTable().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        else
+        {
+            imgsyllabus.setVisibility(View.VISIBLE);
+            gridView.setVisibility(View.GONE);
+        }
     }
 }

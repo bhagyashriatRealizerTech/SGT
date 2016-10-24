@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -30,11 +31,17 @@ import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
+import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkListModel;
+import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
 import com.realizer.schoolgeine.teacher.myclass.TeacherMyClassDialogBoxActivity;
 import com.realizer.schoolgeine.teacher.timetable.adapter.TeacherTimeTableExamListAdapter;
 import com.realizer.schoolgeine.teacher.timetable.model.TeacherTimeTableExamListModel;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Win on 11/25/2015.
@@ -77,7 +84,7 @@ public class TeacherTimeTableFragment extends Fragment implements FragmentBackPr
 
         j=i;
         Log.d("Checked", "" + i);
-        ArrayList<TeacherTimeTableExamListModel> syllabus = GetSyllabusList(preferences.getString("STANDARD", ""),preferences.getString("DIVISION", ""));
+       /* ArrayList<TeacherTimeTableExamListModel> syllabus = GetSyllabusList(preferences.getString("STANDARD", ""),preferences.getString("DIVISION", ""));
         listsyllabus.setVisibility(View.VISIBLE);
         if(syllabus.size()>0) {
             noData.setVisibility(View.GONE);
@@ -88,7 +95,8 @@ public class TeacherTimeTableFragment extends Fragment implements FragmentBackPr
         {
             noData.setVisibility(View.VISIBLE);
             listsyllabus.setVisibility(View.INVISIBLE);
-        }
+        }*/
+        new GetTimeTableAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         Singlton obj = Singlton.getInstance();
         resultReceiver = new MessageResultReceiver(null);
@@ -106,10 +114,11 @@ public class TeacherTimeTableFragment extends Fragment implements FragmentBackPr
                 Singlton.setSelectedFragment(fragment);
                 Bundle bundle = new Bundle();
                 bundle.putString("Title",homeworkObj.getTitle());
-                bundle.putString("TimeTableDate",homeworkObj.getDate());
+                bundle.putString("TimeTableDate",Config.getMediumDate(homeworkObj.getDate()));
                 bundle.putString("TeacherName",homeworkObj.getTeacher());
                 bundle.putString("TimeTableImage",homeworkObj.getImage());
                 bundle.putString("TimeTableText",homeworkObj.getDescription());
+                bundle.putInt("ImageCount", homeworkObj.getImageCount());
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_container,fragment);
@@ -137,7 +146,21 @@ public class TeacherTimeTableFragment extends Fragment implements FragmentBackPr
     {
 
         ArrayList<TeacherTimeTableExamListModel> ttlst=qr.GetTimeTableData(std,div);
+        List<TeacherHomeworkModel> imageList = new ArrayList<>();
+
+        for(int i=0;i<ttlst.size();i++)
+        {
+            TeacherHomeworkModel obj = new TeacherHomeworkModel();
+            obj.setHwImage64Lst(ttlst.get(i).getImage());
+            obj.setSubject(ttlst.get(i).getTitle());
+            imageList.add(i,obj);
+        }
+
+        Singlton.setHomeworkthumbnailList(imageList);
+
         ArrayList<TeacherTimeTableExamListModel> results = new ArrayList<>();
+        ArrayList<TeacherTimeTableExamListModel> result1 = new ArrayList<>();
+
         for(int i=0;i<ttlst.size();i++)
         {
             TeacherTimeTableExamListModel hDetail = new TeacherTimeTableExamListModel();
@@ -154,7 +177,69 @@ public class TeacherTimeTableFragment extends Fragment implements FragmentBackPr
                 hDetail.setImage(obj.getImage());
             results.add(hDetail);
         }
-        return results;
+        if(results.size()>1) {
+            String sub = results.get(0).getDescription();
+            JSONArray arr = new JSONArray();
+            try {
+                arr.put(0, results.get(0).getImage());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String images = arr.toString();
+            JSONArray arr1 = new JSONArray();
+            int forcounter = 0;
+            TeacherTimeTableExamListModel hD = results.get(0);
+            hD.setImage(arr.toString());
+            hD.setImageCount(0);
+            result1.add(forcounter, hD);
+            try {
+                for (int j = 1; j < results.size(); j++) {
+                    TeacherTimeTableExamListModel hDetail = results.get(j);
+                    if (sub.equalsIgnoreCase(results.get(j).getDescription())) {
+                        if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
+
+                        } else {
+                            arr1 = new JSONArray(images);
+                            arr1.put(arr1.length(), results.get(j).getImage());
+                            hDetail.setImage(arr1.toString());
+                        }
+
+                        result1.remove(forcounter);
+                    } else {
+                        forcounter = forcounter + 1;
+
+                        if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
+
+                        } else {
+                            arr1 = new JSONArray();
+                            arr1.put(0, results.get(j).getImage());
+                            hDetail.setImage(arr1.toString());
+                        }
+                    }
+                    if (forcounter != 0) {
+                        if (result1.get(forcounter - 1).getImage().equalsIgnoreCase("NoImage")) {
+                            hD.setImageCount(0);
+                        } else {
+                            JSONArray temp = new JSONArray(result1.get(forcounter - 1).getImage());
+                            hDetail.setImageCount(result1.get(forcounter - 1).getImageCount() + temp.length());
+                        }
+                    } else {
+                        hD.setImageCount(0);
+                    }
+
+                    result1.add(forcounter, hDetail);
+                    sub = results.get(j).getDescription();
+                    images = arr1.toString();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+            else
+            result1 = results;
+
+            return result1;
+
     }
 
     @Override
@@ -242,21 +327,48 @@ public class TeacherTimeTableFragment extends Fragment implements FragmentBackPr
         public void run() {
 
             if(update.equals("RefreshUI")) {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                ArrayList<TeacherTimeTableExamListModel> syllabus = GetSyllabusList(preferences.getString("STANDARD", ""), preferences.getString("DIVISION", ""));
-                if(syllabus.size()>0) {
-                    noData.setVisibility(View.GONE);
-                    listsyllabus.setVisibility(View.VISIBLE);
-                    listsyllabus.setAdapter(new TeacherTimeTableExamListAdapter(getActivity(), syllabus));
-                }
-                else
-                {
-                    noData.setVisibility(View.VISIBLE);
-                    listsyllabus.setVisibility(View.INVISIBLE);
-                }
+
+                new GetTimeTableAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
 
         }
+    }
+
+    public class GetTimeTableAsyncTask extends AsyncTask<Void,Void,Void>
+    {
+        ArrayList<TeacherTimeTableExamListModel> syllabus;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            syllabus = GetSyllabusList(preferences.getString("STANDARD", ""), preferences.getString("DIVISION", ""));
+
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(syllabus.size()>0) {
+                noData.setVisibility(View.GONE);
+                listsyllabus.setVisibility(View.VISIBLE);
+                listsyllabus.setAdapter(new TeacherTimeTableExamListAdapter(getActivity(), syllabus));
+            }
+            else
+            {
+                noData.setVisibility(View.VISIBLE);
+                listsyllabus.setVisibility(View.INVISIBLE);
+            }
+        }
+
+
     }
 
 }

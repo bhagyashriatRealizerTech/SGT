@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.FragmentBackPressedListener;
 import com.realizer.schoolgeine.teacher.R;
+import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
@@ -53,13 +54,15 @@ public class SyncUpFragment extends Fragment implements FragmentBackPressedListe
         lastSync = (TextView)rootView.findViewById(R.id.txtlastsyncup);
         nextSync = (TextView)rootView.findViewById(R.id.txtnextsyncup);
 
+        ((DrawerActivity) getActivity()).getSupportActionBar().setTitle(Config.actionBarTitle("Sync Up", getActivity()));
+        ((DrawerActivity) getActivity()).getSupportActionBar().show();
 
 
         qr = new DatabaseQueries(getActivity());
 
         SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        lastSync.setText(sharedpreferences.getString("LastSyncUpTime",""));
-        nextSync.setText(sharedpreferences.getString("NextSyncUpTime",""));
+        lastSync.setText("Last Sync Up Time: "+sharedpreferences.getString("LastSyncUpTime",""));
+        nextSync.setText("Next Sync Up Time: "+sharedpreferences.getString("NextSyncUpTime",""));
 
 
         new GetSyncUpData().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

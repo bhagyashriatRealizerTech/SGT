@@ -102,11 +102,26 @@
         android:textSize="22sp"
         android:layout_marginTop="20dp"
         android:text="Time Table Image"/>
+    <GridView
+        android:id="@+id/gallerygridView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:columnWidth="100dip"
+        android:gravity="center"
+        android:horizontalSpacing="4dip"
+        android:numColumns="5"
+        android:visibility="gone"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="13dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dip" />
     <com.realizer.schoolgeine.teacher.view.ZoomImage
         android:layout_margin="15dp"
         android:id="@+id/imgexamsyllabus"
         android:layout_weight="7.6"
         android:layout_width="match_parent"
+        android:visibility="visible"
         android:background="@drawable/imageviewborder"
         android:layout_height="0dp" />
 

@@ -186,9 +186,24 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:scaleType="fitXY"
+            android:visibility="gone"
             android:adjustViewBounds="true"
 
             />
+
+        <GridView
+            android:id="@+id/gallerygridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnWidth="100dip"
+            android:gravity="center"
+            android:horizontalSpacing="4dip"
+            android:numColumns="5"
+            android:visibility="visible"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="13dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dip" />
 
     </FrameLayout>
     <TextView

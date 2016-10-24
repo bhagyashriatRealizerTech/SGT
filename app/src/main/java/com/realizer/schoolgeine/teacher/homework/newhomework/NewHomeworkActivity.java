@@ -200,6 +200,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
                 Intent intent = new Intent(getActivity(),PhotoAlbumActivity.class);
                 Bundle b = new Bundle();
                 b.putBoolean("FunCenter", false);
+                b.putBoolean("Homework",true);
                 intent.putExtras(b);
                 getActivity().startActivity(intent);
             }
@@ -286,7 +287,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
             if(templist.size()>0) {
                 addImage.setVisibility(View.GONE);
                 gridView.setVisibility(View.VISIBLE);
-                adapter = new NewHomeworkGalleryAdapter(getActivity(), hwimage,temp);
+                adapter = new NewHomeworkGalleryAdapter(getActivity(), hwimage,temp,true);
                 gridView.setAdapter(adapter);
                 gridView.setFastScrollEnabled(true);
             }

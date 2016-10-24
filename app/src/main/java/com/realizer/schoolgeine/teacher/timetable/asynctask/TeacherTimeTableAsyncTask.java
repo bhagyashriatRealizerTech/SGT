@@ -90,7 +90,7 @@ public class TeacherTimeTableAsyncTask extends AsyncTask<Void, Void,StringBuilde
             jobj.put("TimeTableText",obj.getTitle());
             jobj.put("Description",obj.getDescription());
             jobj.put("UploadDate",date);
-            jobj.put("TimeTableImage",obj.getImage());
+            jobj.put("TimeTableImage",obj.getSharedLink());
             jobj.put("UploadedBy",obj.getTeacher());
             jobj.put("fileName","Sample.jpg");
 

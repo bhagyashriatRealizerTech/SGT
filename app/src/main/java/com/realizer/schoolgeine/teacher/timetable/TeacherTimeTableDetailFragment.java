@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +24,14 @@ import com.realizer.schoolgeine.teacher.exceptionhandler.ExceptionHandler;
 import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
+import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
+import com.realizer.schoolgeine.teacher.homework.newhomework.adapter.NewHomeworkGalleryAdapter;
+import com.realizer.schoolgeine.teacher.timetable.adapter.TimeTableDetailAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
 
 /**
  * Created by Bhagyashri on 8/29/2016.
@@ -32,6 +42,9 @@ public class TeacherTimeTableDetailFragment extends Fragment implements Fragment
     TextView txtstd ,txtclss;
     String title,image;
     ImageView image1;
+    GridView gridView;
+    TimeTableDetailAdapter adapter;
+    int imageCount;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,49 +63,16 @@ public class TeacherTimeTableDetailFragment extends Fragment implements Fragment
         ((DrawerActivity) getActivity()).getSupportActionBar().show();
 
         txtTitle.setText(bundle.getString("Title"));
-        txtDate.setText(bundle.getString("TimeTableDate").split(" ")[0]);
+        txtDate.setText(bundle.getString("TimeTableDate"));
         txtTeacherName.setText(bundle.getString("TeacherName"));
         txtDescription.setText(bundle.getString("TimeTableText"));
 
         title = bundle.getString("Title");
         image = bundle.getString("TimeTableImage");
 
-        byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        //barr[position] = decodedByte;
-        image1.setImageBitmap(decodedByte);
+        imageCount = bundle.getInt("ImageCount");
 
-        /*txtClickToViewImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimeTableImageViewFragment fragment = new TimeTableImageViewFragment();
-                Singlton.setSelectedFragment(fragment);
-                Bundle bundle = new Bundle();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                bundle.putString("title", title);
-                bundle.putString("image", image);
-                fragment.setArguments(bundle);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.replace(R.id.frame_container, fragment);
-                fragmentTransaction.commit();
-            }
-        });*/
-        image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimeTableImageViewFragment fragment = new TimeTableImageViewFragment();
-                Singlton.setSelectedFragment(fragment);
-                Bundle bundle = new Bundle();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                bundle.putString("title", title);
-                bundle.putString("image", image);
-                fragment.setArguments(bundle);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.replace(R.id.frame_container, fragment);
-                fragmentTransaction.commit();
-            }
-        });
-
+        new GetImagesTimeTable().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         return rootView;
     }
@@ -104,9 +84,8 @@ public class TeacherTimeTableDetailFragment extends Fragment implements Fragment
         txtTeacherName = (TextView)view.findViewById(R.id.txtteacherName);
         txtDescription = (TextView)view.findViewById(R.id.txtdescription);
         image1 = (ImageView) view.findViewById(R.id.btnCapturePicture1);
+        gridView= (GridView) view.findViewById(R.id.gallerygridView);
 
-       /* txtClickToViewImage = (TextView)view.findViewById(R.id.txtclicktoviewimage);
-        txtClickToViewImage.setPaintFlags(txtClickToViewImage.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);*/
         txtstd  = (TextView) view.findViewById(R.id.txttclassname);
         txtclss = (TextView) view.findViewById(R.id.txttdivname);
 
@@ -125,5 +104,55 @@ public class TeacherTimeTableDetailFragment extends Fragment implements Fragment
         super.onResume();
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    public class GetImagesTimeTable extends AsyncTask<Void, Void,Void>
+    {
+        private ArrayList<TeacherHomeworkModel> elementDetails = new ArrayList<>();
+        JSONArray temp;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // loading.setVisibility(View.VISIBLE);
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                temp = new JSONArray(image);
+
+            for(int i=0;i<temp.length();i++)
+            {
+                String path = temp.get(i).toString();
+                Bitmap bitmap =BitmapFactory.decodeFile(path);
+
+                TeacherHomeworkModel obj = new TeacherHomeworkModel();
+                obj.setPic(bitmap);
+                obj.setHid(imageCount);
+                elementDetails.add(obj);
+
+             }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if(elementDetails.size()>0) {
+                gridView.setVisibility(View.VISIBLE);
+                adapter = new TimeTableDetailAdapter(getActivity(),elementDetails,image,"TimeTable");
+                gridView.setAdapter(adapter);
+                gridView.setFastScrollEnabled(true);
+            }
+
+        }
     }
 }

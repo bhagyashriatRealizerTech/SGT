@@ -38,6 +38,7 @@ import com.realizer.schoolgeine.teacher.homework.adapter.TeacherHomeworkListAdap
 import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkListModel;
 import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
 import com.realizer.schoolgeine.teacher.myclass.TeacherMyClassDialogBoxActivity;
+import com.realizer.schoolgeine.teacher.timetable.TeacherTimeTableDetailFragment;
 import com.realizer.schoolgeine.teacher.view.FullImageViewPager;
 import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 
@@ -125,38 +126,33 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
         selectedDate = listofDate.get(listofDate.size()-1);
         datePos = listofDate.size()-1;
         new GetHomeworkAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-       /* ArrayList<TeacherHomeworkListModel> homewok = GetHomeWorkList(listofDate.get(listofDate.size()-1));
-            if(homewok.size()>0)
-        listHoliday.setAdapter(new TeacherHomeworkListAdapter(getActivity(), homewok,htext));*/
 
 
 
         listHoliday.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
                 Object o = listHoliday.getItemAtPosition(position);
                 TeacherHomeworkListModel homeworkObj = (TeacherHomeworkListModel) o;
-                Intent i = new Intent(getActivity(),FullImageViewPager.class);
-                i.putExtra("HEADERTEXT",htext);
-                i.putExtra("HWUUID",homeworkObj.getHwid());
-                startActivity(i);
-                /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
                 TeacherHomeworkDetailFragment fragment = new TeacherHomeworkDetailFragment();
                 Singlton.setSelectedFragment(fragment);
                 Bundle bundle = new Bundle();
                 bundle.putString("HEADERTEXT", htext);
-                bundle.putString("SubjectName", homeworkObj.getSubject());
-                bundle.putString("HomeworkDate", listofDate.get(spinner.getSelectedItemPosition()));
-                bundle.putString("TeacherName", preferences.getString("DisplayName", ""));
-                bundle.putString("Status", homeworkObj.getHasSync());
                 bundle.putString("HomeworkImage", homeworkObj.getImage());
                 bundle.putString("HomeworkText", homeworkObj.getHomework());
+                bundle.putString("SubjectName", homeworkObj.getSubject());
+                bundle.putString("HomeworkDate", Config.getMediumDate(selectedDate));
+                bundle.putString("TeacherName", preferences.getString("DisplayName", ""));
+                bundle.putString("Status", homeworkObj.getHasSync());
+                bundle.putInt("HWUUID", homeworkObj.getHwid());
+
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_container, fragment);
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();*/
+                fragmentTransaction.commit();
 
             }
         });
@@ -261,11 +257,11 @@ if(results.size()>1) {
                 }
         }
        if(forcounter != 0) {
-             if (results.get(forcounter - 1).getImage().equalsIgnoreCase("NoImage")) {
+             if (result1.get(forcounter - 1).getImage().equalsIgnoreCase("NoImage")) {
                  hDetail.setHwid(0);
                } else {
-                     JSONArray temp = new JSONArray(results.get(forcounter - 1).getImage());
-                     hDetail.setHwid(results.get(forcounter - 1).getHwid() + temp.length());
+                     JSONArray temp = new JSONArray(result1.get(forcounter - 1).getImage());
+                     hDetail.setHwid(result1.get(forcounter - 1).getHwid() + temp.length());
                      }
                }
         else

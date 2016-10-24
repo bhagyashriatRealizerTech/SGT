@@ -105,7 +105,6 @@ public class PhotoAlbumAdapter extends RecyclerView.Adapter {
                 Intent mIntent =new Intent(mAct, SelectPhotoActivity.class);;
                 if(flag) {
                     mIntent = new Intent(mAct, SelectPhotoActivityFunCenter.class);
-                    mIntent.putExtra("Event",b);
                 }
                 mIntent.putExtra("bucket_id", bucketItemList.get(position).getBucketId());
                 mIntent.putExtra("Event",b);

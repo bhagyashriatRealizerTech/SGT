@@ -19,18 +19,19 @@
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_gravity="center"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginTop="50dp"
             android:id="@+id/iv_uImage" />
 
-        <TextView android:layout_width="80dp"
-            android:layout_height="80dp"
+        <TextView android:layout_width="160dp"
+            android:layout_height="160dp"
             android:layout_gravity="center"
             android:textColor="@color/black"
-            android:textSize="18dp"
+            android:textSize="35sp"
             android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"
+            android:layout_marginTop="50dp"
+            android:visibility="visible"
+            android:text="S"
             android:background="@drawable/profilepic_circle"
             android:id="@+id/img_user_text_image" />
 

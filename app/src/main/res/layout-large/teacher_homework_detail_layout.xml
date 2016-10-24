@@ -212,47 +212,22 @@
         android:id="@+id/imagelayout"
         android:orientation="vertical">
 
-        <LinearLayout
+
+        <GridView
+            android:id="@+id/gallerygridView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="7dp"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:columnWidth="100dip"
+            android:gravity="center"
+            android:horizontalSpacing="4dip"
+            android:numColumns="5"
+            android:visibility="visible"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="13dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dip" />
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="160dp"
-                android:background="@drawable/imageviewborder"
-                android:id="@+id/btnCapturePicture1"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
 
-                />
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="160dp"
-                android:background="@drawable/imageviewborder"
-                android:id="@+id/btnCapturePicture2"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-
-                />
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="160dp"
-                android:background="@drawable/imageviewborder"
-                android:id="@+id/btnCapturePicture3"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-
-                />
-
-        </LinearLayout>
 
 
     </LinearLayout>

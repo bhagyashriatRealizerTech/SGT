@@ -229,6 +229,7 @@ public class TeacherDashboardFragment extends Fragment implements View.OnClickLi
         picUser = (ImageView)v.findViewById(R.id.iv_uImage);
         nameUSer = (TextView)v.findViewById(R.id.txtuName);
         userInitials = (TextView)v.findViewById(R.id.img_user_text_image);
+        userInitials.setTypeface(face);
 
     }
 

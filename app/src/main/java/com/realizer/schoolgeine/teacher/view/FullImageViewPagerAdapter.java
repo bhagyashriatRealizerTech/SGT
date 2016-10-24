@@ -55,45 +55,24 @@ public class FullImageViewPagerAdapter extends PagerAdapter {
 
         //Inflate the view
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = inflater.inflate(R.layout.fullimageview_parent, container, false);
+        View itemView = inflater.inflate(R.layout.fullimageview_homework, container, false);
 
         holder = new ViewHolder();
 
         holder.imgview = (ImageView) itemView.findViewById(R.id.imageView);
         holder.txtcnt = (TextView) itemView.findViewById(R.id.txtcounter);
+        holder.txtTitle = (TextView) itemView.findViewById(R.id.txttitle);
         holder.txtcnt.setMovementMethod(new ScrollingMovementMethod());
-        //holder.txtcnt.setText("" + (position + 1) + " / " + attachmentList.size());
-        holder.txtcnt.setText(attachmentList.get(position).getHwTxtLst());
-        /*if (attachmentList.get(position).getHwImage64Lst().contains("http"))
-        {
-            String newURL=new Utility().getURLImage(attachmentList.get(position).getHwImage64Lst());
-            if(!ImageStorage.checkifImageExists(newURL.split("/")[newURL.split("/").length - 1]))
-                new GetImages(newURL,holder.imgview,null,null,newURL.split("/")[newURL.split("/").length-1]).execute(newURL);
-            else
-            {
-                File image = ImageStorage.getImage(newURL.split("/")[newURL.split("/").length - 1]);
-                BitmapFactory.Options bmOptions1 = new BitmapFactory.Options();
-                Bitmap decodedByte = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions1);
-                holder.imgview.setImageBitmap(decodedByte);
-            }
-        }
-        else
-        {*/
+        holder.txtTitle.setMovementMethod(new ScrollingMovementMethod());
 
-                /*JSONArray jarr = new JSONArray(attachmentList.get(position).getHwImage64Lst());
-                IMG = new String[jarr.length()];
-                for(int i=0;i<jarr.length();i++)
-                {
-                    IMG[i] = jarr.getString(i);*/
-                String temp = attachmentList.get(position).getHwImage64Lst();
+        holder.txtcnt.setText("" + (position + 1) + " / " + attachmentList.size());
+        holder.txtTitle.setText(attachmentList.get(position).getSubject());
+
+                    String temp = attachmentList.get(position).getHwImage64Lst();
                     BitmapFactory.Options bmOptions = new BitmapFactory.Options();
                     Bitmap decodedByte = BitmapFactory.decodeFile(temp, bmOptions);
                     holder.imgview.setImageBitmap(decodedByte);
-               // }
 
-
-        /*}*/
-        // Add viewpager_item.xml to ViewPager
         (container).addView(itemView);
 
         return itemView;
@@ -107,7 +86,7 @@ public class FullImageViewPagerAdapter extends PagerAdapter {
     }
 
     class ViewHolder {
-        TextView txtcnt;
+        TextView txtcnt,txtTitle;
         ImageView imgview;
     }
 }

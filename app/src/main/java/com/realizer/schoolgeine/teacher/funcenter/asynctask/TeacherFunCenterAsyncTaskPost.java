@@ -78,15 +78,7 @@ public class TeacherFunCenterAsyncTaskPost extends AsyncTask<Void, Void,StringBu
         JSONObject jobj = new JSONObject();
 
         File file = ImageStorage.getEventImage(obj.getThumbNailImage());
-        String imagebse64= "";
-        if(file != null) {
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            Bitmap bitmap = BitmapFactory.decodeFile(obj.getThumbNailImage(), bmOptions);
-            ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos1); //bm is the bitmap object
-            byte[] b1 = baos1.toByteArray();
-            imagebse64 = Base64.encodeToString(b1, Base64.DEFAULT);
-        }
+
 
         try
         {
