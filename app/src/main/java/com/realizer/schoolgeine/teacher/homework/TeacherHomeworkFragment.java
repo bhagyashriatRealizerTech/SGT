@@ -103,7 +103,7 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedDate = listofDate.get(position);
                 datePos = position;
-                loading.setVisibility(View.VISIBLE);
+
                 new GetHomeworkAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
             }
@@ -277,8 +277,21 @@ if(results.size()>1) {
         e.printStackTrace();
     }
 }
+        else if(results.size() == 1) {
+    JSONArray arr = new JSONArray();
+    try {
+        arr.put(0, results.get(0).getImage());
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+    int forcounter = 0;
+    TeacherHomeworkListModel hD = results.get(0);
+    hD.setImage(arr.toString());
+    hD.setHwid(0);
+    result1.add(forcounter, hD);
+}
         else
-           result1 = results;
+result1 = results;
 
         return result1;
     }
@@ -441,6 +454,7 @@ if(results.size()>1) {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            loading.setVisibility(View.VISIBLE);
         }
 
         @Override

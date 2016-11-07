@@ -193,50 +193,67 @@ public class TeacherTimeTableFragment extends Fragment implements FragmentBackPr
             hD.setImageCount(0);
             result1.add(forcounter, hD);
             try {
-                for (int j = 1; j < results.size(); j++) {
-                    TeacherTimeTableExamListModel hDetail = results.get(j);
-                    if (sub.equalsIgnoreCase(results.get(j).getDescription())) {
-                        if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
 
+                    for (int j = 1; j < results.size(); j++) {
+                        TeacherTimeTableExamListModel hDetail = results.get(j);
+                        if (sub.equalsIgnoreCase(results.get(j).getDescription())) {
+                            if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
+
+                            } else {
+                                arr1 = new JSONArray(images);
+                                arr1.put(arr1.length(), results.get(j).getImage());
+                                hDetail.setImage(arr1.toString());
+                            }
+
+                            result1.remove(forcounter);
                         } else {
-                            arr1 = new JSONArray(images);
-                            arr1.put(arr1.length(), results.get(j).getImage());
-                            hDetail.setImage(arr1.toString());
+                            forcounter = forcounter + 1;
+
+                            if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
+
+                            } else {
+                                arr1 = new JSONArray();
+                                arr1.put(0, results.get(j).getImage());
+                                hDetail.setImage(arr1.toString());
+                            }
                         }
-
-                        result1.remove(forcounter);
-                    } else {
-                        forcounter = forcounter + 1;
-
-                        if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
-
+                        if (forcounter != 0) {
+                            if (result1.get(forcounter - 1).getImage().equalsIgnoreCase("NoImage")) {
+                                hD.setImageCount(0);
+                            } else {
+                                JSONArray temp = new JSONArray(result1.get(forcounter - 1).getImage());
+                                hDetail.setImageCount(result1.get(forcounter - 1).getImageCount() + temp.length());
+                            }
                         } else {
-                            arr1 = new JSONArray();
-                            arr1.put(0, results.get(j).getImage());
-                            hDetail.setImage(arr1.toString());
-                        }
-                    }
-                    if (forcounter != 0) {
-                        if (result1.get(forcounter - 1).getImage().equalsIgnoreCase("NoImage")) {
                             hD.setImageCount(0);
-                        } else {
-                            JSONArray temp = new JSONArray(result1.get(forcounter - 1).getImage());
-                            hDetail.setImageCount(result1.get(forcounter - 1).getImageCount() + temp.length());
                         }
-                    } else {
-                        hD.setImageCount(0);
+
+                        result1.add(forcounter, hDetail);
+                        sub = results.get(j).getDescription();
+                        images = arr1.toString();
                     }
 
-                    result1.add(forcounter, hDetail);
-                    sub = results.get(j).getDescription();
-                    images = arr1.toString();
-                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-            else
-            result1 = results;
+            else if(results.size() == 1) {
+
+            JSONArray arr = new JSONArray();
+            try {
+                arr.put(0, results.get(0).getImage());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            int forcounter = 0;
+            TeacherTimeTableExamListModel hD = results.get(0);
+            hD.setImage(arr.toString());
+            hD.setImageCount(0);
+            result1.add(forcounter, hD);
+        }
+        else
+        result1 = results;
 
             return result1;
 

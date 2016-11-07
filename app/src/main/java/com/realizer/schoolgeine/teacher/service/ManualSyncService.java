@@ -202,6 +202,7 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                         Config.alertDialog(Singlton.getContext(), "Manual Sync", "Sync Completed Successfully");
                         Intent intent = Singlton.getManualserviceIntent();
                         Singlton.setManualserviceIntent(null);
+                        if(intent != null)
                         stopService(intent);
 
                         //Toast.makeText(Singlton.getContext(),"Sync Completed Successfully",Toast.LENGTH_SHORT).show();
@@ -533,6 +534,7 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                     adbdialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            if(Singlton.getManualserviceIntent() != null)
                            stopService(Singlton.getManualserviceIntent());
                         } });
                     adbdialog.show();

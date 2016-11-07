@@ -2,6 +2,7 @@ package com.realizer.schoolgeine.teacher.gallaryimagepicker;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -20,6 +21,7 @@ import com.realizer.schoolgeine.teacher.gallaryimagepicker.adapters.PhotoAlbumAd
 import com.realizer.schoolgeine.teacher.gallaryimagepicker.utils.MediaStoreHelperMethods;
 import com.realizer.schoolgeine.teacher.gallaryimagepicker.utils.MediaStorePhoto;
 import com.realizer.schoolgeine.teacher.homework.newhomework.NewHomeworkActivity;
+import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 
 import java.util.ArrayList;
 
@@ -33,6 +35,7 @@ public class PhotoAlbumActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+    public ProgressWheel loading;
 
     private ArrayList<MediaStorePhoto> bucketItemList = new ArrayList<>();
     private ArrayList<Integer> bucketTotalImageCount = new ArrayList<>();
@@ -61,7 +64,11 @@ public class PhotoAlbumActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        getPhotoAlbumData();
+        loading = (ProgressWheel)findViewById(R.id.loading);
+
+
+
+        new GetBuketsAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -110,6 +117,8 @@ public class PhotoAlbumActivity extends AppCompatActivity {
         }
 
         mAdapter.notifyDataSetChanged();
+
+        loading.setVisibility(View.GONE);
     }
 
     @Override
@@ -122,7 +131,8 @@ public class PhotoAlbumActivity extends AppCompatActivity {
                 selectedPhotoList.add(mPhoto);
             }
             ab.setTitle(String.valueOf(selectedPhotoList.size()) + " Photos Selected");
-            getPhotoAlbumData();
+            //getPhotoAlbumData();
+            new GetBuketsAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
         if (requestCode == 3000 && resultCode == RESULT_OK) {
             Intent intent = new Intent();
@@ -150,5 +160,44 @@ public class PhotoAlbumActivity extends AppCompatActivity {
             countList.add(count);
         }
         return countList;
+    }
+
+    public class GetBuketsAsyncTask extends AsyncTask<Void,Void,Void>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            bucketItemList.clear();
+            bucketTotalImageCount.clear();
+            bucketSelectedImageCount.clear();
+            loading.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            bucketTotalImageCount = getBucketTotalImageCount();
+            bucketSelectedImageCount = getBucketSelectedImageCount();
+
+            ArrayList<MediaStorePhoto> mList = new ArrayList<>(MediaStoreHelperMethods.getBucketCoverItems(getContentResolver()));
+
+            for (int i = 0; i < mList.size(); i++) {
+                MediaStorePhoto photo = mList.get(i);
+                photo.setBucket("(" + bucketSelectedImageCount.get(i) + "/" + bucketTotalImageCount.get(i) + ") " + photo.getBucket());
+                bucketItemList.add(photo);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            loading.setVisibility(View.GONE);
+            mAdapter.notifyDataSetChanged();
+
+        }
     }
 }

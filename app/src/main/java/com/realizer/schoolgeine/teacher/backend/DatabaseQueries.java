@@ -2148,6 +2148,7 @@ public class DatabaseQueries {
         deleterow = db.delete("EventImages",null, null);
         deleterow = db.delete("TeacherFullInfo",null, null);
         deleterow = db.delete("Notification",null, null);
+        deleterow = db.delete("Exception",null, null);
 
 
     }

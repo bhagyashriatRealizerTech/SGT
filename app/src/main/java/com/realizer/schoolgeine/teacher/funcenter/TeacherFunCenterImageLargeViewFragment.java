@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -52,7 +53,6 @@ public class TeacherFunCenterImageLargeViewFragment extends FragmentActivity imp
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String path = preferences.getString("Image","");
         seletpos = getIntent().getExtras().getInt("PositionSelect");
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.fragment_page);
         try {
             String jarr[]=path.split("@@");
@@ -124,9 +124,13 @@ public class TeacherFunCenterImageLargeViewFragment extends FragmentActivity imp
             Log.d("FILENAME", "" + IMG[position]);
 
             String filePath = IMG[position];
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            decodedByte = BitmapFactory.decodeFile(filePath, bmOptions);
+            decodedByte = BitmapFactory.decodeFile(filePath);
+            if(decodedByte == null)
+                decodedByte = ((BitmapDrawable)getResources().getDrawable(R.drawable.sorryimage)).getBitmap();
+
+            if(decodedByte!= null)
             imageView.setImageBitmap(decodedByte);
+
             txtcnt.setText("" + (position + 1) + " / " + NUM_ITEMS);
 
             imgv[position] = imageView;

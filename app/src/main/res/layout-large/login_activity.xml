@@ -101,6 +101,7 @@
             android:textStyle="bold"
             android:textSize="22sp"
             android:textColor="#4682B4"
+            android:buttonTint="@color/colorAccent"
             android:layout_gravity="center_vertical|right|bottom"
             android:text="Remember Me !"
             />

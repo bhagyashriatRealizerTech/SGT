@@ -3,6 +3,7 @@ package com.realizer.schoolgeine.teacher.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.view.PagerAdapter;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -71,6 +72,11 @@ public class FullImageViewPagerAdapter extends PagerAdapter {
                     String temp = attachmentList.get(position).getHwImage64Lst();
                     BitmapFactory.Options bmOptions = new BitmapFactory.Options();
                     Bitmap decodedByte = BitmapFactory.decodeFile(temp, bmOptions);
+                 if(decodedByte == null)
+                  {
+                      decodedByte = ((BitmapDrawable)context.getResources().getDrawable(R.drawable.sorryimage)).getBitmap();
+                  }
+                     if(decodedByte!= null)
                     holder.imgview.setImageBitmap(decodedByte);
 
         (container).addView(itemView);

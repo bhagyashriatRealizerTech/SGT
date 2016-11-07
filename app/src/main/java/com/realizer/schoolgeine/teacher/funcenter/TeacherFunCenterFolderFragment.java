@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -156,15 +158,22 @@ public class TeacherFunCenterFolderFragment extends Fragment implements Fragment
             {
 
                 String image1 =allData1.get(i).getImage();
-                File file = ImageStorage.getEventImage(image1);
+              // File file = ImageStorage.getEventImage(image1);
 
-                if(file != null) {
+                if(image1 != null) {
                    /* BitmapFactory.Options bmOptions = new BitmapFactory.Options();
                     Bitmap bitmap = BitmapFactory.decodeFile(image1, bmOptions);*/
-                    Bitmap bitmap = ImageStorage.decodeSampledBitmapFromPath(image1,150,150);
+                    Bitmap bitmap = BitmapFactory.decodeFile(image1);
+
                     TeacherFunCenterModel obj = new TeacherFunCenterModel();
                     obj = allData1.get(i);
+                    if(bitmap == null)
+                    {
+                        bitmap = ((BitmapDrawable)getActivity().getResources().getDrawable(R.drawable.sorryimage)).getBitmap();
+                    }
+                    if(bitmap!= null)
                     obj.setBitmap(bitmap);
+
                     allData1.set(i,obj);
                 }
             }

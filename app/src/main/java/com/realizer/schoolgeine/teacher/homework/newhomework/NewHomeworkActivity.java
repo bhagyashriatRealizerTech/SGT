@@ -194,6 +194,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
         txtstd  = (TextView) rootview.findViewById(R.id.txtstdname);
         txtclss = (TextView) rootview.findViewById(R.id.txttdivname);
 
+        homeworktext.setHint("Enter "+htext+" Text");
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,24 +258,6 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
                 obj.setHwTxtLst("NoIcon");
                 hwimage.add(templist.size(),obj);
             }
-           /* allData=qr.GetImage(getid);
-
-            for(int i=0;i<allData.size();i++)
-            {
-
-                String image1 =allData.get(i).getImage();
-                File file = ImageStorage.getEventImage(image1);
-
-                if(file != null) {
-                    // BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                    //  Bitmap bitmap = BitmapFactory.decodeFile(image1, bmOptions);
-                    Bitmap bitmap = ImageStorage.decodeSampledBitmapFromPath(image1,150,150);
-                    TeacherFunCenterGalleryModel obj = new TeacherFunCenterGalleryModel();
-                    obj = allData.get(i);
-                    obj.setBitmap(bitmap);
-                    allData.set(i,obj);
-                }
-            }*/
 
             return null;
         }

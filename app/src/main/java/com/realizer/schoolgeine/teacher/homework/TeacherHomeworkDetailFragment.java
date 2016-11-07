@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,10 +123,19 @@ public class TeacherHomeworkDetailFragment extends Fragment implements FragmentB
                 for(int i=0;i<temp.length();i++)
                 {
                     String path = temp.get(i).toString();
-                    Bitmap bitmap =BitmapFactory.decodeFile(path);
+                    Bitmap bitmap = null;
+                    if(!TextUtils.isEmpty(path) && path != null)
+                    bitmap =BitmapFactory.decodeFile(path);
 
                     TeacherHomeworkModel obj = new TeacherHomeworkModel();
-                    obj.setPic(bitmap);
+
+                    if(bitmap == null)
+                    {
+                         bitmap = ((BitmapDrawable)getActivity().getResources().getDrawable(R.drawable.sorryimage)).getBitmap();
+                    }
+                    if(bitmap!= null)
+                        obj.setPic(bitmap);
+
                     obj.setHid(imageCount);
                     elementDetails.add(obj);
 

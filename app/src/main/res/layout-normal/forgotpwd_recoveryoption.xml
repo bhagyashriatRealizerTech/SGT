@@ -30,6 +30,7 @@
             android:text="Receive Password by Email"
             android:id="@+id/rb_option_mail"
             android:textSize="16sp"
+            android:buttonTint="@color/colorAccent"
             android:textColor="@color/black"
             android:layout_marginBottom="10dp"/>
         <RadioButton
@@ -38,6 +39,7 @@
             android:text="Reset Password by Magic Word"
             android:layout_marginBottom="10dp"
             android:textColor="@color/black"
+            android:buttonTint="@color/colorAccent"
             android:id="@+id/rb_option_magic_word"
             android:textSize="16sp"/>
     </RadioGroup>

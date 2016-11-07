@@ -545,6 +545,7 @@ public class TeacherDashboardFragment extends Fragment implements View.OnClickLi
         protected void onReceiveResult(int resultCode, Bundle resultData) {
 
             if(resultCode == 1){
+                if(getActivity() != null)
                 getActivity().runOnUiThread(new UpdateUI("UpdateNotification"));
             }
         }

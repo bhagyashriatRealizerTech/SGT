@@ -94,6 +94,7 @@
             android:textStyle="bold"
             android:textSize="15dp"
             android:textColor="#4682B4"
+            android:buttonTint="@color/colorAccent"
             android:text="Remember Me !"
             />
     </FrameLayout>
