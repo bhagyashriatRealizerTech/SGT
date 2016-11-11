@@ -2,7 +2,9 @@ package com.realizer.schoolgeine.teacher.star.asynctask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.realizer.schoolgeine.teacher.Utils.Config;
@@ -68,6 +70,8 @@ public class TeacherGiveStarAsyncTaskPost extends AsyncTask<Void, Void,StringBui
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         String date = df.format(calendar.getTime());*/
         StringEntity se = null;
+        SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(myContext);
+        String accesstoken = sharedpreferences.getString("AccessToken", "");
         JSONObject jsonobj = new JSONObject();
         try {
 
@@ -82,12 +86,14 @@ public class TeacherGiveStarAsyncTaskPost extends AsyncTask<Void, Void,StringBui
             String resdate = date1[1]+"/"+date1[0]+"/"+date1[2];
             jsonobj.put("StarDate",resdate);
             jsonobj.put("Subject",obj.getSubject());
+            jsonobj.put("UserId",sharedpreferences.getString("UidName",""));
 
             json = jsonobj.toString();
             Log.d("STARRES", json);
             se = new StringEntity(json);
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
+            httpPost.setHeader("AccessToken", accesstoken);
 
             httpPost.setEntity(se);
             HttpResponse httpResponse = httpclient.execute(httpPost);

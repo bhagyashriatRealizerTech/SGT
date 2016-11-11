@@ -86,7 +86,7 @@ public class TeacherClassworkAsyncTaskPost extends AsyncTask<Void, Void,StringBu
             String date = obj.getHwDate();
             String date1[] = date.split("/");
             String resdate = date1[1]+"/"+date1[0]+"/"+date1[2];
-            jobj.put("cwDate",resdate);
+            jobj.put("cwDate", obj.getHwDate());
             jobj.put("Std",obj.getStd());
             jobj.put("div",obj.getDiv());
             jobj.put("subject",obj.getSubject());
