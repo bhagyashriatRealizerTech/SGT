@@ -145,17 +145,35 @@ public class SelectPhotoActivityFunCenter extends AppCompatActivity {
 
         if (selectedItems.size()==0)
         {
-            Config.alertDialog(SelectPhotoActivityFunCenter.this, "Gallery", "Please Select at least one image");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Config.alertDialog(SelectPhotoActivityFunCenter.this, "Gallery", "Please Select at least one image");
+                }
+            });
+
         }
         else
         {
             if (Singlton.getImageList().size()+selectedItems.size()>10)
             {
-                Config.alertDialog(SelectPhotoActivityFunCenter.this, "Gallery", "Please Select only 10 image");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Config.alertDialog(SelectPhotoActivityFunCenter.this, "Gallery", "Please Select only 10 image");
+                    }
+                });
+
             }
             else if (Singlton.getImageList().size()>10||selectedItems.size()>10)
             {
-                Config.alertDialog(SelectPhotoActivityFunCenter.this, "Gallery", "Please Select only 10 image");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Config.alertDialog(SelectPhotoActivityFunCenter.this, "Gallery", "Please Select only 10 image");
+                    }
+                });
+
             }
             else {
 

@@ -84,7 +84,7 @@ public class GoogleDriveImageUploadAsyncTask extends AsyncTask<Void,Void,File>
             cancel(true);
             file = null;
 
-            NetworkException.insertNetworkException(mcontext,"UploadImageError"+e.getMessage().toString());
+            NetworkException.insertNetworkException(mcontext,"UploadImageError: "+e.getMessage().toString());
 
         }
 
@@ -131,13 +131,13 @@ public class GoogleDriveImageUploadAsyncTask extends AsyncTask<Void,Void,File>
         catch (UserRecoverableAuthIOException e){
 
             activity.startActivityForResult(e.getIntent(), DrawerActivity.REQUEST_AUTHORIZATION);
-            NetworkException.insertNetworkException(mcontext, "UploadImageError"+e.getMessage().toString());
+            NetworkException.insertNetworkException(mcontext, "UploadImageError: "+e.getMessage().toString());
         }
 
         catch (Exception e) {
 
             System.out.println("An error occured: " + e);
-            NetworkException.insertNetworkException(mcontext, "UploadImageError"+e.getMessage().toString());
+            NetworkException.insertNetworkException(mcontext, "UploadImageError: "+e.getMessage().toString());
             file= null;
         }
         Log.d("Upload Image", file.toString());

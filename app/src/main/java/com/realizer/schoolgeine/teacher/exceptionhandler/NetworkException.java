@@ -1,12 +1,19 @@
 package com.realizer.schoolgeine.teacher.exceptionhandler;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
+import com.realizer.schoolgeine.teacher.Utils.Config;
+import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.backend.DatabaseQueries;
 import com.realizer.schoolgeine.teacher.exceptionhandler.model.ExceptionModel;
+import com.realizer.schoolgeine.teacher.mailsender.MailSender;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,5 +46,43 @@ public class NetworkException {
         n = qr.insertQueue(qr.getExceptionId(), "Exception", "1", date);
     }
 
+    if(Config.isConnectingToInternet(myContext))
+        sendEmail(obj);
+
+
   }
+
+
+    public static void sendEmail(final ExceptionModel obj)
+    {
+        new Thread(new Runnable() {
+
+            public void run() {
+
+                try {
+
+                    String messageContent = "Application Source: "+obj.getApplicationSource()
+                            +"\nDevice Model: "+obj.getDeviceModel()+"\nAndroid Version: "+obj.getAndroidVersion()
+                            +"\nDevice Brand: "+obj.getDeviceBrand()+"\nUserID: "+obj.getUserId()
+                            +"\nException: "+obj.getExceptionDetails();
+
+                    String TO = "bhagyashri.salgare@realizertech.com,sachin.shinde@realizertech.com";
+
+                    MailSender sender = new MailSender("realizertech1@gmail.com","realizer@15");
+
+                   // sender.addAttachment(Environment.getExternalStorageDirectory().getPath()+"/image.jpg");
+
+                    sender.sendMail("Critical Network Error: Teacher App",messageContent,"realizertech1@gmail.com",TO);
+
+                } catch (Exception e) {
+
+                    Log.d("Exception Mail",e.toString());
+                   // Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+
+                }
+
+                               }
+
+        }).start();
+    }
 }

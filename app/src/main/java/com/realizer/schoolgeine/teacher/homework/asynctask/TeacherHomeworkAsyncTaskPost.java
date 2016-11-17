@@ -133,7 +133,7 @@ public class TeacherHomeworkAsyncTaskPost extends AsyncTask<Void, Void,StringBui
                     resultLogin.append(line);
                 }
 
-                if(!resultLogin.toString().equalsIgnoreCase("success"))
+                if(!resultLogin.toString().replace("\"","").equalsIgnoreCase("success"))
                     NetworkException.insertNetworkException(myContext, resultLogin.toString());
 
             } else {

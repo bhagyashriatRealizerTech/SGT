@@ -278,7 +278,7 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
 
         else {
             //Toast.makeText(this, "Server not responding please wait...", Toast.LENGTH_SHORT).show();
-            Config.alertDialog(Singlton.getContext(),"Network Error","Server Not Responding");
+            //Config.alertDialog(Singlton.getContext(),"Network Error","Server Not Responding");
         }
     }
 

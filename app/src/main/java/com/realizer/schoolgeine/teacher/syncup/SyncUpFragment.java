@@ -102,6 +102,7 @@ public class SyncUpFragment extends Fragment implements FragmentBackPressedListe
                 temp1.add(obj);
                 temp.addAll(temp1);
                 temp.addAll(quelist);
+                if(temp.size()>0)
                 listpublicholiday.setAdapter(new SyncupListAdapter(getActivity(), temp));
             }
         }

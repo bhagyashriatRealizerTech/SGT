@@ -131,7 +131,9 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBWFdHgqzk-YqW8vY9BcWH8fOUrlQZrvSE" />
+            android:value="AIzaSyAq2r7AQ3c5UhhKJxK4Qco2_3jucEwu3lU" />
+
+
 
 
         <service

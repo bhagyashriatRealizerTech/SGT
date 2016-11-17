@@ -135,7 +135,7 @@ public class TeacherFunCenterImageAsynckPost extends AsyncTask<Void, Void,String
                     resultLogin.append(line);
                 }
 
-                if(!resultLogin.toString().equalsIgnoreCase("success"))
+                if(!resultLogin.toString().replace("\"","").equalsIgnoreCase("success"))
                     NetworkException.insertNetworkException(myContext, resultLogin.toString());
 
             } else {

@@ -119,7 +119,7 @@ public class TeacherFunCenterAsyncTaskPost extends AsyncTask<Void, Void,StringBu
                     resultLogin.append(line);
                 }
 
-                if(!resultLogin.toString().equalsIgnoreCase("success"))
+                if(!resultLogin.toString().replace("\"","").equalsIgnoreCase("success"))
                     NetworkException.insertNetworkException(myContext, resultLogin.toString());
 
 
