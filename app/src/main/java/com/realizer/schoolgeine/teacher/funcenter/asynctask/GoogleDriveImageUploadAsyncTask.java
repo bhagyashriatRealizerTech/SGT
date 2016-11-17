@@ -3,6 +3,7 @@ package com.realizer.schoolgeine.teacher.funcenter.asynctask;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -56,6 +57,7 @@ public class GoogleDriveImageUploadAsyncTask extends AsyncTask<Void,Void,File>
     @Override
     protected void onPostExecute(File file) {
         super.onPostExecute(file);
+       Log.d("Execute","on post of goole drive");
         if(file != null)
 
             new GoogleDriveShareFileAsyncTask(file,mService,cb,o).executeOnExecutor(THREAD_POOL_EXECUTOR);
@@ -69,6 +71,7 @@ public class GoogleDriveImageUploadAsyncTask extends AsyncTask<Void,Void,File>
         try {
             file = insertFile(mService,filename1[filename1.length-1],"", o.getFoldername(),"image/jpeg",o.getFilepath());
         } catch (Exception e) {
+            Log.d("Execute","on doinbackground of file catch");
             mLastError = e;
             cancel(true);
             file = null;

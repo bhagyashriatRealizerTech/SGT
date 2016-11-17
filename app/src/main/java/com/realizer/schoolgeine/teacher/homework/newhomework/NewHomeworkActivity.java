@@ -361,28 +361,45 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
         }
         String encodedImage = "";
         String hwUUID = String.valueOf(UUID.randomUUID());
-        for (int i = 0; i < tempImageList.size(); i++) {
-            imglstbase64 = new JSONArray();
-            encodedImage = ImageStorage.saveEventToSdCard(tempImageList.get(i).getPic(), "Homework", getActivity());
 
-            try {
-                imglstbase64.put(0, encodedImage);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if(tempImageList.size()>0) {
+                for (int i = 0; i < tempImageList.size(); i++) {
+                    imglstbase64 = new JSONArray();
+
+                    encodedImage = ImageStorage.saveEventToSdCard(tempImageList.get(i).getPic(), "Homework", getActivity());
+
+                    try {
+                        imglstbase64.put(0, encodedImage);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    long n = qr.insertHomework(givenby, sub, date, txtlst, encodedImage, sharedpreferences.getString("STANDARD", ""), sharedpreferences.getString("DIVISION", ""), htext, hwUUID);
+                    if (n > 0) {
+                        // Toast.makeText(getActivity(), "Homework Inserted Successfully", Toast.LENGTH_SHORT).show();
+                        n = -1;
+
+                        hid = qr.getHomeworkId();
+                        SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
+                        n = qr.insertQueue(hid, "Homework", "1", df1.format(calendar.getTime()));
+                    }
+
+                }
             }
+            else
+            {
+                encodedImage ="NoIcon";
+                long n = qr.insertHomework(givenby, sub, date, txtlst, encodedImage, sharedpreferences.getString("STANDARD", ""), sharedpreferences.getString("DIVISION", ""), htext, hwUUID);
+                if (n > 0) {
+                    // Toast.makeText(getActivity(), "Homework Inserted Successfully", Toast.LENGTH_SHORT).show();
+                    n = -1;
 
-
-            long n = qr.insertHomework(givenby, sub, date, txtlst, encodedImage, sharedpreferences.getString("STANDARD", ""), sharedpreferences.getString("DIVISION", ""), htext, hwUUID);
-            if (n > 0) {
-                // Toast.makeText(getActivity(), "Homework Inserted Successfully", Toast.LENGTH_SHORT).show();
-                n = -1;
-
-                hid = qr.getHomeworkId();
-                SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
-                n = qr.insertQueue(hid, "Homework", "1", df1.format(calendar.getTime()));
+                    hid = qr.getHomeworkId();
+                    SimpleDateFormat df1 = new SimpleDateFormat("dd MMM hh:mm:ss a");
+                    n = qr.insertQueue(hid, "Homework", "1", df1.format(calendar.getTime()));
+                }
             }
-
-        }
 
         TeacherHomeworkFragment fragment = new TeacherHomeworkFragment();
         Singlton.setMainFragment(fragment);

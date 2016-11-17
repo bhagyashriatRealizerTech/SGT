@@ -80,7 +80,6 @@ public class TeacherHomeworkDetailFragment extends Fragment implements FragmentB
         txtDescription.setText(bundle.getString("HomeworkText"));
 
         imageCount = bundle.getInt("HWUUID");
-
         new GetImagesTimeTable().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         return rootView;
@@ -118,31 +117,42 @@ public class TeacherHomeworkDetailFragment extends Fragment implements FragmentB
         protected Void doInBackground(Void... params) {
 
             try {
-                temp = new JSONArray(path);
-
-                for(int i=0;i<temp.length();i++)
-                {
-                    String path = temp.get(i).toString();
-                    Bitmap bitmap = null;
-                    if(!TextUtils.isEmpty(path) && path != null)
-                    bitmap =BitmapFactory.decodeFile(path);
-
+                if (path.equalsIgnoreCase("NoImage")) {
                     TeacherHomeworkModel obj = new TeacherHomeworkModel();
+                    Bitmap bitmap = null;
 
-                    if(bitmap == null)
-                    {
-                         bitmap = ((BitmapDrawable)getActivity().getResources().getDrawable(R.drawable.sorryimage)).getBitmap();
-                    }
-                    if(bitmap!= null)
-                        obj.setPic(bitmap);
+                    bitmap = ((BitmapDrawable) getActivity().getResources().getDrawable(R.drawable.sorryimage)).getBitmap();
 
+                    obj.setPic(bitmap);
                     obj.setHid(imageCount);
                     elementDetails.add(obj);
 
+                } else {
+                    temp = new JSONArray(path);
+
+                    for (int i = 0; i < temp.length(); i++) {
+                        String path = temp.get(i).toString();
+                        Bitmap bitmap = null;
+                        if (!TextUtils.isEmpty(path) && path != null)
+                            bitmap = BitmapFactory.decodeFile(path);
+
+                        TeacherHomeworkModel obj = new TeacherHomeworkModel();
+
+                        if (bitmap == null) {
+                            bitmap = ((BitmapDrawable) getActivity().getResources().getDrawable(R.drawable.sorryimage)).getBitmap();
+                        }
+                        if (bitmap != null)
+                            obj.setPic(bitmap);
+
+                        obj.setHid(imageCount);
+                        elementDetails.add(obj);
+
+                    }
+                 }
+                }catch(JSONException e){
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
 
             return null;
         }

@@ -330,10 +330,16 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                         GoogleDriveUploadClass o1 = new GoogleDriveUploadClass();
                         o1.setGdID(Integer.valueOf(o.getHid()));
                         o1.setFilepath(o.getHwImage64Lst());
-                        o1.setFoldername(Config.FUN_CENTER_FOLDER);
+
+                        if(o.getWork().equalsIgnoreCase("Homework"))
+                            o1.setFoldername(Config.HOMEWORK_FOLDER);
+                        else
+                            o1.setFoldername(Config.CLASSWORK_FOLDER);
+
                         o1.setGdfilename(o.getHwImage64Lst());
                         o1.setGdtype(o.getWork());
-                        if(TextUtils.isEmpty(o.getSharedLink())) {
+
+                        if(TextUtils.isEmpty(o.getSharedLink()) && !o.getHwImage64Lst().equalsIgnoreCase("NoIcon")) {
                             GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
                             objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                         }
@@ -421,7 +427,7 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                     GoogleDriveUploadClass o1 = new GoogleDriveUploadClass();
                     o1.setGdID(Integer.valueOf(o.getTtid()));
                     o1.setFilepath(o.getImage());
-                    o1.setFoldername(Config.FUN_CENTER_FOLDER);
+                    o1.setFoldername(Config.TIMETABLE_FOLDER);
                     o1.setGdfilename(o.getImage());
                     o1.setGdtype("TimeTable");
                     if(TextUtils.isEmpty(o.getSharedLink())) {

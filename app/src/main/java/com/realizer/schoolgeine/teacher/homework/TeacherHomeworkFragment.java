@@ -125,7 +125,7 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
         //populate list
         selectedDate = listofDate.get(listofDate.size()-1);
         datePos = listofDate.size()-1;
-        new GetHomeworkAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+       // new GetHomeworkAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 
 
@@ -204,8 +204,9 @@ public class TeacherHomeworkFragment extends Fragment implements View.OnClickLis
             hDetail.setHomework(obj.getHwTxtLst());
 
 
-            if(obj.getHwImage64Lst().length()==0)
+            if(obj.getHwImage64Lst().length()==0 || obj.getHwImage64Lst().equalsIgnoreCase("NoIcon"))
             hDetail.setImage("NoImage");
+
             else {
 
                 hDetail.setImage(obj.getHwImage64Lst());
@@ -223,18 +224,28 @@ if(results.size()>1) {
         e.printStackTrace();
     }
     String images = arr.toString();
+    String hwtext = results.get(0).getHomework();
     JSONArray arr1 = new JSONArray();
     int forcounter = 0;
     int tempcounter=0;
     TeacherHomeworkListModel hD = results.get(0);
     hD.setImage(arr.toString());
     hD.setHwid(0);
+    hD.setHomework(hwtext);
     result1.add(forcounter, hD);
     try {
     for (int j = 1; j < results.size(); j++) {
         TeacherHomeworkListModel hDetail = results.get(j);
         if (sub.equalsIgnoreCase(results.get(j).getSubject())) {
                 if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
+                    hDetail.setHomework(hwtext+"\n"+results.get(j).getHomework());
+
+                    if(!results.get(j-1).getImage().equalsIgnoreCase("NoImage")) {
+                        if((j-1) == 0)
+                            hDetail.setImage(images);
+                        else
+                            hDetail.setImage(arr1.toString());
+                    }
 
                 }
 
@@ -242,6 +253,8 @@ if(results.size()>1) {
                     arr1 = new JSONArray(images);
                     arr1.put(arr1.length(), results.get(j).getImage());
                     hDetail.setImage(arr1.toString());
+                    if(!hwtext.equalsIgnoreCase(results.get(j).getHomework()))
+                        hDetail.setHomework(hwtext+"\n"+results.get(j).getHomework());
                 }
 
             result1.remove(forcounter);
@@ -249,7 +262,7 @@ if(results.size()>1) {
             forcounter = forcounter + 1;
 
                 if (results.get(j).getImage().equalsIgnoreCase("NoImage")) {
-
+                   // hDetail.setHomework(hwtext+"\n"+results.get(j).getHomework());
                 } else {
                     arr1 = new JSONArray();
                     arr1.put(0, results.get(j).getImage());
@@ -272,6 +285,7 @@ if(results.size()>1) {
         result1.add(forcounter, hDetail);
         sub = results.get(j).getSubject();
         images = arr1.toString();
+        hwtext = hDetail.getHomework();
     }
     } catch (JSONException e) {
         e.printStackTrace();

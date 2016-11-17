@@ -2,6 +2,7 @@ package com.realizer.schoolgeine.teacher.funcenter.asynctask;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.api.client.googleapis.batch.BatchRequest;
 import com.google.api.client.googleapis.batch.json.JsonBatchCallback;
@@ -46,7 +47,7 @@ public class GoogleDriveShareFileAsyncTask extends AsyncTask<Void,Void,File>
     @Override
     protected void onPostExecute(File file) {
         super.onPostExecute(file);
-
+        //Toast.makeText(context, "in doInBackground of google drive", Toast.LENGTH_SHORT);
         QueueListModel obj1 = new QueueListModel();
         obj1.setId(Integer.valueOf(o.getGdID()));
         obj1.setType(o.getGdtype());

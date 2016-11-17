@@ -400,10 +400,14 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                         GoogleDriveUploadClass o1 = new GoogleDriveUploadClass();
                                         o1.setGdID(Integer.valueOf(o.getHid()));
                                         o1.setFilepath(o.getHwImage64Lst());
-                                        o1.setFoldername(Config.FUN_CENTER_FOLDER);
+                                        if(o.getWork().equalsIgnoreCase("Homework"))
+                                            o1.setFoldername(Config.HOMEWORK_FOLDER);
+                                        else
+                                            o1.setFoldername(Config.CLASSWORK_FOLDER);
+
                                         o1.setGdfilename(o.getHwImage64Lst());
                                         o1.setGdtype(o.getWork());
-                                        if(TextUtils.isEmpty(o.getSharedLink())) {
+                                        if(TextUtils.isEmpty(o.getSharedLink()) && !o.getHwImage64Lst().equalsIgnoreCase("NoIcon")) {
                                             GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), ManualSyncService.this, o1);
                                             objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                                         }
@@ -419,16 +423,6 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                             }
                                         }
                                     }
-                                   /* TeacherHomeworkModel o = qr.GetHomework(id);
-                                    if(o.getWork().equalsIgnoreCase("Homework")) {
-                                        TeacherHomeworkAsyncTaskPost obj = new TeacherHomeworkAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
-                                        obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                                    }
-                                    else if(o.getWork().equalsIgnoreCase("Classwork"))
-                                    {
-                                        TeacherClassworkAsyncTaskPost obj = new TeacherClassworkAsyncTaskPost(o, ManualSyncService.this, ManualSyncService.this, "false");
-                                        obj.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                                    }*/
                                 }
                                 else if(type.equals("GiveStar"))
                                 {
@@ -503,7 +497,7 @@ public class ManualSyncService extends Service implements OnTaskCompleted {
                                     GoogleDriveUploadClass o1 = new GoogleDriveUploadClass();
                                     o1.setGdID(Integer.valueOf(o.getTtid()));
                                     o1.setFilepath(o.getImage());
-                                    o1.setFoldername(Config.FUN_CENTER_FOLDER);
+                                    o1.setFoldername(Config.TIMETABLE_FOLDER);
                                     o1.setGdfilename(o.getImage());
                                     o1.setGdtype("TimeTable");
                                     if(TextUtils.isEmpty(o.getSharedLink())) {
