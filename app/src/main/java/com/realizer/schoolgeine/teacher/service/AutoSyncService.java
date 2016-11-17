@@ -340,7 +340,7 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                         o1.setGdtype(o.getWork());
 
                         if(TextUtils.isEmpty(o.getSharedLink()) && !o.getHwImage64Lst().equalsIgnoreCase("NoIcon")) {
-                            GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
+                            GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1,AutoSyncService.this);
                             objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                         }
                         else
@@ -389,7 +389,7 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                     o1.setGdfilename(o.getFilename());
                     o1.setGdtype("EventMaster");
                     if(TextUtils.isEmpty(o.getSharedlink())) {
-                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
+                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1,AutoSyncService.this);
                         objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                     }
                     else
@@ -408,7 +408,7 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                       o1.setGdfilename(o.getFilename());
                       o1.setGdtype("EventImages");
                       if(TextUtils.isEmpty(o.getSharedlink()) || o.getSharedlink().equalsIgnoreCase("NoData")) {
-                          GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
+                          GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1,AutoSyncService.this);
                           objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 
                       }
@@ -431,7 +431,7 @@ public class AutoSyncService extends Service implements OnTaskCompleted {
                     o1.setGdfilename(o.getImage());
                     o1.setGdtype("TimeTable");
                     if(TextUtils.isEmpty(o.getSharedLink())) {
-                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1);
+                        GoogleDriveImageUploadAsyncTask objasync = new GoogleDriveImageUploadAsyncTask(Singlton.getmCredential(), AutoSyncService.this, o1,AutoSyncService.this);
                         objasync.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                     }
                     else

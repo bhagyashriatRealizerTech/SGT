@@ -1,6 +1,7 @@
 package com.realizer.schoolgeine.teacher.funcenter.asynctask;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,9 +20,15 @@ import com.realizer.schoolgeine.teacher.DrawerActivity;
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
+import com.realizer.schoolgeine.teacher.exceptionhandler.NetworkException;
 import com.realizer.schoolgeine.teacher.funcenter.model.GoogleDriveUploadClass;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterImageModel;
 
+import org.apache.http.HttpEntity;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 /**
@@ -35,13 +42,15 @@ public class GoogleDriveImageUploadAsyncTask extends AsyncTask<Void,Void,File>
     GoogleDriveUploadClass o;
     Activity activity;
     GoogleAccountCredential credential;
+    Context mcontext;
 
-    public GoogleDriveImageUploadAsyncTask(GoogleAccountCredential credential,OnTaskCompleted cb,GoogleDriveUploadClass o) {
+    public GoogleDriveImageUploadAsyncTask(GoogleAccountCredential credential,OnTaskCompleted cb,GoogleDriveUploadClass o, Context context) {
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
         this.cb = cb;
         this.o = o;
         activity = Singlton.getActivity();
+        mcontext = context;
         this.credential = credential;
         mService = new Drive.Builder(
                 transport, jsonFactory, credential)
@@ -59,8 +68,7 @@ public class GoogleDriveImageUploadAsyncTask extends AsyncTask<Void,Void,File>
         super.onPostExecute(file);
        Log.d("Execute","on post of goole drive");
         if(file != null)
-
-            new GoogleDriveShareFileAsyncTask(file,mService,cb,o).executeOnExecutor(THREAD_POOL_EXECUTOR);
+            new GoogleDriveShareFileAsyncTask(file,mService,cb,o,mcontext).executeOnExecutor(THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -75,7 +83,11 @@ public class GoogleDriveImageUploadAsyncTask extends AsyncTask<Void,Void,File>
             mLastError = e;
             cancel(true);
             file = null;
+
+            NetworkException.insertNetworkException(mcontext,"UploadImageError"+e.getMessage().toString());
+
         }
+
         return file;
     }
 
@@ -119,11 +131,13 @@ public class GoogleDriveImageUploadAsyncTask extends AsyncTask<Void,Void,File>
         catch (UserRecoverableAuthIOException e){
 
             activity.startActivityForResult(e.getIntent(), DrawerActivity.REQUEST_AUTHORIZATION);
+            NetworkException.insertNetworkException(mcontext, "UploadImageError"+e.getMessage().toString());
         }
 
         catch (Exception e) {
 
             System.out.println("An error occured: " + e);
+            NetworkException.insertNetworkException(mcontext, "UploadImageError"+e.getMessage().toString());
             file= null;
         }
         Log.d("Upload Image", file.toString());

@@ -1,5 +1,6 @@
 package com.realizer.schoolgeine.teacher.funcenter.asynctask;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.Permission;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
+import com.realizer.schoolgeine.teacher.exceptionhandler.NetworkException;
 import com.realizer.schoolgeine.teacher.funcenter.model.GoogleDriveUploadClass;
 import com.realizer.schoolgeine.teacher.funcenter.model.TeacherFunCenterImageModel;
 import com.realizer.schoolgeine.teacher.queue.QueueListModel;
@@ -29,13 +31,15 @@ public class GoogleDriveShareFileAsyncTask extends AsyncTask<Void,Void,File>
     GoogleDriveUploadClass o;
     String sharedLink=null;
     String tempString;
-    public GoogleDriveShareFileAsyncTask(File file,Drive service,OnTaskCompleted cb,GoogleDriveUploadClass o) {
+    Context mcontext;
+    public GoogleDriveShareFileAsyncTask(File file,Drive service,OnTaskCompleted cb,GoogleDriveUploadClass o,Context comtext) {
 
         filetemp = file;
         servicetemp = service;
         this.callback = cb;
         this.o = o;
         tempString = "notdone";
+        mcontext =mcontext;
     }
     @Override
     protected File doInBackground(Void... params) {
@@ -67,6 +71,7 @@ public class GoogleDriveShareFileAsyncTask extends AsyncTask<Void,Void,File>
                     throws IOException {
                 // Handle error
                 System.err.println(e.getMessage());
+                NetworkException.insertNetworkException(mcontext, "UploadImageError" + e.getMessage());
             }
 
             @Override
@@ -92,6 +97,7 @@ public class GoogleDriveShareFileAsyncTask extends AsyncTask<Void,Void,File>
         }
         catch (IOException e) {
             e.printStackTrace();
+            NetworkException.insertNetworkException(mcontext, "UploadImageError" + e.getMessage().toString());
         }
 
     }

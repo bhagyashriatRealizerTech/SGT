@@ -173,6 +173,8 @@ public class TeacherGiveStarFragment extends Fragment implements OnTaskCompleted
         else
         {
 
+            Log.d("Student List Size",""+studentList.size());
+
             for(int i=0;i<studentList.size();i++)
             {
                 if (i == studentList.size() - 1) {
@@ -187,7 +189,9 @@ public class TeacherGiveStarFragment extends Fragment implements OnTaskCompleted
             String uidname = sharedpreferences.getString("UidName", "");
 
             Log.d("INSERT", uidname + uidstud + date + sub + startxt + commnt);
+
             long n= qr.insertGiveStar(uidname,uidstud,date,sub,startxt,commnt,txtstd.getText().toString(),txtclss.getText().toString(),time);
+
             if(n>0) {
                 //Toast.makeText(getActivity(), "Star Inserted Successfully", Toast.LENGTH_SHORT).show();
                 n = -1;

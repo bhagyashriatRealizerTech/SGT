@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
+import com.realizer.schoolgeine.teacher.exceptionhandler.NetworkException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -74,19 +75,26 @@ public class LoginAsyncTaskGet extends AsyncTask<Void, Void,StringBuilder>
                 {
                     resultLogin.append(line);
                 }
+
             }
             else
             {
                // Log.e("Error", "Failed to Login");
+
+                if(!resultLogin.toString().equalsIgnoreCase("true"))
+                    NetworkException.insertNetworkException(myContext, resultLogin.toString());
+
             }
         }
         catch(ClientProtocolException e)
         {
             e.printStackTrace();
+            NetworkException.insertNetworkException(myContext, e.getMessage().toString());
         }
         catch(IOException e)
         {
             e.printStackTrace();
+            NetworkException.insertNetworkException(myContext, e.getMessage().toString());
         }
         finally
         {

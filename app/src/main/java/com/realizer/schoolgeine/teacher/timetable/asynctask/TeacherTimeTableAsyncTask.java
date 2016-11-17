@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
+import com.realizer.schoolgeine.teacher.exceptionhandler.NetworkException;
 import com.realizer.schoolgeine.teacher.queue.QueueListModel;
 import com.realizer.schoolgeine.teacher.timetable.model.TeacherTimeTableExamListModel;
 
@@ -117,8 +118,24 @@ public class TeacherTimeTableAsyncTask extends AsyncTask<Void, Void,StringBuilde
                     resultLogin.append(line);
                 }
 
+                if(!resultLogin.toString().equalsIgnoreCase("true"))
+                    NetworkException.insertNetworkException(myContext, resultLogin.toString());
+
             } else {
                 // Log.e("Error", "Failed to Login");
+
+                StringBuilder exceptionString = new StringBuilder();
+                HttpEntity entity = httpResponse.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
+                while((line=reader.readLine()) != null)
+                {
+                    exceptionString.append(line);
+                }
+
+                NetworkException.insertNetworkException(myContext, exceptionString.toString());
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
