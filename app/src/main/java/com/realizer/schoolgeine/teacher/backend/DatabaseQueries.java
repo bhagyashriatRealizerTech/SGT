@@ -1243,43 +1243,24 @@ public class DatabaseQueries {
 
     //Select Date Wise Homework
 
-    public ArrayList<TeacherHomeworkModel> GetHomeworkDataASC( String date,String work,String std,String div) {
+    public int GetHomeworkForSub( String date,String work,String std,String div,String sub) {
 
         Cursor c = db.rawQuery("SELECT * FROM Homework WHERE hwDate='"+date+"' AND Work='"+work+"' " +
-                "AND Std= '"+std+"' AND Div= '"+div+"' ORDER BY HomeworkId ASC", null);
+                "AND Std= '"+std+"' AND Div= '"+div+"' AND subject= '"+sub+"' ORDER BY HomeworkId ASC", null);
 
 
         ArrayList<TeacherHomeworkModel> result = new ArrayList<>();
 
-        int cnt = 1;
+        int cnt = 0;
+        cnt = c.getCount();
         if (c != null) {
-            if (c.moveToFirst()) {
-                System.out.print("while moving  - C != null");
-                do {
 
-                    TeacherHomeworkModel o = new TeacherHomeworkModel();
-                    o.setHid(c.getInt(c.getColumnIndex("HomeworkId")));
-                    o.setSubject(c.getString(c.getColumnIndex("subject")));
-                    o.setStd(c.getString(c.getColumnIndex("Std")));
-                    o.setDiv(c.getString(c.getColumnIndex("Div")));
-                    o.setHwTxtLst(c.getString(c.getColumnIndex("textlst")));
-                    o.setHwImage64Lst(c.getString(c.getColumnIndex("Imglst")));
-                    o.setGivenBy(c.getString(c.getColumnIndex("Givenby")));
-                    o.setHwDate(c.getString(c.getColumnIndex("hwDate")));
-                    o.setWork(c.getString(c.getColumnIndex("Work")));
-                    o.setIsSync(c.getString(c.getColumnIndex("HasSyncedUp")));
-                    o.setSharedLink(c.getString(c.getColumnIndex("ShredLink")));
-                    result.add(o);
-                    cnt = cnt+1;
-                }
-                while (c.moveToNext());
-            }
         } else {
-            // mToast("Table Has No contain");
+           cnt =0;
         }
         c.close();
         //dbClose(db);
-        return result;
+        return cnt;
     }
 
     //Get All Homework Data

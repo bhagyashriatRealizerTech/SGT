@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#ffffff"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -137,7 +138,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:id="@+id/addimage"
-        android:src="@drawable/noicon"
+        android:src="@drawable/addimageicon"
         android:visibility="visible"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/inlayout"
@@ -171,5 +172,26 @@
 
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/tvNoDataMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="Homework provided for this Subject today"
+        android:textSize="22sp"
+        android:textStyle="normal"
+        android:textColor="@color/red"
+        android:visibility="gone" />
 
+    <com.realizer.schoolgeine.teacher.view.ProgressWheel
+        android:id="@+id/loading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        app:matProg_barColor="@color/colorAccent"
+        app:matProg_progressIndeterminate="true"
+        />
 </RelativeLayout>

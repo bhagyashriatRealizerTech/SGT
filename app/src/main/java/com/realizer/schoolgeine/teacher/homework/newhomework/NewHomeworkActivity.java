@@ -3,24 +3,34 @@ package com.realizer.schoolgeine.teacher.homework.newhomework;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -37,10 +47,16 @@ import com.realizer.schoolgeine.teacher.homework.model.TeacherHomeworkModel;
 import com.realizer.schoolgeine.teacher.homework.newhomework.adapter.NewHomeworkGalleryAdapter;
 import com.realizer.schoolgeine.teacher.R;
 import com.realizer.schoolgeine.teacher.myclass.TeacherMyClassDialogBoxActivity;
+import com.realizer.schoolgeine.teacher.view.ProgressWheel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,7 +68,7 @@ import java.util.UUID;
 public class NewHomeworkActivity extends Fragment implements FragmentBackPressedListener {
 
     String htext;
-    TextView txtstd,txtclss;
+    TextView txtstd,txtclss,hwMessage;
     EditText homeworktext;
     GridView gridView;
     ImageButton addImage;
@@ -66,6 +82,9 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
     Spinner spinnersub, spinnerdate;
     ArrayList<String> listofDate = new ArrayList<>();
     ArrayList<String> listofDay = new ArrayList<>();
+    int REQUEST_CAMERA = 100;
+    ProgressWheel loading ;
+
 
     @Nullable
     @Override
@@ -92,6 +111,38 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
         FillSubjectTypes();
         FillDates();
 
+        spinnersub.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                loading.setVisibility(View.VISIBLE);
+                String sub1 = spinnersub.getSelectedItem().toString();
+                String date1 = listofDate.get(spinnerdate.getSelectedItemPosition());
+
+
+                int cnt = qr.GetHomeworkForSub(date1,htext.toString(),txtstd.getText().toString(),txtclss.getText().toString(),sub1);
+                if(cnt>0)
+                {
+                    loading.setVisibility(View.GONE);
+                    hwMessage.setText(htext+" provided for this subject today");
+                    hwMessage.setVisibility(View.VISIBLE);
+                    addImage.setVisibility(View.GONE);
+                    homeworktext.setEnabled(false);
+                }
+                else
+                {
+                    loading.setVisibility(View.GONE);
+                    hwMessage.setVisibility(View.GONE);
+                    addImage.setVisibility(View.VISIBLE);
+                    homeworktext.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         return rootView;
     }
@@ -134,7 +185,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
             else
                 listofDate.add(0, "" + currentdate + "/" + month + "/" + year);
         }
-        listofDay.add(0,"Today"+" ("+currentdate+" "+Config.getMonth(month)+")");
+        listofDay.add(0, "Today" + " (" + currentdate + " " + Config.getMonth(month) + ")");
         for (int i = 1; i <7; i++) {
             c.add(Calendar.DATE, 1);
             int month1 = c.get(Calendar.MONTH) + 1;
@@ -193,17 +244,62 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
         spinnerdate = (Spinner) rootview.findViewById(R.id.spinnerdate);
         txtstd  = (TextView) rootview.findViewById(R.id.txtstdname);
         txtclss = (TextView) rootview.findViewById(R.id.txttdivname);
+        loading = (ProgressWheel)rootview.findViewById(R.id.loading);
+        hwMessage = (TextView) rootview.findViewById(R.id.tvNoDataMsg);
 
-        homeworktext.setHint("Enter "+htext+" Text");
+        homeworktext.setHint("Enter " + htext + " Text");
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),PhotoAlbumActivity.class);
-                Bundle b = new Bundle();
-                b.putBoolean("FunCenter", false);
-                b.putBoolean("Homework",true);
-                intent.putExtras(b);
-                getActivity().startActivity(intent);
+
+                final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "fonts/font.ttf");
+
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialoglayout = inflater.inflate(R.layout.imagepickerdialog_layout, null);
+                ImageButton camera_btn = (ImageButton) dialoglayout.findViewById(R.id.img_camera);
+                ImageButton gallery_btn = (ImageButton) dialoglayout.findViewById(R.id.img_gallary);
+                Button cancel = (Button) dialoglayout.findViewById(R.id.btn_cancel);
+                cancel.setTypeface(face);
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setView(dialoglayout);
+
+                final AlertDialog alertDialog = builder.create();
+
+
+                camera_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, REQUEST_CAMERA);
+                        alertDialog.dismiss();
+                    }
+                });
+
+
+                gallery_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent = new Intent(getActivity(), PhotoAlbumActivity.class);
+                        Bundle b = new Bundle();
+                        b.putBoolean("FunCenter", false);
+                        b.putBoolean("Homework", true);
+                        intent.putExtras(b);
+                        getActivity().startActivity(intent);
+                        alertDialog.dismiss();
+                    }
+                });
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                alertDialog.show();
+
             }
         });
     }
@@ -252,7 +348,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
             if(templist.size()<10)
             {
                 Bitmap icon = BitmapFactory.decodeResource(NewHomeworkActivity.this.getResources(),
-                        R.drawable.noicon);
+                        R.drawable.addimageicon);
                 TeacherHomeworkModel obj = new TeacherHomeworkModel();
                 obj.setPic(icon);
                 obj.setHwTxtLst("NoIcon");
@@ -270,7 +366,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
             if(templist.size()>0) {
                 addImage.setVisibility(View.GONE);
                 gridView.setVisibility(View.VISIBLE);
-                adapter = new NewHomeworkGalleryAdapter(getActivity(), hwimage,temp,true);
+                adapter = new NewHomeworkGalleryAdapter(getActivity(), hwimage,temp,true,NewHomeworkActivity.this);
                 gridView.setAdapter(adapter);
                 gridView.setFastScrollEnabled(true);
             }
@@ -284,7 +380,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_main, menu);
 
     }
@@ -313,7 +409,7 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
     public void saveHomework() {
         if(txtstd.getText().toString().isEmpty() )
         {
-            Config.alertDialog(Singlton.getContext(), "New "+htext, "Please Select Standard");
+            Config.alertDialog(Singlton.getContext(), "New " + htext, "Please Select Standard");
             // Toast.makeText(getActivity(), "Please Select Standard", Toast.LENGTH_SHORT).show();
         }
         else if(txtclss.getText().toString().isEmpty())
@@ -428,6 +524,59 @@ public class NewHomeworkActivity extends Fragment implements FragmentBackPressed
             gridView.setVisibility(View.GONE);
         }
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == getActivity().RESULT_OK) {
+            if (requestCode == REQUEST_CAMERA)
+                onCaptureImageResult(data);
+        }
+    }
+
+    private void onCaptureImageResult(Intent data) {
+        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+
+        // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+        Uri tempUri = getImageUri(getActivity(), thumbnail);
+
+        // CALL THIS METHOD TO GET THE ACTUAL PATH
+        File finalFile = new File(getRealPathFromURI(tempUri));
+        ArrayList<String> imageList = new ArrayList<>();
+        imageList = Singlton.getImageList();
+
+        imageList.add(imageList.size(), finalFile.getAbsolutePath());
+        Singlton.setImageList(imageList);
+
+        if(Singlton.getImageList().size()>0)
+        {
+            new GetImagesForEvent().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        else
+        {
+            addImage.setVisibility(View.VISIBLE);
+            gridView.setVisibility(View.GONE);
+        }
+
+       // ivImage.setImageBitmap(thumbnail);
+    }
+
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
+
 
 
 }

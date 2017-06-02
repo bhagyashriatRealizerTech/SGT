@@ -536,6 +536,9 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
             else
             b= false;
 
+            edit.putBoolean("ParsData", b);
+            edit.commit();
+
             if (b) {
             if (mWord.trim().length() > 0 && !mWord.equalsIgnoreCase("null")) {
 
@@ -762,6 +765,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
         }
 
         if(validate.equals("valid"))
+
         return true;
         else
             return false;
@@ -934,7 +938,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
 
                 alertDialog.dismiss();
                 if (from.equalsIgnoreCase("FirstLogin")) {
-                    boolean b = parsData(s);
+                    boolean b = sharedpreferences.getBoolean("ParsData",true);
                     if (b == true) {
                         loading.setVisibility(View.GONE);
                         GCMReg();

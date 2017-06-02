@@ -134,7 +134,12 @@ public class TeacherHomeworkAsyncTaskPost extends AsyncTask<Void, Void,StringBui
                 }
 
                 if(!resultLogin.toString().replace("\"","").equalsIgnoreCase("success"))
-                    NetworkException.insertNetworkException(myContext, resultLogin.toString());
+                {
+                    StringBuilder exceptionString = new StringBuilder();
+                    exceptionString.append("URL: "+url.toString()+"\nInput: "+jobj.toString()+"\nException: ");
+                    exceptionString.append(resultLogin.toString());
+                    NetworkException.insertNetworkException(myContext,exceptionString.toString());
+                }
 
             } else {
                 // Log.e("Error", "Failed to Login");
@@ -144,6 +149,8 @@ public class TeacherHomeworkAsyncTaskPost extends AsyncTask<Void, Void,StringBui
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
                 String line;
+                exceptionString.append("URL: "+url.toString()+"\nInput: "+jobj.toString()+"\nException: ");
+
                 while((line=reader.readLine()) != null)
                 {
                     exceptionString.append(line);

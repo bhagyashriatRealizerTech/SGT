@@ -152,7 +152,12 @@ public class TeacherAttendanceAsyncTaskPost extends AsyncTask<Void, Void,StringB
                 }
 
                 if(!resultLogin.toString().equalsIgnoreCase("true"))
-                    NetworkException.insertNetworkException(myContext, resultLogin.toString());
+                {
+                    StringBuilder exceptionString = new StringBuilder();
+                    exceptionString.append("URL: "+url.toString()+"\nInput: "+jsonobj.toString()+"\nException: ");
+                    exceptionString.append(resultLogin.toString());
+                    NetworkException.insertNetworkException(myContext,exceptionString.toString());
+                }
 
             } else {
                 // Log.e("Error", "Failed to Login");
@@ -162,6 +167,8 @@ public class TeacherAttendanceAsyncTaskPost extends AsyncTask<Void, Void,StringB
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
                 String line;
+                exceptionString.append("URL: "+url.toString()+"\nInput: "+jsonobj.toString()+"\nException: ");
+
                 while((line=reader.readLine()) != null)
                 {
                     exceptionString.append(line);

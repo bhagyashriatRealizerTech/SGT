@@ -108,7 +108,12 @@ public class TeacherQueryAsyncTaskPost extends AsyncTask<Void, Void,StringBuilde
                 }
 
                 if(!resultLogin.toString().equalsIgnoreCase("true"))
-                    NetworkException.insertNetworkException(myContext,resultLogin.toString());
+                {
+                    StringBuilder exceptionString = new StringBuilder();
+                    exceptionString.append("URL: "+url.toString()+"\nInput: "+jsonobj.toString()+"\nException: ");
+                    exceptionString.append(resultLogin.toString());
+                    NetworkException.insertNetworkException(myContext,exceptionString.toString());
+                }
 
             }
             else
@@ -118,6 +123,9 @@ public class TeacherQueryAsyncTaskPost extends AsyncTask<Void, Void,StringBuilde
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
                 String line;
+
+                exceptionString.append("URL: "+url.toString()+"\nInput: "+jsonobj.toString()+"\nException: ");
+
                 while((line=reader.readLine()) != null)
                 {
                     exceptionString.append(line);

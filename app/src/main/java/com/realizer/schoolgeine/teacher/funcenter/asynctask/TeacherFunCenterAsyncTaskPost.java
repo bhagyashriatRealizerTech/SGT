@@ -119,8 +119,12 @@ public class TeacherFunCenterAsyncTaskPost extends AsyncTask<Void, Void,StringBu
                     resultLogin.append(line);
                 }
 
-                if(!resultLogin.toString().replace("\"","").equalsIgnoreCase("success"))
-                    NetworkException.insertNetworkException(myContext, resultLogin.toString());
+                if(!resultLogin.toString().replace("\"","").equalsIgnoreCase("success")) {
+                    StringBuilder exceptionString = new StringBuilder();
+                    exceptionString.append("URL: " + url.toString() + "\nInput: " + jobj.toString()+"\nException: ");
+                    exceptionString.append(resultLogin.toString());
+                    NetworkException.insertNetworkException(myContext, exceptionString.toString());
+                }
 
 
             } else {
@@ -131,6 +135,9 @@ public class TeacherFunCenterAsyncTaskPost extends AsyncTask<Void, Void,StringBu
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
                 String line;
+
+                exceptionString.append("URL: " + url.toString() + "\nInput: " + jobj.toString()+"\nException: ");
+
                 while((line=reader.readLine()) != null)
                 {
                     exceptionString.append(line);

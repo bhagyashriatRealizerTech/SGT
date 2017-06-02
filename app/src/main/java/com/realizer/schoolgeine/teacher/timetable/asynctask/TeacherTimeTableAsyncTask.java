@@ -119,7 +119,12 @@ public class TeacherTimeTableAsyncTask extends AsyncTask<Void, Void,StringBuilde
                 }
 
                 if(!resultLogin.toString().equalsIgnoreCase("true"))
-                    NetworkException.insertNetworkException(myContext, resultLogin.toString());
+                {
+                    StringBuilder exceptionString = new StringBuilder();
+                    exceptionString.append("URL: "+url.toString()+"\nInput: "+jobj.toString()+"\nException: ");
+                    exceptionString.append(resultLogin.toString());
+                    NetworkException.insertNetworkException(myContext,exceptionString.toString());
+                }
 
             } else {
                 // Log.e("Error", "Failed to Login");
@@ -129,6 +134,8 @@ public class TeacherTimeTableAsyncTask extends AsyncTask<Void, Void,StringBuilde
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
                 String line;
+                exceptionString.append("URL: "+url.toString()+"\nInput: "+jobj.toString()+"\nException: ");
+
                 while((line=reader.readLine()) != null)
                 {
                     exceptionString.append(line);
