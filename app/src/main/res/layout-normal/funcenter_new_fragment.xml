@@ -144,7 +144,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/imageviewborder"
+        android:background="@drawable/addimageicon"
         android:id="@+id/btnCapturePicture1"
         android:scaleType="fitXY"
         android:layout_marginLeft="20dp"

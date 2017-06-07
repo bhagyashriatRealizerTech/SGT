@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -19,6 +21,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,8 +31,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -70,6 +75,7 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
     private static final String TAG = NewHomeworkActivity.class.getSimpleName();
 
     // Camera activity request codes
+    int REQUEST_CAMERA = 100;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
 
@@ -90,6 +96,7 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
     ArrayList<TeacherHomeworkModel> hwimage;
     NewHomeworkGalleryAdapter adapter;
     ArrayList<String> base64imageList;
+    File cameraCapturedFile;
 
     @Nullable
     @Override
@@ -122,17 +129,74 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
             public void onClick(View v) {
                 // capture picture
                 //getOption();
-                Intent intent = new Intent(getActivity(),PhotoAlbumActivity.class);
+              /*  Intent intent = new Intent(getActivity(),PhotoAlbumActivity.class);
                 Bundle b = new Bundle();
                 b.putBoolean("FunCenter", false);
                 b.putBoolean("Homework",false);
                 intent.putExtras(b);
-                getActivity().startActivity(intent);
+                getActivity().startActivity(intent);*/
+                final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "fonts/font.ttf");
+
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialoglayout = inflater.inflate(R.layout.imagepickerdialog_layout, null);
+                ImageButton camera_btn = (ImageButton) dialoglayout.findViewById(R.id.img_camera);
+                ImageButton gallery_btn = (ImageButton) dialoglayout.findViewById(R.id.img_gallary);
+                Button cancel = (Button) dialoglayout.findViewById(R.id.btn_cancel);
+                cancel.setTypeface(face);
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setView(dialoglayout);
+
+                final AlertDialog alertDialog = builder.create();
+
+
+                camera_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        cameraCapturedFile= new File(Environment.getExternalStorageDirectory() + File.separator + "DCIM" + File.separator + "temp.png");
+                        Uri tempURI = Uri.fromFile(cameraCapturedFile);
+
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, tempURI);
+                        startActivityForResult(intent, REQUEST_CAMERA);
+                        alertDialog.dismiss();
+                    }
+                });
+
+
+                gallery_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent = new Intent(getActivity(), PhotoAlbumActivity.class);
+                        Bundle b = new Bundle();
+                        b.putBoolean("FunCenter", false);
+                        b.putBoolean("Homework", true);
+                        intent.putExtras(b);
+                        getActivity().startActivity(intent);
+                        alertDialog.dismiss();
+                    }
+                });
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                alertDialog.show();
             }
         });
 
 
         return rootView;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 
     public class GetImagesTimeTable extends AsyncTask<Void, Void,Void>
@@ -172,7 +236,7 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
             if(templist.size()<10)
             {
                 Bitmap icon = BitmapFactory.decodeResource(TeacherTimeTableNewFragment.this.getResources(),
-                        R.drawable.noicon);
+                        R.drawable.addimageicon);
                 TeacherHomeworkModel obj = new TeacherHomeworkModel();
                 obj.setPic(icon);
                 obj.setHwTxtLst("NoIcon");
@@ -190,7 +254,7 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
             if(templist.size()>0) {
                 imgsyllabus.setVisibility(View.GONE);
                 gridView.setVisibility(View.VISIBLE);
-                adapter = new NewHomeworkGalleryAdapter(getActivity(), hwimage,temp,false);
+                adapter = new NewHomeworkGalleryAdapter(getActivity(), hwimage,temp,false,TeacherTimeTableNewFragment.this);
                 gridView.setAdapter(adapter);
                 gridView.setFastScrollEnabled(true);
             }
@@ -212,14 +276,13 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
             //Toast.makeText(getActivity(),"Please enter title", Toast.LENGTH_LONG).show();
             //Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.TimetableEnter)).toString());
         }
-        else
-        if (description.getText().toString().equals(""))
+        else if (description.getText().toString().equals(""))
         {
             Config.alertDialog(Singlton.getContext(), "Time Table", "Please Enter Description");
            // Toast.makeText(getActivity(), "Please Enter Description", Toast.LENGTH_LONG).show();
             //Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.Timetabledescription)).toString());
         }
-        if ( Singlton.getFialbitmaplist().size()<=0)
+        else if ( Singlton.getFialbitmaplist().size()<=0)
         {
             Config.alertDialog(Singlton.getContext(), "Time Table", "Please Add Image");
            // Toast.makeText(getActivity(), "Please insert image", Toast.LENGTH_LONG).show();
@@ -287,189 +350,15 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
         return false;
     }
 
-    /**
-     * Checking device has camera hardware or not
-     */
-    private boolean isDeviceSupportCamera() {
-        if (getActivity().getPackageManager().hasSystemFeature(
-                PackageManager.FEATURE_CAMERA)) {
-            // this device has a camera
-            return true;
-        } else {
-            // no camera on this device
-            return false;
-        }
-    }
-
-    //Option camera or gallery
-
-    public void getOption() {
-        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT, null);
-        galleryIntent.setType("image/*");
-        galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-
-        Intent chooser = new Intent(Intent.ACTION_CHOOSER);
-        chooser.putExtra(Intent.EXTRA_INTENT, galleryIntent);
-        chooser.putExtra(Intent.EXTRA_TITLE, "Choose Action");
-
-        Intent[] intentArray = {cameraIntent};
-        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
-        startActivityForResult(chooser, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
-    }
-
-    /**
-     * Here we store the file url as it will be null after returning from camera
-     * app
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        // save file url in bundle as it will be null on screen orientation
-        // changes
-        outState.putParcelable("file_uri", fileUri);
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        // if the result is capturing Image
-        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-            if (resultCode == getActivity().RESULT_OK) {
-
-                // successfully captured the image
-                // launching upload activity
-                launchUploadActivity(data);
-
-            } else if (resultCode == getActivity().RESULT_CANCELED) {
-
-                // user cancelled Image capture
-               /* Toast.makeText(getActivity(), "user cancle action", Toast.LENGTH_LONG).show();*/
-               // Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.CanceledImage)).toString());
-
-            } else {
-                // failed to capture image
-                Config.alertDialog(Singlton.getContext(), "Camera", "Failed to Capture Image");
-                //Toast.makeText(getActivity(), "failed to capture image", Toast.LENGTH_LONG).show();
-                //Utils.alertDialog(getActivity(), "", Utils.actionBarTitle(getString(R.string.FailedImage)).toString());
-            }
+        if (resultCode == getActivity().RESULT_OK) {
+            if (requestCode == REQUEST_CAMERA)
+                onCaptureImageResult(data);
         }
     }
-
-
-    private void launchUploadActivity(Intent data){
-
-        if(data.getData()!=null)
-        {
-            try
-            {
-                if (bitmap != null)
-                {
-                    //bitmap.recycle();
-                }
-
-                InputStream stream = getActivity().getContentResolver().openInputStream(data.getData());
-                bitmap = BitmapFactory.decodeStream(stream);
-                stream.close();
-                imgsyllabus.setScaleType(ImageView.ScaleType.FIT_XY);
-                imgsyllabus.setImageBitmap(bitmap);
-
-            }
-
-            catch (FileNotFoundException e)
-            {
-                e.printStackTrace();
-            }
-
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-
-        else
-        {
-            bitmap=(Bitmap) data.getExtras().get("data");
-
-            imgsyllabus.setScaleType(ImageView.ScaleType.FIT_XY);
-            imgsyllabus.setImageBitmap(bitmap);
-
-        }
-    }
-
-    /**
-     * ------------ Helper Methods ----------------------
-     * */
-
-    /**
-     * Creating file uri to store image/video
-     */
-    public Uri getOutputMediaFileUri(int type) {
-        return Uri.fromFile(getOutputMediaFile(type));
-    }
-
-    /**
-     * returning image / video
-     */
-    private static File getOutputMediaFile(int type) {
-
-        // External sdcard location
-        File mediaStorageDir = new File(
-                Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                Config.IMAGE_DIRECTORY_NAME);
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.d(TAG, "Oops! Failed create "
-                        + Config.IMAGE_DIRECTORY_NAME + " directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(new Date());
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                    + "IMG_" + timeStamp + ".jpg");
-        } else if (type == MEDIA_TYPE_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                    + "VID_" + timeStamp + ".mp4");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
-    }
-
-
-    @Override
-    public void onClick(View v) {
-
-    }
-
-
-    //Encode image to Base64 to send to server
-    private void setPhoto(Bitmap bitmapm) {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmapm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-
-            byte[] byteArrayImage = baos.toByteArray();
-            String imagebase64string = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -568,4 +457,52 @@ public class TeacherTimeTableNewFragment extends Fragment implements View.OnClic
             gridView.setVisibility(View.GONE);
         }
     }
+
+
+
+
+
+    private void onCaptureImageResult(Intent data) {
+       /* Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+
+        // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+        Uri tempUri = getImageUri(getActivity(), thumbnail);
+
+        // CALL THIS METHOD TO GET THE ACTUAL PATH
+        File finalFile = new File(getRealPathFromURI(tempUri));*/
+        ArrayList<String> imageList = new ArrayList<>();
+        imageList = Singlton.getImageList();
+
+        imageList.add(imageList.size(), cameraCapturedFile.getAbsolutePath());
+        Singlton.setImageList(imageList);
+
+
+        if(Singlton.getImageList().size()>0)
+        {
+            new GetImagesTimeTable().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        else
+        {
+            imgsyllabus.setVisibility(View.VISIBLE);
+            gridView.setVisibility(View.GONE);
+        }
+
+    }
+
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
+
+
 }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,7 @@ public class TeacherMyClassAttDetails extends Fragment implements FragmentBackPr
                     o.setRollno(studlst.get(j).getSrnoStd());
                     o.setAttDate(name);
                     o.setAbscnt("A");
-                    if(!studlst.get(j).getSrnoStd().equalsIgnoreCase("null"))
+                    if(!studlst.get(j).getSrnoStd().equalsIgnoreCase("null") && !TextUtils.isEmpty(studlst.get(j).getSrnoStd()))
                     o.setRno(Integer.valueOf(studlst.get(j).getSrnoStd()));
                     o.setProfileimage(studlst.get(j).getProfileimage());
                     listat.add(o);

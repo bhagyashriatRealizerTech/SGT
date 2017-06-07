@@ -75,14 +75,32 @@ public class LoginAsyncTaskGet extends AsyncTask<Void, Void,StringBuilder>
                 {
                     resultLogin.append(line);
                 }
+               /* if(!resultLogin.toString().equalsIgnoreCase("true"))
+                {
+                    StringBuilder exceptionString = new StringBuilder();
+                    exceptionString.append("URL: "+my.toString()+"\nInput: Get Method");
+                    exceptionString.append(resultLogin.toString());
+                    NetworkException.insertNetworkException(myContext,exceptionString.toString());
+                }*/
 
             }
             else
             {
                // Log.e("Error", "Failed to Login");
+                StringBuilder exceptionString = new StringBuilder();
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
 
-                if(!resultLogin.toString().equalsIgnoreCase("true"))
-                    NetworkException.insertNetworkException(myContext, resultLogin.toString());
+                exceptionString.append("URL: "+my.toString()+"\nInput: Get Method\nException: ");
+
+                while((line=reader.readLine()) != null)
+                {
+                    exceptionString.append(line);
+                }
+
+                NetworkException.insertNetworkException(myContext,exceptionString.toString());
 
             }
         }

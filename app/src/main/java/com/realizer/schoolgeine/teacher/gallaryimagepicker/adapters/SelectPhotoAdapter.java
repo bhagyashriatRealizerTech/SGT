@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.realizer.schoolgeine.teacher.R;
+import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.Singlton;
 import com.realizer.schoolgeine.teacher.gallaryimagepicker.utils.MediaStorePhoto;
 import com.realizer.schoolgeine.teacher.gallaryimagepicker.utils.SquareImageView;
@@ -33,6 +34,7 @@ public class SelectPhotoAdapter extends RecyclerView.Adapter {
     private Activity mAct;
     private SelectPhotoCallback selectPhotoCallback;
     int count=0;
+    int imageCount=0;
 
     public SelectPhotoAdapter(ArrayList<MediaStorePhoto> bucketPhotoList, Activity mActivity) {
         this.bucketPhotoList = bucketPhotoList;
@@ -80,14 +82,33 @@ public class SelectPhotoAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View v) {
                     if (bucketPhotoList.get(position).getStatus().equals("checked"))
-                    {  bucketPhotoList.get(position).setStatus("null");}
-                    else
-                    {bucketPhotoList.get(position).setStatus("checked");}
-
-                    if (selectPhotoCallback != null) {
-                        selectPhotoCallback.selectViewPressed(position, bucketPhotoList.get(position).getStatus());
+                    {
+                        bucketPhotoList.get(position).setStatus("null");
+                        imageCount = imageCount-1;
+                        if (selectPhotoCallback != null) {
+                            selectPhotoCallback.selectViewPressed(position, bucketPhotoList.get(position).getStatus());
+                        }
+                        ((PhotoViewHolder) holder).getSelectView().setChecked(bucketPhotoList.get(position).getStatus().equals("checked"));
                     }
-                    ((PhotoViewHolder) holder).getSelectView().setChecked(bucketPhotoList.get(position).getStatus().equals("checked"));
+                    else
+                    {
+                        if(imageCount==10)
+                        {
+                           // Config.alertDialog(Singlton.getContext(), "Gallery", "Please Select only 10 image");
+                        }
+                        else
+                        {
+                            bucketPhotoList.get(position).setStatus("checked");
+                            imageCount = imageCount+1;
+                            if (selectPhotoCallback != null) {
+                                selectPhotoCallback.selectViewPressed(position, bucketPhotoList.get(position).getStatus());
+                            }
+                            ((PhotoViewHolder) holder).getSelectView().setChecked(bucketPhotoList.get(position).getStatus().equals("checked"));
+                        }
+
+                    }
+
+
 
             }
         });
@@ -95,14 +116,30 @@ public class SelectPhotoAdapter extends RecyclerView.Adapter {
         ((PhotoViewHolder) holder).getSelectView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bucketPhotoList.get(position).getStatus().equals("checked"))
+                if (bucketPhotoList.get(position).getStatus().equals("checked")) {
                     bucketPhotoList.get(position).setStatus("null");
-                else
-                    bucketPhotoList.get(position).setStatus("checked");
-                if (selectPhotoCallback != null) {
-                    selectPhotoCallback.selectViewPressed(position, bucketPhotoList.get(position).getStatus());
+                    imageCount = imageCount-1;
+                    if (selectPhotoCallback != null) {
+                        selectPhotoCallback.selectViewPressed(position, bucketPhotoList.get(position).getStatus());
+                    }
+                    ((PhotoViewHolder) holder).getSelectView().setChecked(bucketPhotoList.get(position).getStatus().equals("checked"));
                 }
-                ((PhotoViewHolder) holder).getSelectView().setChecked(bucketPhotoList.get(position).getStatus().equals("checked"));
+                else {
+                    if(imageCount==10)
+                    {
+                        //Config.alertDialog(mAct.getApplicationContext(), "Gallery", "Please Select only 10 image");
+                    }
+                    else {
+                        bucketPhotoList.get(position).setStatus("checked");
+                        imageCount = imageCount+1;
+                        if (selectPhotoCallback != null) {
+                            selectPhotoCallback.selectViewPressed(position, bucketPhotoList.get(position).getStatus());
+                        }
+                        ((PhotoViewHolder) holder).getSelectView().setChecked(bucketPhotoList.get(position).getStatus().equals("checked"));
+                    }
+                }
+
+
 
                 Log.e("Status", bucketPhotoList.get(position).getStatus());
             }

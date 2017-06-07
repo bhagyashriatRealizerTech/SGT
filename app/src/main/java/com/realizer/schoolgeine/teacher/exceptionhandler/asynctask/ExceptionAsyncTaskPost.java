@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.realizer.schoolgeine.teacher.Utils.Config;
 import com.realizer.schoolgeine.teacher.Utils.OnTaskCompleted;
+import com.realizer.schoolgeine.teacher.exceptionhandler.NetworkException;
 import com.realizer.schoolgeine.teacher.exceptionhandler.model.ExceptionModel;
 import com.realizer.schoolgeine.teacher.queue.QueueListModel;
 
@@ -88,9 +89,34 @@ public class ExceptionAsyncTaskPost extends AsyncTask<Void, Void,StringBuilder>
                 {
                     resultLogin.append(line);
                 }
+
+                if(!resultLogin.toString().equalsIgnoreCase("true"))
+                {
+                    StringBuilder exceptionString = new StringBuilder();
+                    exceptionString.append("URL: "+url.toString()+"\nInput: "+jsonobj.toString());
+                    exceptionString.append(resultLogin.toString());
+
+                    NetworkException.insertNetworkException(myContext,exceptionString.toString());
+                }
             }
             else
             {
+
+                StringBuilder exceptionString = new StringBuilder();
+                HttpEntity entity = httpResponse.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
+
+                exceptionString.append("URL: "+url.toString()+"\nInput: "+jsonobj.toString());
+
+                while((line=reader.readLine()) != null)
+                {
+                    exceptionString.append(line);
+                }
+
+                NetworkException.insertNetworkException(myContext, exceptionString.toString());
+
                 // Log.e("Error", "Failed to Login");
             }
         } catch (JSONException e) {
