@@ -27,6 +27,7 @@ android {
         }
         debug {
             debuggable true // make this value false while releasing  app
+            signingConfig signingConfigs.config
         }
     }
     useLibrary 'org.apache.http.legacy'
