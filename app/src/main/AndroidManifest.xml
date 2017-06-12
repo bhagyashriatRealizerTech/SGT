@@ -61,15 +61,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.realizer.schoolgeine.teacher.MainActivity"
-            android:screenOrientation="portrait"
-            android:noHistory="true"
-            android:theme="@style/AppTheme1"
-             />
-
         <activity android:name="com.realizer.schoolgeine.teacher.LoginActivity"
             android:screenOrientation="portrait"
-            android:noHistory="false"
             android:theme="@style/AppTheme1"
             />
         <activity

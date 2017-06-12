@@ -107,9 +107,10 @@
         android:layout_weight="1">
         <TextView style="@style/TextViewsBold15"
             android:layout_marginBottom="0dp"
+            android:id="@+id/copyrightyear"
             android:layout_gravity="bottom|center_horizontal"
             android:textColor="#4682B4"
-            android:text="© 2016 RealizerTech"/>
+            android:text="© 2017 RealizerTech"/>
 
     </FrameLayout>
 

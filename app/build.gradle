@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'SchoolGenieTeacher'
-            keyPassword 'schoolgenie'
-            storeFile file('C:/schoolgenieteacher.jks')
-            storePassword 'schoolgenie'
-        }
-    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
     defaultConfig {
@@ -20,14 +12,10 @@ android {
         multiDexEnabled true
     }
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
-        }
+
         debug {
             debuggable true // make this value false while releasing  app
-            signingConfig signingConfigs.config
+
         }
     }
     useLibrary 'org.apache.http.legacy'

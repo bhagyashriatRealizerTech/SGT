@@ -64,6 +64,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -74,11 +75,12 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * Created by Win on 11/27/2015.
  */
-public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPermissions.PermissionCallbacks {
+public class LoginActivity extends Activity implements OnTaskCompleted {
 
     EditText userName, password;
     Button loginButton;
     CheckBox checkBox;
+    TextView copyRight;
     DatabaseQueries dbqr;
     int num;
     ProgressWheel loading;
@@ -99,10 +101,9 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-
-        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
         setContentView(R.layout.login_activity);
 
+        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
 
         int MyVersion = Build.VERSION.SDK_INT;
         if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -117,6 +118,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
         Typeface face= Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/font.ttf");
         loginButton.setTypeface(face);
         checkBox = (CheckBox) findViewById(R.id.checkBox1);
+        copyRight = (TextView) findViewById(R.id.copyrightyear);
         loading = (ProgressWheel) findViewById(R.id.loading);
         forgotPassword = (TextView) findViewById(R.id.txtForgetPswrd);
         dbqr = new DatabaseQueries(LoginActivity.this);
@@ -125,13 +127,6 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
         //About Remember me in login page
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        SharedPreferences.Editor edit = sharedpreferences.edit();
-        edit.putString("DeviceId", telephonyManager.getDeviceId());
-        edit.commit();
-
-
-
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
@@ -139,6 +134,8 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
         mCredential.setSelectedAccountName(Config.Account_Name);
         Singlton.setmCredential(mCredential);
 
+        String copyYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+        copyRight.setText("© "+ copyYear +" RealizerTech");
 
         userName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -1041,6 +1038,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
             startService(ser);
             Intent i = new Intent(LoginActivity.this, DrawerActivity.class);
             startActivity(i);
+            finish();
         }
     }
 
@@ -1174,45 +1172,33 @@ public class LoginActivity extends Activity implements OnTaskCompleted ,EasyPerm
         }
     }
 
-    /**
-     * Respond to requests for permissions at runtime for API 23 and above.
-     * @param requestCode The request code passed in
-     *     requestPermissions(android.app.Activity, String, int, String[])
-     * @param permissions The requested permissions. Never null.
-     * @param grantResults The grant results for the corresponding permissions
-     *     which is either PERMISSION_GRANTED or PERMISSION_DENIED. Never null.
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(
-                requestCode, permissions, grantResults, this);
-    }
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 101: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-    /**
-     * Callback for when a permission is granted using the EasyPermissions
-     * library.
-     * @param requestCode The request code associated with the requested
-     *         permission
-     * @param list The requested permission list. Never null.
-     */
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> list) {
-        // Do nothing.
-    }
+                    TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                    SharedPreferences.Editor edit = sharedpreferences.edit();
+                    edit.putString("DeviceId", telephonyManager.getDeviceId());
+                    edit.commit();
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
 
-    /**
-     * Callback for when a permission is denied using the EasyPermissions
-     * library.
-     * @param requestCode The request code associated with the requested
-     *         permission
-     * @param list The requested permission list. Never null.
-     */
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> list) {
-        // Do nothing.
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
 }

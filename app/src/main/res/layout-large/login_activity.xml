@@ -120,12 +120,13 @@
 
     <TextView style="@style/TextViewsBold15"
         android:layout_marginBottom="5dp"
+        android:id="@+id/copyrightyear"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:textColor="#4682B4"
         android:textSize="20sp"
-        android:text="© 2016 RealizerTech"/>
+        android:text="© 2017 RealizerTech"/>
     <com.realizer.schoolgeine.teacher.view.ProgressWheel
         android:id="@+id/loading"
         android:layout_width="80dp"
