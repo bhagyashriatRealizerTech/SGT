@@ -68,7 +68,7 @@ public class NetworkException {
 
                     String TO = "bhagyashri.salgare@realizertech.com,sachin.shinde@realizertech.com";
 
-                    MailSender sender = new MailSender("realizertech1@gmail.com","realizer@15");
+                    MailSender sender = new MailSender("realizertech1@gmail.com","realizer@17");
 
                    // sender.addAttachment(Environment.getExternalStorageDirectory().getPath()+"/image.jpg");
 
